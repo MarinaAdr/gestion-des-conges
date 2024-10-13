@@ -23,7 +23,7 @@ const Login = () => {
             <input
               type="email"
               placeholder="exemple@gmail.com"
-              className="w-full px-3 py-2 border outline-none"
+              className="w-full px-3 py-2 border mt-1.5 outline-none"
             />
           </div>
           <div className="mb-4">
@@ -36,7 +36,7 @@ const Login = () => {
             <input
               type="password"
               placeholder="*******"
-              className="w-full px-3 py-2 border outline-none"
+              className="w-full px-3 py-2 border mt-1.5 outline-none"
             />
           </div>
           <div className="mb-4 flex items-center justify-between gap-4">
@@ -54,7 +54,7 @@ const Login = () => {
           <div className="mb-4">
             <button
               type="submit"
-              className="w-full bg-[#3bb8d8] text-white py-2"
+              className="w-full bg-[#3bb8d8] text-lg text-white py-2"
             >
               Se connecter
             </button>
