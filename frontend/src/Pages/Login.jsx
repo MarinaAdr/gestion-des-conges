@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault ();
     try {
       const response = await axios.post (
-        'http://localhost:5000/api/auth/login',
+        'http://localhost:8080/api/auth/login',
         {email, password}
       );
       console.log (response);
@@ -46,7 +46,7 @@ const Login = () => {
           <div className="mb-4">
             <div className="flex items-center gap-2">
               <RiLockPasswordFill className="text-lg" />
-              <label htmlFor="mdp" className="text-lg">
+              <label htmlFor="password" className="text-lg">
                 Mot de passe
               </label>
             </div>
