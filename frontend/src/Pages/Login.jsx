@@ -7,6 +7,7 @@ import axios from 'axios';
 const Login = () => {
   const [email, setEmail] = useState ('');
   const [password, setPassword] = useState ('');
+  const [error, setError] = useState(null)
 
   const handleSubmit = async e => {
     e.preventDefault ();
@@ -15,9 +16,15 @@ const Login = () => {
         'http://localhost:8080/api/auth/login',
         {email, password}
       );
-      console.log (response);
+      if(response.data.success){
+        alert("Connexion réussie")
+      }
     } catch (error) {
-      console.log (error);
+      if (error.response && !error.response.data.success) {
+        setError(error.response.data.error)
+      }else{
+        setError('Erreur serveur')
+      }
     }
   };
   return (
@@ -28,6 +35,7 @@ const Login = () => {
         </div>
 
         <h2 className="text-2xl font-pacific mb-4 text-center">Connexion</h2>
+        {error && <p className='text-red-500 ml-[20px] '>{error}</p>}
         <form className="m-5" onSubmit={handleSubmit}>
           <div className="mb-4 ">
             <div className="flex items-center gap-2">
