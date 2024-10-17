@@ -1,11 +1,11 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {RxDashboard} from 'react-icons/rx';
-import {LiaUsersSolid} from 'react-icons/lia';
-import {FcDepartment} from 'react-icons/fc';
+import { PiUsersThree } from "react-icons/pi";
 import {RiCalendarScheduleLine} from 'react-icons/ri';
 import {FaMoneyCheck} from 'react-icons/fa';
 import {TbSettingsCog} from 'react-icons/tb';
+import { BiBuildings } from "react-icons/bi";
 
 const AdminSidebar = () => {
   return (
@@ -28,14 +28,14 @@ const AdminSidebar = () => {
           to="/employees"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <LiaUsersSolid className="w-8 h-12 mr-4" />
+          <PiUsersThree  className="w-8 h-12 mr-4" />
           <span>Employés</span>
         </NavLink>
         <NavLink
           to="/departments"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <FcDepartment className="w-8 h-12 mr-4" />
+          <BiBuildings  className="w-8 h-12 mr-4" />
           <span>Départements</span>
         </NavLink>
         <NavLink
