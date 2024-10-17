@@ -3,11 +3,15 @@ import {MdEmail} from 'react-icons/md';
 import {RiLockPasswordFill} from 'react-icons/ri';
 import LoginImage from '../assets/login.gif';
 import axios from 'axios';
+import { useAuth } from '../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState ('');
   const [password, setPassword] = useState ('');
   const [error, setError] = useState(null)
+  const {login} = useAuth()
+  const navigate = useNavigate()
 
   const handleSubmit = async e => {
     e.preventDefault ();
@@ -17,7 +21,13 @@ const Login = () => {
         {email, password}
       );
       if(response.data.success){
-        alert("Connexion réussie")
+        login(response.data.user)
+        localStorage.setItem("token", response.data.token)
+        if (response.data.user.role === "admin") {
+          navigate('/admin-dashboard')
+        }else {
+          navigate('/employee-dashboard')
+        }
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
@@ -49,6 +59,7 @@ const Login = () => {
               placeholder="exemple@gmail.com"
               className="w-full px-3 py-2 border mt-1.5 outline-none"
               onChange={e => setEmail (e.target.value)}
+              required
             />
           </div>
           <div className="mb-4">
@@ -63,6 +74,7 @@ const Login = () => {
               placeholder="*******"
               className="w-full px-3 py-2 border mt-1.5 outline-none"
               onChange={e => setPassword (e.target.value)}
+              required
             />
           </div>
           <div className="mb-4 flex items-center justify-between gap-4">
