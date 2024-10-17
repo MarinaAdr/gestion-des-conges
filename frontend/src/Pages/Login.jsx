@@ -92,7 +92,7 @@ const Login = () => {
           <div className="mb-4">
             <button
               type="submit"
-              className="w-full bg-[#3bb8d8] text-lg text-white py-2"
+              className="w-full bg-[#3bb8d8] rounded-[7px] text-lg text-white py-2"
             >
               Se connecter
             </button>
