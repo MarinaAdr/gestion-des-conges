@@ -1,16 +1,16 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
 import {RxDashboard} from 'react-icons/rx';
-import { PiUsersThree } from "react-icons/pi";
+import {PiUsersThree} from 'react-icons/pi';
 import {RiCalendarScheduleLine} from 'react-icons/ri';
-import {FaMoneyCheck} from 'react-icons/fa';
+import { FaRegMoneyBill1 } from "react-icons/fa6";
 import {TbSettingsCog} from 'react-icons/tb';
-import { BiBuildings } from "react-icons/bi";
+import {BiBuildings} from 'react-icons/bi';
 
 const AdminSidebar = () => {
   return (
     <div className="bg-slate-700 text-white h-screen fixed left-0 top-0 bottom-0 w-80">
-      <div className="bg-[#3bb8d8] h-12 flex items-center justify-center">
+      <div className="bg-[#3bb8d8] h-[48px] flex items-center justify-center">
         <h3 className="text-2xl text-center font-pacific ">
           Gestion des congés
         </h3>
@@ -21,42 +21,42 @@ const AdminSidebar = () => {
           className={({isActive}) =>
             `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}
         >
-          <RxDashboard className="w-8 h-12 mr-5" />
+          <RxDashboard className="w-7 h-12 mr-5" />
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to="/employees"
+          to="/admin-dasboard/employees"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <PiUsersThree  className="w-8 h-12 mr-4" />
+          <PiUsersThree className="w-7 h-12 mr-4" />
           <span>Employés</span>
         </NavLink>
         <NavLink
-          to="/departments"
+          to="/admin-dasboard/departements"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <BiBuildings  className="w-8 h-12 mr-4" />
+          <BiBuildings className="w-7 h-12 mr-4" />
           <span>Départements</span>
         </NavLink>
         <NavLink
-          to="/leave"
+          to="/admin-dasboard/congés"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <RiCalendarScheduleLine className="w-8 h-12 mr-4" />
+          <RiCalendarScheduleLine className="w-7 h-12 mr-4" />
           <span>Congés</span>
         </NavLink>
         <NavLink
-          to="/salary"
+          to="/admin-dasboard/salaire"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <FaMoneyCheck className="w-8 h-12 mr-4" />
+          <FaRegMoneyBill1 className="w-7 h-12 mr-4" />
           <span>Salaire</span>
         </NavLink>
         <NavLink
-          to="/settings"
+          to="/admin-dasboard/paramètres"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
-          <TbSettingsCog className="w-8 h-12 mr-4" />
+          <TbSettingsCog className="w-7 h-12 mr-4" />
           <span>Paramètres</span>
         </NavLink>
       </nav>
