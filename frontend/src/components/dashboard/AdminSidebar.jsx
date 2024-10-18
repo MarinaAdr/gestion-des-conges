@@ -19,41 +19,42 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard"
           className={({isActive}) =>
-            `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}
+            `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}end 
         >
           <RxDashboard className="w-7 h-12 mr-5" />
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to="/admin-dasboard/employees"
+          to="/admin-dashboard/employees"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
           <PiUsersThree className="w-7 h-12 mr-4" />
           <span>Employés</span>
         </NavLink>
         <NavLink
-          to="/admin-dasboard/departements"
-          className="flex items-center px-4 py-2 hover:bg-slate-600"
+          to="/admin-dashboard/departements"
+          className={({isActive}) =>
+            `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}
         >
           <BiBuildings className="w-7 h-12 mr-4" />
           <span>Départements</span>
         </NavLink>
         <NavLink
-          to="/admin-dasboard/congés"
+          to="/admin-dashboard/congés"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
           <RiCalendarScheduleLine className="w-7 h-12 mr-4" />
           <span>Congés</span>
         </NavLink>
         <NavLink
-          to="/admin-dasboard/salaire"
+          to="/admin-dashboard/salaire"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
           <FaRegMoneyBill1 className="w-7 h-12 mr-4" />
           <span>Salaire</span>
         </NavLink>
         <NavLink
-          to="/admin-dasboard/paramètres"
+          to="/admin-dashboard/paramètres"
           className="flex items-center px-4 py-2 hover:bg-slate-600"
         >
           <TbSettingsCog className="w-7 h-12 mr-4" />
