@@ -1,11 +1,47 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import axios from 'axios';
 
 const AjoutDepartement = () => {
+  const [departement, setDepartement] = useState ({
+    nom_departement: '',
+    description: '',
+  });
+
+  const navigate = useNavigate ();
+
+  const handleChange = async (e) => {
+    const {name, value} = e.target;
+    setDepartement ({...departement, [name]: value});
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault ();
+    try {
+      const response = await axios.post (
+        'http://localhost:8080/api/departement/ajout',
+        departement,
+        {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem ('token')}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        console.log(response)
+        navigate ('/admin-dashboard/departements');
+      }
+    } catch (error) {
+      if (error.response && !error.response.data.success) {
+        alert (error.response.data.error);
+      }
+    }
+  };
   return (
-    <div className="max-w-3xl mx-auto mt-[150px] bg-white p-8 rounded-md shadow-md w-96">
+    <div className="max-w-3xl mx-auto mt-[150px] bg-white p-8 rounded-xl shadow-md w-96">
       <div>
         <h2 className="text-2xl font-bold mb-6">Nouveau département</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="nom_departement"
@@ -14,8 +50,10 @@ const AjoutDepartement = () => {
               Nom du département
             </label>
             <input
+              name="nom_departement"
               type="text"
               placeholder="Nom département"
+              onChange={handleChange}
               className="mt-1 w-full p-2 border border-gray-300 rounded-md outline-none"
             />
           </div>
@@ -29,8 +67,9 @@ const AjoutDepartement = () => {
             <textarea
               name="description"
               placeholder="Description"
+              onChange={handleChange}
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md outline-none"
-              required
+              rows="4"
             />
           </div>
           <button
