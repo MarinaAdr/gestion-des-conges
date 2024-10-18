@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 connectToDatabase()
 app.use('/api/auth', authRouter)
-app.use('/api/departement', departementRouter)
+app.use('/api/departements', departementRouter)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`)
