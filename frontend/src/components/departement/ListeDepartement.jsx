@@ -12,7 +12,7 @@ const ListeDepartement = () => {
     const fetchDepartements = async () => {
       setDepLoading(true);
       try {
-        const response = await axios.get('http://localhost:8080/api/departements', {
+        const response = await axios.get('http://localhost:8080/api/departement', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -24,7 +24,7 @@ const ListeDepartement = () => {
             _id: dep._id,
             sno: sno++,
             nom_departement: dep.nom_departement,
-            action: <DepartementButton />,
+            action: <DepartementButton _id={dep._d} />,
           }));
           setDepartements(data);
         }
