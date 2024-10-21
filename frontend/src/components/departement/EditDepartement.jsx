@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import axios from 'axios' // Import de axios
+import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios' 
 
 const EditDepartement = () => {
   const { id } = useParams()
-  const [departement, setDepartement] = useState({}) // Initialiser avec un objet vide
+  const [departement, setDepartement] = useState({}) 
   const [depLoading, setDepLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchDepartements = async () => {
@@ -19,7 +20,7 @@ const EditDepartement = () => {
             },
           }
         )
-        console.log(response.data)
+        // console.log(response.data)
         if (response.data.success) {
           setDepartement(response.data.departement[0])
         }
@@ -41,8 +42,26 @@ const EditDepartement = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault() // Empêcher le comportement par défaut du formulaire
-    // Logique de soumission à ajouter si besoin
+    e.preventDefault() 
+    try {
+      const response = await axios.put (
+        `http://localhost:8080/api/departement/${id}`,
+        departement,
+        {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem ('token')}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        // console.log(response)
+        navigate ('/admin-dashboard/departements');
+      }
+    } catch (error) {
+      if (error.response && !error.response.data.success) {
+        alert (error.response.data.error);
+      }
+    }
   }
 
   return (
