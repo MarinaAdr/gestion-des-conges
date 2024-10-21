@@ -25,4 +25,15 @@ const ajoutDepartement = async(req, res) => {
     }
 }
 
-export {ajoutDepartement, getDepartements}
+const editerDepartement = async(req, res) =>{
+    try {
+        const {id} = req.params;
+        const departement = await Departement.find({_id: id})
+        return res.status(200).json({success: true, departement})
+    } catch (error) {
+        return res.status(500).json({success: false, error: "Modifier le département serveur erreur"})
+        
+    }
+}
+
+export {ajoutDepartement, getDepartements, editerDepartement}
