@@ -8,6 +8,8 @@ import AdminSummary from './components/dashboard/AdminSummary';
 import ListeDepartement from './components/departement/ListeDepartement';
 import AjoutDepartement from './components/departement/AjoutDepartement';
 import EditDepartement from './components/departement/EditDepartement';
+import ListEmploye from './components/employee/listEmploye';
+import AjoutEmploye from './components/employee/AjoutEmploye'
 
 function App () {
   return (
@@ -39,6 +41,16 @@ function App () {
             path="/admin-dashboard/departements/:id"
             element={<EditDepartement />}
           />
+
+          <Route
+            path="/admin-dashboard/employees"
+            element={<ListEmploye />}
+          />
+             <Route
+            path="/admin-dashboard/ajout-employe"
+            element={<AjoutEmploye />}
+          />
+
         </Route>
         <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
       </Routes>

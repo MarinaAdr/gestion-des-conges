@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import {RxDashboard} from 'react-icons/rx';
 import {PiUsersThree} from 'react-icons/pi';
 import {RiCalendarScheduleLine} from 'react-icons/ri';
-import { FaRegMoneyBill1 } from "react-icons/fa6";
+import {FaRegMoneyBill1} from 'react-icons/fa6';
 import {TbSettingsCog} from 'react-icons/tb';
 import {BiBuildings} from 'react-icons/bi';
 
@@ -19,14 +19,16 @@ const AdminSidebar = () => {
         <NavLink
           to="/admin-dashboard"
           className={({isActive}) =>
-            `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}end 
+            `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}
+          end
         >
           <RxDashboard className="w-7 h-12 mr-5" />
           <span>Dashboard</span>
         </NavLink>
         <NavLink
           to="/admin-dashboard/employees"
-          className="flex items-center px-4 py-2 hover:bg-slate-600"
+          className={({isActive}) =>
+            `flex items-center px-4 py-2 hover:bg-slate-600 ${isActive ? 'bg-[#3bb8d8]' : ''}`}
         >
           <PiUsersThree className="w-7 h-12 mr-4" />
           <span>Employés</span>
