@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axios from 'axios' 
+import axios from 'axios'
 
 const EditDepartement = () => {
   const { id } = useParams()
-  const [departement, setDepartement] = useState({}) 
+  const [departement, setDepartement] = useState({})
   const [depLoading, setDepLoading] = useState(false)
   const navigate = useNavigate()
 
@@ -20,7 +20,6 @@ const EditDepartement = () => {
             },
           }
         )
-        // console.log(response.data)
         if (response.data.success) {
           setDepartement(response.data.departement[0])
         }
@@ -34,7 +33,7 @@ const EditDepartement = () => {
     }
 
     fetchDepartements()
-  }, [id]) // Ajouter 'id' dans les dépendances
+  }, [id])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -42,72 +41,85 @@ const EditDepartement = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault() 
+    e.preventDefault()
     try {
-      const response = await axios.put (
+      const response = await axios.put(
         `http://localhost:8080/api/departement/${id}`,
         departement,
         {
           headers: {
-            "Authorization": `Bearer ${localStorage.getItem ('token')}`,
+            "Authorization": `Bearer ${localStorage.getItem('token')}`,
           },
         }
       );
       if (response.data.success) {
-        // console.log(response)
-        navigate ('/admin-dashboard/departements');
+        navigate('/admin-dashboard/departements');
       }
     } catch (error) {
       if (error.response && !error.response.data.success) {
-        alert (error.response.data.error);
+        alert(error.response.data.error);
       }
     }
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4">
       {depLoading ? (
-        <div>Loading...</div>
+        <div className="text-xl font-medium text-violet-600">Chargement...</div>
       ) : (
-        <div className="max-w-3xl mx-auto mt-[150px] bg-slate-100 p-8 rounded-xl shadow-md w-96">
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Modifier département</h2>
-            <form onSubmit={handleSubmit}>
-              <div>
-                <label
-                  htmlFor="nom_departement"
-                  className="text-m font-medium text-gray-700"
-                >
-                  Nom du département
-                </label>
-                <input
-                  name="nom_departement"
-                  type="text"
-                  placeholder="Nom département"
-                  value={departement.nom_departement || ''} 
-                  onChange={handleChange}
-                  className="mt-1 w-full p-2 border border-gray-300 rounded-md outline-none"
-                />
+        <div className="relative w-full max-w-xl">
+          {/* Carte de fond violette claire */}
+          <div className="absolute -bottom-4 -right-4 w-full h-full bg-violet-100 rounded-xl"></div>
+          
+          {/* Carte de fond violette foncée */}
+          <div className="absolute -bottom-2 -right-2 w-full h-full bg-violet-200 rounded-xl"></div>
+          
+          {/* Carte principale */}
+          <div className="relative bg-white p-8 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold text-center mb-8">
+              Modifier département
+            </h2>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label
+                    htmlFor="nom_departement"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Nom du département
+                  </label>
+                  <input
+                    name="nom_departement"
+                    type="text"
+                    placeholder="Nom département"
+                    value={departement.nom_departement || ''}
+                    onChange={handleChange}
+                    className="mt-1 w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    placeholder="Description"
+                    onChange={handleChange}
+                    value={departement.description || ''}
+                    rows="4"
+                    className="mt-1 w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  />
+                </div>
               </div>
-              <div className="mt-3">
-                <label
-                  htmlFor="description"
-                  className="block text-m font-medium text-gray-700"
-                >
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  placeholder="Description"
-                  onChange={handleChange}
-                  value={departement.description || ''} 
-                  className="mt-1 p-2 block w-full border border-gray-300 rounded-md outline-none"
-                  rows="4"
-                />
-              </div>
+
               <button
                 type="submit"
-                className="w-full mt-6 bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                className="w-full bg-violet-500 hover:bg-violet-600 text-white font-medium py-3 px-4 rounded-lg transition duration-200"
               >
                 Modifier
               </button>
@@ -115,8 +127,8 @@ const EditDepartement = () => {
           </div>
         </div>
       )}
-    </>
-  )
+    </div>
+  );
 }
 
 export default EditDepartement
