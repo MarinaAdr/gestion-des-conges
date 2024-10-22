@@ -4,12 +4,12 @@ const AjoutEmploye = () => {
   return (
     <div className="relative max-w-4xl mx-auto mt-20 px-4">
       {/* Rectangles décoratifs de fond */}
-      <div className="absolute -top-4 -right-4 w-full h-full bg-pink-200 rounded-lg transform rotate-2"></div>
-      <div className="absolute -bottom-4 -left-4 w-full h-full bg-blue-400 rounded-lg transform -rotate-2"></div>
+      <div className="absolute -top-4 -right-4 w-full h-full bg-violet-100 rounded-lg transform rotate-2"></div>
+      <div className="absolute -bottom-4 -left-4 w-full h-full bg-violet-200 rounded-lg transform -rotate-2"></div>
       
       {/* Carte principale */}
       <div className="relative bg-white rounded-lg shadow-xl p-8">
-        <h2 className="text-2xl font-bold mb-6 text-center">
+        <h2 className="text-2xl font-pacific font-bold mb-6 text-center">
           Ajouter un nouvel employé
         </h2>
         
@@ -24,7 +24,7 @@ const AjoutEmploye = () => {
                 type="text"
                 name="name"
                 placeholder="Entrer votre nom"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -38,7 +38,7 @@ const AjoutEmploye = () => {
                 type="email"
                 name="email"
                 placeholder="Entrer votre email"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -52,7 +52,7 @@ const AjoutEmploye = () => {
                 type="text"
                 name="employeeId"
                 placeholder="Votre Id"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -65,7 +65,7 @@ const AjoutEmploye = () => {
               <input
                 type="date"
                 name="dateDeNaissance"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -77,7 +77,7 @@ const AjoutEmploye = () => {
               </label>
               <select
                 name="genre"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               >
                 <option value="">Choisir</option>
@@ -95,7 +95,7 @@ const AjoutEmploye = () => {
                 type="text"
                 name="designation"
                 placeholder="Désignation"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -107,7 +107,7 @@ const AjoutEmploye = () => {
               </label>
               <select
                 name="departement"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               >
                 <option value="">Choisir votre département</option>
@@ -123,7 +123,7 @@ const AjoutEmploye = () => {
                 type="number"
                 name="salaire"
                 placeholder="Salaire"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -137,7 +137,7 @@ const AjoutEmploye = () => {
                 type="password"
                 name="password"
                 placeholder="**********"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
@@ -149,7 +149,7 @@ const AjoutEmploye = () => {
               </label>
               <select
                 name="role"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               >
                 <option value="">Choisir role</option>
@@ -167,14 +167,14 @@ const AjoutEmploye = () => {
                 type="file"
                 name="image"
                 accept="image/*"
-                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors"
+            className="w-full mt-8 bg-violet-500 hover:bg-violet-600 text-white py-3 px-4 rounded-lg transition-colors"
           >
             Ajouter
           </button>
