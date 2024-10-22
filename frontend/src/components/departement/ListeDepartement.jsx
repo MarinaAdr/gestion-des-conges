@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { DepartementButton } from '../../utils/DepartementHelper';
 import axios from 'axios';
+import { Spinner } from "@material-tailwind/react";
 
 const ListeDepartement = () => {
   const [departements, setDepartements] = useState([]);
@@ -151,7 +152,9 @@ const ListeDepartement = () => {
           <div className="flex items-center justify-center h-64 bg-white rounded-xl shadow-sm">
             <div className="flex items-center gap-3">
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-violet-600 border-t-transparent"></div>
-              <span className="text-slate-600">Chargement...</span>
+              <span>
+              <Spinner className="h-12 w-12" />
+              </span>
             </div>
           </div>
         ) : (
@@ -169,7 +172,7 @@ const ListeDepartement = () => {
                   <input
                     type="text"
                     placeholder="Rechercher par nom..."
-                    className="pl-4 pr-4 py-2 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent w-64"
+                    className="pl-4 pr-4 py-2 rounded-lg  border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
                     onChange={filtrerDepartement}
                   />
                 </div>

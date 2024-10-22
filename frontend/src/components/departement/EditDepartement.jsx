@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { Spinner } from "@material-tailwind/react";
 
 const EditDepartement = () => {
   const { id } = useParams()
@@ -65,7 +66,7 @@ const EditDepartement = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4">
       {depLoading ? (
-        <div className="text-xl font-medium text-violet-600">Chargement...</div>
+        <div><Spinner className="h-12 w-12" /></div>
       ) : (
         <div className="relative w-full max-w-xl">
           {/* Carte de fond violette claire */}
