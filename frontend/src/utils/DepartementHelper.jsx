@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { BiSolidEditAlt } from "react-icons/bi";
+import { RiDeleteBinFill } from "react-icons/ri";
 
 export const DepartementButton = ({ _id, onSupprimerDepartement }) => {
     const navigate = useNavigate(); 
@@ -35,16 +37,16 @@ export const DepartementButton = ({ _id, onSupprimerDepartement }) => {
     return (
         <div className="flex space-x-3">
             <button 
-                className="px-2 py-1 bg-blue-500 text-white rounded"
+                className="px-2 py-1 bg-green-700 text-white rounded"
                 onClick={() => navigate(`/admin-dashboard/departements/${_id}`)}  
             >
-                Editer
+                <BiSolidEditAlt  className='h-5 w-5' />
             </button>
             <button 
                 className="px-2 py-1 bg-red-500 text-white rounded ml-2"
                 onClick={handleSupprimer}  
             >
-                Supprimer
+                <RiDeleteBinFill  className='h-5 w-5' />
             </button>
         </div>
     );
