@@ -2,7 +2,7 @@ import React from 'react';
 
 const AjoutEmploye = () => {
   return (
-    <div className="relative bg-slate-50 max-w-4xl mx-auto mt-20 px-4">
+    <div className="relative bg-slate-50 max-w-4xl mx-auto mt-[70px] px-4">
       {/* Rectangles décoratifs de fond */}
       <div className="absolute -top-4 -right-4 w-full h-full bg-violet-100 rounded-lg transform rotate-2"></div>
       <div className="absolute -bottom-4 -left-4 w-full h-full bg-violet-200 rounded-lg transform -rotate-2"></div>
