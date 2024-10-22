@@ -165,8 +165,9 @@ const ListeDepartement = () => {
                 <h2 className="text-2xl font-semibold text-slate-900">Gestion des départements</h2>
                 <p className="text-sm text-slate-500">Gérez et organisez vos départements</p>
               </div>
+              </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between gap-4">
                 {/* Barre de recherche */}
                 <div className="relative">
                   <input
@@ -195,10 +196,10 @@ const ListeDepartement = () => {
                       d="M12 4v16m8-8H4" 
                     />
                   </svg>
-                  Nouveau département
+                  Nouveau 
                 </Link>
               </div>
-            </div>
+           
 
             {/* Table avec effet de carte */}
             <div className="bg-white mt-5 rounded-xl shadow-sm overflow-hidden">
