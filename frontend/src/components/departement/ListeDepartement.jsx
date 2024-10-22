@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { columns, DepartementButton } from '../../utils/DepartementHelper';
+import { DepartementButton } from '../../utils/DepartementHelper';
 import axios from 'axios';
 
 const ListeDepartement = () => {
@@ -9,9 +9,35 @@ const ListeDepartement = () => {
   const [depLoading, setDepLoading] = useState(false);
 
   const onSupprimerDepartement = async (id) => {
-    const data = departements.filter(dep => dep._id !==id)
-    setDepartements(data)
-  }
+    setDepartements(prevDepartements => {
+      return prevDepartements
+        .filter(dep => dep._id !== id)
+        .map((dep, index) => ({
+          ...dep,
+          sno: index + 1
+        }));
+    });
+  };
+
+  const columns = [
+    {
+      name: "Id",
+      selector: (row) => row.sno
+    },
+    {
+      name: "Nom département",
+      selector: (row) => row.nom_departement
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <DepartementButton 
+          _id={row._id}
+          onSupprimerDepartement={onSupprimerDepartement}
+        />
+      )
+    }
+  ];
 
   useEffect(() => {
     const fetchDepartements = async () => {
@@ -24,12 +50,10 @@ const ListeDepartement = () => {
         });
 
         if (response.data.success) {
-          let sno = 1;
-          const data = response.data.departements.map((dep) => ({
+          const data = response.data.departements.map((dep, index) => ({
             _id: dep._id,
-            sno: sno++,
+            sno: index + 1,
             nom_departement: dep.nom_departement,
-            action: <DepartementButton _id={dep._id} onSupprimerDepartement={onSupprimerDepartement} />,
           }));
           setDepartements(data);
         }
@@ -67,8 +91,13 @@ const ListeDepartement = () => {
               Nouveau
             </Link>
           </div>
-          <div className='mt-5'>
-            <DataTable columns={columns} data={departements} />
+          <div className="mt-5">
+            <DataTable 
+              columns={columns} 
+              data={departements}
+              pagination
+              responsive
+            />
           </div>
         </div>
       )}
