@@ -2,221 +2,184 @@ import React from 'react';
 
 const AjoutEmploye = () => {
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">
-        Ajouter un nouvel employé
-      </h2>
-      <form action="">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* nom */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
+    <div className="relative max-w-4xl mx-auto mt-20 px-4">
+      {/* Rectangles décoratifs de fond */}
+      <div className="absolute -top-4 -right-4 w-full h-full bg-pink-200 rounded-lg transform rotate-2"></div>
+      <div className="absolute -bottom-4 -left-4 w-full h-full bg-blue-400 rounded-lg transform -rotate-2"></div>
+      
+      {/* Carte principale */}
+      <div className="relative bg-white rounded-lg shadow-xl p-8">
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Ajouter un nouvel employé
+        </h2>
+        
+        <form action="">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* nom */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Name
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Entrer votre nom"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-            </label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Entrer votre nom"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-          {/* email */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
+            {/* email */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="Entrer votre email"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Entrer votre email"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* Employe Id */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Employé Id
+              </label>
+              <input
+                type="text"
+                name="employeeId"
+                placeholder="Votre Id"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-          {/* Employe Id */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Employé Id
+            {/* date de naissance */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Date de naissance
+              </label>
+              <input
+                type="date"
+                name="dateDeNaissance"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-            </label>
-            <input
-              type="text"
-              name="employeeId"
-              placeholder="Votre Id"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-          {/* date de naissance  */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Date de naissance
+            {/* Genre */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Genre
+              </label>
+              <select
+                name="genre"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              >
+                <option value="">Choisir</option>
+                <option value="masculin">masculin</option>
+                <option value="féminin">féminin</option>
+              </select>
+            </div>
 
-            </label>
-            <input
-              type="date"
-              name="dateDeNaissance"
-              placeholder="00/00/00"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* désignation */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Désignation
+              </label>
+              <input
+                type="text"
+                name="designation"
+                placeholder="Désignation"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-          {/* Genre */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Genre
+            {/* Départements */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Département
+              </label>
+              <select
+                name="departement"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              >
+                <option value="">Choisir votre département</option>
+              </select>
+            </div>
 
-            </label>
-            <select
-              name="genre"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Choisir</option>
-              <option value="masculin">masculin</option>
-              <option value="féminin">féminin</option>
-            </select>
-          </div>
+            {/* salaire */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Salaire
+              </label>
+              <input
+                type="number"
+                name="salaire"
+                placeholder="Salaire"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-          {/* désignation */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Désignation
+            {/* mot de passe */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Mot de passe
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="**********"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              />
+            </div>
 
-            </label>
-            <input
-              type="text"
-              name="designation"
-              placeholder="Désignation"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
+            {/* role */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Role
+              </label>
+              <select
+                name="role"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+                required
+              >
+                <option value="">Choisir role</option>
+                <option value="admin">Admin</option>
+                <option value="employee">Employé</option>
+              </select>
+            </div>
 
-          {/* Départements */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Département
-
-            </label>
-            <select
-              name="departement"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Choisir votre département</option>
-            </select>
-
-          </div>
-
-          {/* salaire */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Salaire
-
-            </label>
-            <input
-              type="number"
-              name="salaire"
-              placeholder="Salaire"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          {/* mot de passe */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Mot de passe
-
-            </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="**********"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-          {/* role */}
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Role
-
-            </label>
-            <select
-              name="role"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Choisir role</option>
-              <option value="admin">Admin</option>
-              <option value="employee">Employé</option>
-            </select>
-          </div>
-          {/* Profile  */}
-
-          <div>
-            <label
-              htmlFor=""
-              className="block text-sm font-medium text-gray-700"
-            >
-              Importer un profil
-
-            </label>
-            <input
-              type="file"
-              name="image"
-              placeholder="Importer"
-              accept="image/*"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
-            />
+            {/* Profile */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Importer un profil
+              </label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors rounded-md"
+              />
+            </div>
           </div>
 
-        </div>
-        <button
-          type="submit"
-          className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-        >
-          Ajouter
-        </button>
-      </form>
-
+          <button
+            type="submit"
+            className="w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors"
+          >
+            Ajouter
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
