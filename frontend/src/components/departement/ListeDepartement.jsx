@@ -7,6 +7,7 @@ import axios from 'axios';
 const ListeDepartement = () => {
   const [departements, setDepartements] = useState([]);
   const [depLoading, setDepLoading] = useState(false);
+  const [filtreDepartements, setFiltreDepartements] = useState([])
 
   const onSupprimerDepartement = async (id) => {
     setDepartements(prevDepartements => {
@@ -22,11 +23,13 @@ const ListeDepartement = () => {
   const columns = [
     {
       name: "Id",
-      selector: (row) => row.sno
+      selector: (row) => row.sno,
+      sortable:true
     },
     {
       name: "Nom département",
-      selector: (row) => row.nom_departement
+      selector: (row) => row.nom_departement,
+      sortable:true
     },
     {
       name: "Action",
@@ -56,6 +59,7 @@ const ListeDepartement = () => {
             nom_departement: dep.nom_departement,
           }));
           setDepartements(data);
+          setFiltreDepartements(data)
         }
       } catch (error) {
         if (error.response && !error.response.data.success) {
@@ -68,6 +72,11 @@ const ListeDepartement = () => {
 
     fetchDepartements();
   }, []);
+
+  const filtrerDepartement = (e) => {
+    const records = departements.filter((dep)=> dep.nom_departement.toLowerCase().includes(e.target.value.toLowerCase()))
+    setFiltreDepartements(records)
+  }
 
   return (
     <>
@@ -83,6 +92,7 @@ const ListeDepartement = () => {
               type="text"
               placeholder="Rechercher par nom"
               className="px-4 py-0.5"
+              onChange={filtrerDepartement}
             />
             <Link
               to="/admin-dashboard/ajout-departement"
@@ -94,9 +104,8 @@ const ListeDepartement = () => {
           <div className="mt-5">
             <DataTable 
               columns={columns} 
-              data={departements}
+              data={filtreDepartements}
               pagination
-              responsive
             />
           </div>
         </div>
