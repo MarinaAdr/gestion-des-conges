@@ -8,6 +8,11 @@ const ListeDepartement = () => {
   const [departements, setDepartements] = useState([]);
   const [depLoading, setDepLoading] = useState(false);
 
+  const onSupprimerDepartement = async (id) => {
+    const data = departements.filter(dep => dep._id !==id)
+    setDepartements(data)
+  }
+
   useEffect(() => {
     const fetchDepartements = async () => {
       setDepLoading(true);
@@ -24,7 +29,7 @@ const ListeDepartement = () => {
             _id: dep._id,
             sno: sno++,
             nom_departement: dep.nom_departement,
-            action: <DepartementButton _id={dep._d} />,
+            action: <DepartementButton _id={dep._id} onSupprimerDepartement={onSupprimerDepartement} />,
           }));
           setDepartements(data);
         }

@@ -50,4 +50,16 @@ const modifierDepartement = async(req, res) =>{
     }
 }
 
-export {ajoutDepartement, getDepartements, getDepartement, modifierDepartement}
+
+const supprimerDepartement = async(req, res) =>{
+    try {
+        const {id} = req.params;
+        const supprimerDepartement = await Departement.findByIdAndDelete({_id: id})
+        return res.status(200).json({success: true, supprimerDepartement})
+    } catch (error) {
+        return res.status(500).json({success: false, error: "Département non supprimé"})
+        
+    }
+}
+
+export {ajoutDepartement, getDepartements, getDepartement, modifierDepartement, supprimerDepartement}
