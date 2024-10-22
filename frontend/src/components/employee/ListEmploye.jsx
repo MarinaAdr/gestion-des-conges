@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const listEmploye = () => {
   return (
-    <div className="p-6">
+    <div className="p-6 bg-slate-100">
       <div className="text-center">
         <h3 className="text-2xl font-bold">Gestion des employés</h3>
       </div>

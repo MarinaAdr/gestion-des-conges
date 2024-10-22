@@ -69,7 +69,7 @@ const EditDepartement = () => {
       {depLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className="max-w-3xl mx-auto mt-[150px] bg-white p-8 rounded-xl shadow-md w-96">
+        <div className="max-w-3xl mx-auto mt-[150px] bg-slate-100 p-8 rounded-xl shadow-md w-96">
           <div>
             <h2 className="text-2xl font-bold mb-6">Modifier département</h2>
             <form onSubmit={handleSubmit}>

@@ -145,7 +145,7 @@ const ListeDepartement = () => {
   };
 
   return (
-    <div className="min-h-screen  bg-slate-50 p-8">
+    <div className="min-h-screen  bg-slate-100 p-8">
       <div className="max-w-7xl mx-auto space-y-6">
         {depLoading ? (
           <div className="flex items-center justify-center h-64 bg-white rounded-xl shadow-sm">
