@@ -6,15 +6,14 @@ import {RiCalendarScheduleLine} from 'react-icons/ri';
 import {FaRegMoneyBill1} from 'react-icons/fa6';
 import {TbSettingsCog} from 'react-icons/tb';
 import {BiBuildings} from 'react-icons/bi';
-import Logo from '../../assets/logo.png'
 
 const AdminSidebar = () => {
   return (
     <div className="bg-white h-screen fixed left-0 top-0 bottom-0 w-80">
-      <div className="bg-white ">
-        
-          <img src={Logo} className='flex h-[120px]  mt-0 w-[620px] items-center'/>
-      
+      <div className="bg-violet-400 h-[70px] flex items-center justify-center">
+        <h3 className="text-2xl text-center font-pacific ">
+          Gestion des congés
+        </h3>
       </div>
       <nav className="mt-4">
         <NavLink

@@ -5,34 +5,34 @@ const AjoutEmploye = () => {
   const [departements, setDepartements] = useState([]);
   const [depLoading, setDepLoading] = useState(false);
 
-useEffect(() => {
-  const fetchDepartements = async () => {
-    setDepLoading(true);
-    try {
-      const response = await axios.get('http://localhost:8080/api/departement', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Correction ici
-        },
-      });
+  useEffect(() => {
+    const fetchDepartements = async () => {
+      setDepLoading(true);
+      try {
+        const response = await axios.get('http://localhost:8080/api/departement', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
 
-      if (response.data.success) {
-        const data = response.data.departements.map((dep, index) => ({
-          _id: dep._id,
-          sno: index + 1,
-          nom_departement: dep.nom_departement,
-        }));
-        setDepartements(data);
+        if (response.data.success) {
+          const data = response.data.departements.map((dep, index) => ({
+            _id: dep._id,
+            sno: index + 1,
+            nom_departement: dep.nom_departement,
+          }));
+          setDepartements(data);
+        }
+      } catch (error) {
+        const messageErreur = error.response?.data?.error || 'Erreur lors du chargement des départements';
+        alert(messageErreur);
+      } finally {
+        setDepLoading(false);
       }
-    } catch (error) {
-      const messageErreur = error.response?.data?.error || 'Erreur lors du chargement des départements';
-      alert(messageErreur);
-    } finally {
-      setDepLoading(false);
-    }
-  };
+    };
 
-  fetchDepartements();
-}, []);
+    fetchDepartements();
+  }, []);
 
   return (
     <div className="relative bg-slate-50 max-w-4xl mx-auto mt-[70px] px-4">
@@ -172,7 +172,7 @@ useEffect(() => {
               <input
                 type="password"
                 name="password"
-                placeholder="****"
+                placeholder="**********"
                 className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />

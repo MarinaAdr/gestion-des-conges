@@ -10,6 +10,7 @@ import AjoutDepartement from './components/departement/AjoutDepartement';
 import EditDepartement from './components/departement/EditDepartement';
 import ListEmploye from './components/employee/listEmploye';
 import AjoutEmploye from './components/employee/AjoutEmploye'
+import Signup from "./Pages/Signup"
 
 function App () {
   return (
@@ -17,6 +18,7 @@ function App () {
       <Routes>
         <Route path="/" element={<Navigate to="/admin-dasboard" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route
           path="/admin-dashboard"
           element={

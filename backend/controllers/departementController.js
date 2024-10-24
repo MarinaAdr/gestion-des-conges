@@ -62,4 +62,14 @@ const supprimerDepartement = async(req, res) =>{
     }
 }
 
-export {ajoutDepartement, getDepartements, getDepartement, modifierDepartement, supprimerDepartement}
+const getDepartementCount = async (req, res) => {
+    try {
+        const count = await Departement.countDocuments(); 
+        return res.status(200).json({ success: true, count });
+    } catch (error) {
+        return res.status(500).json({ success: false, error: "Erreur lors de la récupération du nombre de départements" });
+    }
+}
+
+
+export {ajoutDepartement, getDepartements, getDepartement, modifierDepartement, supprimerDepartement,getDepartementCount}
