@@ -1,13 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AjoutEmploye = () => {
+  const [departements, setDepartements] = useState([]);
+  const [depLoading, setDepLoading] = useState(false);
+
+useEffect(() => {
+  const fetchDepartements = async () => {
+    setDepLoading(true);
+    try {
+      const response = await axios.get('http://localhost:8080/api/departement', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Correction ici
+        },
+      });
+
+      if (response.data.success) {
+        const data = response.data.departements.map((dep, index) => ({
+          _id: dep._id,
+          sno: index + 1,
+          nom_departement: dep.nom_departement,
+        }));
+        setDepartements(data);
+      }
+    } catch (error) {
+      const messageErreur = error.response?.data?.error || 'Erreur lors du chargement des départements';
+      alert(messageErreur);
+    } finally {
+      setDepLoading(false);
+    }
+  };
+
+  fetchDepartements();
+}, []);
+
   return (
     <div className="relative bg-slate-50 max-w-4xl mx-auto mt-[70px] px-4">
-      {/* Rectangles décoratifs de fond */}
       <div className="absolute -top-4 -right-4 w-full h-full bg-violet-100 rounded-lg transform rotate-2"></div>
       <div className="absolute -bottom-4 -left-4 w-full h-full bg-violet-200 rounded-lg transform -rotate-2"></div>
       
-      {/* Carte principale */}
       <div className="relative bg-white rounded-lg shadow-xl p-8">
         <h2 className="text-2xl font-pacific font-bold mb-6 text-center">
           Ajouter un nouvel employé
@@ -15,7 +46,7 @@ const AjoutEmploye = () => {
         
         <form action="">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* nom */}
+            {/* Nom */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Name
@@ -29,7 +60,7 @@ const AjoutEmploye = () => {
               />
             </div>
 
-            {/* email */}
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email
@@ -57,7 +88,7 @@ const AjoutEmploye = () => {
               />
             </div>
 
-            {/* date de naissance */}
+            {/* Date de naissance */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Date de naissance
@@ -81,12 +112,12 @@ const AjoutEmploye = () => {
                 required
               >
                 <option value="">Choisir</option>
-                <option value="masculin">masculin</option>
-                <option value="féminin">féminin</option>
+                <option value="masculin">Masculin</option>
+                <option value="féminin">Féminin</option>
               </select>
             </div>
 
-            {/* désignation */}
+            {/* Désignation */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Désignation
@@ -111,10 +142,15 @@ const AjoutEmploye = () => {
                 required
               >
                 <option value="">Choisir votre département</option>
+                {departements.map(dep => (
+                  <option key={dep._id} value={dep._id}>
+                    {dep.nom_departement}
+                  </option>
+                ))}
               </select>
             </div>
 
-            {/* salaire */}
+            {/* Salaire */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Salaire
@@ -128,7 +164,7 @@ const AjoutEmploye = () => {
               />
             </div>
 
-            {/* mot de passe */}
+            {/* Mot de passe */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Mot de passe
@@ -136,13 +172,13 @@ const AjoutEmploye = () => {
               <input
                 type="password"
                 name="password"
-                placeholder="**********"
+                placeholder="****"
                 className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
                 required
               />
             </div>
 
-            {/* role */}
+            {/* Role */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Role
@@ -158,7 +194,7 @@ const AjoutEmploye = () => {
               </select>
             </div>
 
-            {/* Profile */}
+            {/* Profil */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Importer un profil
