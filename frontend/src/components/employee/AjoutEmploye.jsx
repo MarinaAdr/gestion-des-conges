@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const AjoutEmploye = () => {
   const [departements, setDepartements] = useState([]);
   const [depLoading, setDepLoading] = useState(false);
   const [formData, setFormData] = useState({})
+  const navigate = useNavigate()
 
 useEffect(() => {
   const fetchDepartements = async () => {
@@ -36,7 +39,7 @@ useEffect(() => {
 }, []);
 
   const handleChange = (e) =>{
-    const {name, value, files} = e.targer
+    const {name, value, files} = e.target
     if (name === "image"){
       setFormData((prevData) => ({...prevData, [name] : files[0]}))
     } else{
@@ -135,7 +138,7 @@ useEffect(() => {
                 Date de naissance
               </label>
               <input
-                type="dateNaissance"
+                type="date"
                 onChange={handleChange}
                 name="dateDeNaissance"
                 className="w-full px-4 py-2 border-b-2 border-gray-300 focus:border-violet-500 outline-none transition-colors rounded-md"
@@ -256,7 +259,7 @@ useEffect(() => {
               >
                 <option value="">Choisir un rôle</option>
                 <option value="admin">Admin</option>
-                <option value="employee">Employé</option>
+                <option value="employe">Employé</option>
               </select>
             </div>
 

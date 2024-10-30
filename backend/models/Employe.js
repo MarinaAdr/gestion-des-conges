@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 
 const employeSchema = new mongoose.Schema ({
   userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-  employeId: {type: String, required: true, unique: true},
+  employeeId: {type: String, required: true, unique: true},
   dateDeNaissance: {type: Date},
   genre: {type: String},
   statutMarital: {type: String},
