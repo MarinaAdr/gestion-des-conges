@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/layout/AdminLayout';
 import { RiSearchLine, RiAddLine, RiEditLine, RiDeleteBinLine } from 'react-icons/ri';
 
 const EmployeesPage = () => {
+  const navigate = useNavigate();
   // Données mockées pour l'exemple
   const [employees] = useState([
     { 
@@ -37,7 +39,10 @@ const EmployeesPage = () => {
         <div className="p-6 border-b border-gray-200">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <h1 className="text-2xl font-semibold text-gray-900">Gestion des employés</h1>
-            <button className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            <button 
+              onClick={() => navigate('/employees/new')} 
+              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
               <RiAddLine className="mr-2" />
               Ajouter un employé
             </button>
