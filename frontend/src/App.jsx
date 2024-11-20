@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // Pages
 import AdminDashboard from './pages/Dashboard/AdminDashboard';
 import Login from './pages/Authentification/Login';
+import EmployeesPage from './pages/Employees/EmployeesPage';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
             
           } 
         />
-
+        <Route path="/employees" element={<EmployeesPage />} />
 
       </Routes>
     </BrowserRouter>
