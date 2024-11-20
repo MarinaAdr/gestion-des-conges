@@ -1,7 +1,11 @@
 import React from 'react';
 import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
-
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate('/admin');
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-3xl overflow-hidden w-full max-w-[1000px] md:h-[600px]">
@@ -47,6 +51,7 @@ const Login = () => {
 
             <button
               type="submit"
+              onClick={handleLogin}
               className="w-full bg-blue-600 text-white py-3 md:py-4 rounded-3xl hover:bg-blue-700 transition duration-300 text-lg md:text-xl font-semibold mt-4 md:mt-6"
             >
               LOGIN
