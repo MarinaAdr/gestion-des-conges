@@ -1,7 +1,10 @@
 import React from 'react';
 import { RiMenuLine, RiNotificationLine, RiUserLine } from 'react-icons/ri';
+import { useAuth } from '../contexts/AuthContext';
 
 const NavbarAdmin = ({ onMenuClick }) => {
+  const { user } = useAuth();
+
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200">
       <div className="min-h-[80px] px-4 sm:px-6">
@@ -28,7 +31,7 @@ const NavbarAdmin = ({ onMenuClick }) => {
             <button className="flex items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors">
               <RiUserLine className="text-indigo-900 text-3xl" />
               <span className="ml-2 text-indigo-900 text-xl font-medium hidden md:block">
-                Admin
+                {user?.nom || 'Undefined'}
               </span>
             </button>
           </div>
