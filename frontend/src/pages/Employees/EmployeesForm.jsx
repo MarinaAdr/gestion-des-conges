@@ -71,7 +71,7 @@ const EmployeesForm = () => {
       );
       
       toast.success('Employé créé avec succès', {
-        onClose: () => navigate('/employees', { 
+        onClose: () => navigate('/admin/employees', { 
           state: { refresh: true },
           replace: true 
         })

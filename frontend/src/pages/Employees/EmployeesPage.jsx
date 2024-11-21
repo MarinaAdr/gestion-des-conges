@@ -71,7 +71,7 @@ const EmployeesPage = () => {
   };
 
   const handleEdit = (employeeId) => {
-    navigate(`/employees/edit/${employeeId}`);
+    navigate(`/admin/employees/edit/${employeeId}`);
   };
 
   const handleDelete = async (employeeId) => {
@@ -124,7 +124,7 @@ const EmployeesPage = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <h1 className="text-3xl font-semibold text-gray-900">Gestion des employés</h1>
             <button 
-              onClick={() => navigate('/employees/new')} 
+              onClick={() => navigate('/admin/employees/new')} 
               className="inline-flex text-xl items-center h-12 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               <RiAddLine className="mr-2" />
