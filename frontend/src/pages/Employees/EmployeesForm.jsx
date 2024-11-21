@@ -124,7 +124,10 @@ const EmployeesForm = ({ employee, onSubmit }) => {
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
-          onClose: () => navigate('/employees')
+          onClose: () => navigate('/employees', { 
+            state: { refresh: true },
+            replace: true 
+          })
         });
       }
     } catch (error) {

@@ -1,35 +1,92 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AdminLayout from '../../components/layout/AdminLayout';
 import { RiSearchLine, RiAddLine, RiEditLine, RiDeleteBinLine } from 'react-icons/ri';
+import axios from 'axios';
 
 const EmployeesPage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  // Données mockées pour l'exemple
-  const [employees] = useState([
-    { 
-      id: 1, 
-      nom: 'Doe', 
-      prenom: 'John',
-      email: 'john.doe@example.com',
-      role: 'EMPLOYEE',
-      date_embauche: '2024-01-15',
-      poste: 'Développeur Full Stack',
-    },
-    { 
-      id: 2, 
-      nom: 'Smith', 
-      prenom: 'Jane',
-      email: 'jane.smith@example.com',
-      role: 'ADMIN',
-      date_embauche: '2023-12-01',
-      poste: 'Chef de projet',
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Fonction pour récupérer les employés
+  const fetchEmployees = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get('http://localhost:8080/api/employees');
+      
+      // Vérifier si la réponse a la structure {success: true, data: Array}
+      if (response.data.success && Array.isArray(response.data.data)) {
+        setEmployees(response.data.data);
+      } else {
+        setError('Format de données incorrect');
+        console.error('Format de données reçu:', response.data);
+      }
+    } catch (err) {
+      setError(`Erreur lors du chargement des employés: ${err.message}`);
+      console.error('Erreur complète:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [refreshKey]);
+
+  useEffect(() => {
+    if (location.state?.refresh) {
+      setRefreshKey(prev => prev + 1);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
+
+  // État de chargement
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  // Affichage de l'erreur
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong className="font-bold">Erreur!</strong>
+          <span className="block sm:inline"> {error}</span>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   // Formater la date pour l'affichage
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('fr-FR');
+  };
+
+  // Dans la partie actions du tableau, ajoutez les gestionnaires d'événements
+  const handleEdit = (employeeId) => {
+    navigate(`/employees/edit/${employeeId}`);
+  };
+
+  const handleDelete = async (employeeId) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet employé ?')) {
+      try {
+        await axios.delete(`http://localhost:8080/api/employees/${employeeId}`);
+        fetchEmployees(); // Rafraîchir la liste après suppression
+      } catch (err) {
+        setError('Erreur lors de la suppression de l\'employé');
+        console.error('Erreur:', err);
+      }
+    }
   };
 
   return (
@@ -63,7 +120,7 @@ const EmployeesPage = () => {
 
         {/* Tableau */}
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
@@ -77,7 +134,7 @@ const EmployeesPage = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {employees.map((employee) => (
+              {Array.isArray(employees) && employees.map((employee) => (
                 <tr key={employee.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{employee.id}</div>
@@ -104,10 +161,18 @@ const EmployeesPage = () => {
                     <div className="text-sm text-gray-500">{employee.poste}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-indigo-600 hover:text-indigo-900 mr-3">
+                    <button 
+                      onClick={() => handleEdit(employee.id)} 
+                      className="text-indigo-600 hover:text-indigo-900 mr-3"
+                      title="Modifier"
+                    >
                       <RiEditLine className="inline-block w-5 h-5" />
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button 
+                      onClick={() => handleDelete(employee.id)} 
+                      className="text-red-600 hover:text-red-900"
+                      title="Supprimer"
+                    >
                       <RiDeleteBinLine className="inline-block w-5 h-5" />
                     </button>
                   </td>
@@ -116,6 +181,13 @@ const EmployeesPage = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Afficher un message si aucun employé n'est trouvé */}
+        {Array.isArray(employees) && employees.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500 text-lg">Aucun employé trouvé</p>
+          </div>
+        )}
 
         {/* Pagination */}
         <div className="px-6 py-4 border-t border-gray-200">
