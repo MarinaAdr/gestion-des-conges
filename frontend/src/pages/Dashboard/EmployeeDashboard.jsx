@@ -1,10 +1,10 @@
 import React from 'react'
-import EmployeeLayout from '../../components/layout/EmployeeLayout'
+
 
 const EmployeeDashboard = () => {
   return (
     <div>
-        <EmployeeLayout />
+      <h1>Employee Dashboard</h1>
     </div>
   )
 }

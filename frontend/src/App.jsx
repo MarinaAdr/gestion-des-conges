@@ -11,58 +11,49 @@ import EmployeesPage from './pages/Employees/EmployeesPage';
 import EmployeesForm from './pages/Employees/EmployeesForm';
 import EmployeeModify from './pages/Employees/EmployeeModify';
 import EmployeeDashboard from './pages/Dashboard/EmployeeDashboard';
+import SoldeConges from './pages/employee/SoldeConges';
+import DemandeConges from './pages/employee/DemandeConges';
+import MonProfil from './pages/employee/MonProfil';
+import CalendrierEquipe from './pages/employee/CalendrierEquipe';
+import { useAuth } from './contexts/AuthContext'; 
+import EmployeeLayout from './components/layout/EmployeeLayout';
+import AdminLayout from './components/layout/AdminLayout';
+
+
 
 function App() {
+  const { user } = useAuth();
+
+  // Redirection si non authentifié
+  const PrivateRoute = ({ children }) => {
+    return user ? children : <Navigate to="/login" />;
+  };
+
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          {/* Route publique */}
-          <Route path="/login" element={<Login />} />
-          
-          {/* Routes Admin */}
-          <Route path="/admin/*" element={
-            <ProtectedRoute allowedRoles={['ADMIN']}>
-              <Routes>
-                <Route path="/" element={<AdminDashboard />} />
-                <Route path="employees" element={<EmployeesPage />} />
-                <Route path="employees/new" element={<EmployeesForm />} />
-                <Route path="employees/edit/:id" element={<EmployeeModify />} />
-              </Routes>
-            </ProtectedRoute>
-          } />
+    <Routes>
+      {/* Route publique */}
+      <Route path="/login" element={<Login />} />
 
-          {/* Routes Employé */}
-          <Route path="/employee/*" element={
-            <ProtectedRoute allowedRoles={['EMPLOYEE']}>
-              <Routes>
-                <Route path="/" element={<EmployeeDashboard />} />
-                {/* Ajoutez d'autres routes employé ici */}
-              </Routes>
-            </ProtectedRoute>
-          } />
+      {/* Routes protégées employé */}
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <EmployeeLayout />
+          </PrivateRoute>
+        }
+      >
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route path="dashboard" element={<EmployeeDashboard />} />
+        <Route path="solde-conges" element={<SoldeConges />} />
+        <Route path="demande-conges" element={<DemandeConges />} />
+        <Route path="mon-profil" element={<MonProfil />} />
+        <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
+      </Route>
 
-          {/* Redirection par défaut vers login */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          
-          {/* Redirection des routes inconnues vers login */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </AuthProvider>
-    </BrowserRouter>
+      {/* Route 404 */}
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 }
 
