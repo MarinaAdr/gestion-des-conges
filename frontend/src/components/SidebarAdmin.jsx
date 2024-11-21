@@ -9,11 +9,11 @@ const SidebarAdmin = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
-    { path: '/dashboard', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
-    { path: '/requests', icon: <HiDocumentText className="w-6 h-6" />, text: 'Demandes' },
-    { path: '/employees', icon: <HiUsers className="w-6 h-6" />, text: 'Employés' },
-    { path: '/attendance', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier' },
-    { path: '/performance', icon: <HiChartBar className="w-6 h-6" />, text: 'Jours fériés' },
+    { path: '/admin', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
+    { path: '/admin/requests', icon: <HiDocumentText className="w-6 h-6" />, text: 'Demandes' },
+    { path: '/admin/employees', icon: <HiUsers className="w-6 h-6" />, text: 'Employés' },
+    { path: '/admin/attendance', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier' },
+    { path: '/admin/performance', icon: <HiChartBar className="w-6 h-6" />, text: 'Jours fériés' },
   ];
 
   const toggleMobileMenu = () => {

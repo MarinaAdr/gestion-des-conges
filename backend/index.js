@@ -2,6 +2,7 @@ require ('dotenv').config ();
 const express = require ('express');
 const cors = require ('cors');
 const employeeRoutes = require ('./routes/employeeRoutes');
+const authRoutes = require ('./routes/authRoutes');
 
 const app = express ();
 
@@ -9,8 +10,14 @@ const app = express ();
 app.use (cors ());
 app.use (express.json ());
 
-
+// Routes
+app.use ('/api/auth', authRoutes);
 app.use ('/api/employees', employeeRoutes);
+
+// Route de test API
+app.get ('/api/test', (req, res) => {
+  res.json ({ message: 'API is working' });
+});
 
 // Gestion des erreurs globale
 app.use ((err, req, res, next) => {
