@@ -1,8 +1,11 @@
 import React from 'react'
+import EmployeeLayout from '../../components/layout/EmployeeLayout'
 
 const EmployeeDashboard = () => {
   return (
-    <div>EmployeeDashboard</div>
+    <div>
+        <EmployeeLayout />
+    </div>
   )
 }
 
