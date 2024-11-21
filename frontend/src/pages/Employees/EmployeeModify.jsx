@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AdminLayout from '../../components/layout/AdminLayout';
 import { FaUser } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -12,13 +12,16 @@ import { MdOutlineTitle } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa";
 import 'react-toastify/dist/ReactToastify.css';
+import { LuPencilLine } from "react-icons/lu";
 
 
 
-const EmployeesForm = () => {
+const EmployeeModify = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   
-  const initialFormState = {
+  const [formData, setFormData] = useState({
     nom: '',
     prenom: '',
     email: '',
@@ -26,9 +29,41 @@ const EmployeesForm = () => {
     role: 'EMPLOYEE',
     date_embauche: '',
     poste: ''
-  };
+  });
 
-  const [formData, setFormData] = useState(initialFormState);
+  useEffect(() => {
+    const fetchEmployee = async () => {
+      try {
+        console.log('Fetching employee with ID:', id);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/employees/${id}`);
+        console.log('Employee data received:', response.data);
+        
+        const employeeData = response.data.data;
+        
+        const formattedDate = employeeData.date_embauche ? 
+          new Date(employeeData.date_embauche).toISOString().split('T')[0] : '';
+
+        setFormData({
+          nom: employeeData.nom || '',
+          prenom: employeeData.prenom || '',
+          email: employeeData.email || '',
+          password: '',
+          role: employeeData.role || 'EMPLOYEE',
+          date_embauche: formattedDate,
+          poste: employeeData.poste || ''
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error('Detailed error:', error.response || error);
+        toast.error('Erreur lors de la récupération des données de l\'employé');
+        navigate('/employees');
+      }
+    };
+
+    if (id) {
+      fetchEmployee();
+    }
+  }, [id, navigate]);
 
   const handleCancel = () => {
     navigate('/employees');
@@ -46,14 +81,8 @@ const EmployeesForm = () => {
     e.preventDefault();
     
     // Validation des champs requis
-    if (!formData.nom || !formData.prenom || !formData.email || !formData.password) {
+    if (!formData.nom || !formData.prenom || !formData.email) {
       toast.error('Veuillez remplir tous les champs obligatoires');
-      return;
-    }
-
-    // Validation du mot de passe
-    if (formData.password.length < 6) {
-      toast.error('Le mot de passe doit contenir au moins 6 caractères');
       return;
     }
 
@@ -65,35 +94,34 @@ const EmployeesForm = () => {
     }
 
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/employees`,
-        formData
+      const dataToSend = {
+        ...formData,
+        ...(formData.password ? { password: formData.password } : {})
+      };
+
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/employees/${id}`,
+        dataToSend
       );
       
-      toast.success('Employé créé avec succès', {
-        onClose: () => navigate('/employees', { 
-          state: { refresh: true },
-          replace: true 
-        })
-      });
+      toast.success('Employé modifié avec succès');
+      navigate('/employees');
     } catch (error) {
       console.error('Erreur:', error);
-      
-      let errorMessage = 'Une erreur est survenue';
-      
-      if (error.response) {
-        if (error.response.status === 400) {
-          errorMessage = error.response.data?.message || 'Erreur de validation des données';
-        } else if (error.response.status === 409) {
-          errorMessage = 'Un utilisateur avec cet email existe déjà';
-        } else {
-          errorMessage = error.response.data?.message || 'Erreur lors de l\'opération';
-        }
-      }
-
+      const errorMessage = error.response?.data?.message || 'Une erreur est survenue lors de la modification';
       toast.error(errorMessage);
     }
   };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -109,12 +137,12 @@ const EmployeesForm = () => {
             </button>
             <h2 className="text-2xl md:text-4xl font-bold text-gray-800 flex items-center flex-wrap animate-slideDown">
               <span className="bg-blue-600 text-white p-2 md:p-3 rounded-lg mr-3 md:mr-4 text-xl md:text-2xl">
-                ➕
+                ✏️
               </span>
-              Ajouter un nouvel employé
+              Modifier un employé
             </h2>
             <p className="mt-2 md:mt-3 text-lg md:text-xl text-gray-600 ml-4 md:ml-16 animate-slideRight">
-              Remplissez les informations ci-dessous pour créer un employé.
+              Modifiez les informations de l'employé ci-dessous.
             </p>
           </div>
 
@@ -172,15 +200,15 @@ const EmployeesForm = () => {
                 <div className="form-group transform hover:scale-[1.02] transition-all duration-300">
                   <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
                     <span className="text-xl md:text-2xl mr-2"><FaLock /></span> 
-                    Mot de passe
-                    <span className="text-yellow-500 ml-1">*</span>
+                    {formData.password ? 'Nouveau mot de passe (optionnel)' : 'Mot de passe'}
+                    {!formData.password && <span className="text-yellow-500 ml-1">*</span>}
                   </label>
                   <input
                     type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    required
+                    required={!formData.password}
                     className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="••••••••"
                   />
@@ -246,7 +274,7 @@ const EmployeesForm = () => {
                   type="submit"
                   className="w-full sm:w-auto px-4 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  ➕ Créer
+                  <LuPencilLine className="mr-2 " /> Modifier
                 </button>
               </div>
             </form>
@@ -257,4 +285,4 @@ const EmployeesForm = () => {
   );
 };
 
-export default EmployeesForm;
+export default EmployeeModify;

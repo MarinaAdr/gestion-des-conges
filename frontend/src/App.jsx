@@ -8,6 +8,7 @@ import AdminDashboard from './pages/Dashboard/AdminDashboard';
 import Login from './pages/Authentification/Login';
 import EmployeesPage from './pages/Employees/EmployeesPage';
 import EmployeesForm from './pages/Employees/EmployeesForm';
+import EmployeeModify from './pages/Employees/EmployeeModify';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         />
         <Route path="/employees" element={<EmployeesPage />} />
         <Route path="/employees/new" element={<EmployeesForm />} />
+        <Route path="/employees/edit/:id" element={<EmployeeModify />} />
       </Routes>
       <ToastContainer
         position="top-right"
