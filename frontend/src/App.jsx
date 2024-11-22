@@ -51,6 +51,27 @@ function App() {
         <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
       </Route>
 
+      {/* Routes protégées admin */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="employees" element={<EmployeesPage />} />
+        <Route path="employees-form" element={<EmployeesForm />} />
+        <Route path="employee-modify" element={<EmployeeModify />} />
+        <Route path="employee-dashboard" element={<EmployeeDashboard />} />
+        <Route path="solde-conges" element={<SoldeConges />} />
+        <Route path="demande-conges" element={<DemandeConges />} />
+        <Route path="mon-profil" element={<MonProfil />} />
+        <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
+      </Route>
+
       {/* Route 404 */}
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>

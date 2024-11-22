@@ -40,9 +40,9 @@ const LoginPage = () => {
 
         // Redirection basée sur le rôle
         if (response.data.user.role === 'ADMIN') {
-          navigate('/admin');
+          navigate('/admin/dashboard');
         } else {
-          navigate('/employee');
+          navigate('/dashboard');
         }
       }
     } catch (err) {

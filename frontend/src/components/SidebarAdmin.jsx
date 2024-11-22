@@ -9,7 +9,7 @@ const SidebarAdmin = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
-    { path: '/admin', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
+    { path: '/admin/dashboard', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
     { path: '/admin/requests', icon: <HiDocumentText className="w-6 h-6" />, text: 'Demandes' },
     { path: '/admin/employees', icon: <HiUsers className="w-6 h-6" />, text: 'Employés' },
     { path: '/admin/attendance', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier' },

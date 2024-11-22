@@ -5,6 +5,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
 
+  console.log("User role:", user?.role);
+  console.log("Allowed roles:", allowedRoles);
+
   if (loading) {
     return <div>Chargement...</div>;
   }
