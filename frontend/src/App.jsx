@@ -18,6 +18,9 @@ import CalendrierEquipe from './pages/employee/CalendrierEquipe';
 import { useAuth } from './contexts/AuthContext'; 
 import EmployeeLayout from './components/layout/EmployeeLayout';
 import AdminLayout from './components/layout/AdminLayout';
+import RequetesPage from './pages/Admin/RequetesPage';
+import CalendrierPage from './pages/Admin/CalendrierPage';
+import JoursFeries from './pages/Admin/JoursFeries';
 
 
 
@@ -65,11 +68,11 @@ function App() {
         <Route path="employees" element={<EmployeesPage />} />
         <Route path="employees-form" element={<EmployeesForm />} />
         <Route path="employee-modify" element={<EmployeeModify />} />
-        <Route path="employee-dashboard" element={<EmployeeDashboard />} />
-        <Route path="solde-conges" element={<SoldeConges />} />
-        <Route path="demande-conges" element={<DemandeConges />} />
-        <Route path="mon-profil" element={<MonProfil />} />
-        <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
+       
+        <Route path="requests" element={<RequetesPage />} />
+       
+        <Route path="calendrier" element={<CalendrierPage />} />
+        <Route path="jours-feries" element={<JoursFeries />} />
       </Route>
 
       {/* Route 404 */}

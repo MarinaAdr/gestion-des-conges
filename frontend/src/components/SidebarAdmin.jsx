@@ -12,8 +12,8 @@ const SidebarAdmin = () => {
     { path: '/admin/dashboard', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
     { path: '/admin/requests', icon: <HiDocumentText className="w-6 h-6" />, text: 'Demandes' },
     { path: '/admin/employees', icon: <HiUsers className="w-6 h-6" />, text: 'Employés' },
-    { path: '/admin/attendance', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier' },
-    { path: '/admin/performance', icon: <HiChartBar className="w-6 h-6" />, text: 'Jours fériés' },
+    { path: '/admin/calendrier', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier' },
+    { path: '/admin/jours-feries', icon: <HiChartBar className="w-6 h-6" />, text: 'Jours fériés' },
   ];
 
   const toggleMobileMenu = () => {
