@@ -76,7 +76,7 @@ function App() {
       </Route>
 
       {/* Route 404 */}
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

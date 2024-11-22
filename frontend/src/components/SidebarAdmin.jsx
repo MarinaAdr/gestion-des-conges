@@ -79,7 +79,7 @@ const SidebarAdmin = () => {
           <div className="px-4 mt-auto">
             <button
               onClick={() => {
-                navigate('/');
+                navigate('/login');
                 setIsMobileMenuOpen(false);
               }}
               className="
