@@ -155,7 +155,7 @@ const MonProfil = () => {
                 </label>
                 <input
                   type="text"
-                  value={`${user.solde_conges || 0} jours`}
+                  value={`${user.solde_conge || 0} jours`}
                   readOnly
                   className="w-full p-2 border rounded-md bg-gray-50"
                 />

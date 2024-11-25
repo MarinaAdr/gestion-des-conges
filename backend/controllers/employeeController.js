@@ -10,6 +10,9 @@ exports.create = async (req, res) => {
       'password',
       'date_embauche',
       'poste',
+      'solde_conge',
+      'image',
+      'contact'
     ];
     for (const field of requiredFields) {
       if (!req.body[field]) {
