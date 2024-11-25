@@ -7,8 +7,8 @@ const Employee = {
     try {
       const hashedPassword = await bcrypt.hash(employeeData.password, 10);
       const [result] = await db.query(
-        `INSERT INTO users (nom, prenom, email, password, role, date_embauche, poste) 
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO users (nom, prenom, email, password, role, date_embauche, poste, solde_conge, image, contact) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           employeeData.nom,
           employeeData.prenom,
@@ -16,7 +16,9 @@ const Employee = {
           hashedPassword,
           employeeData.role || 'EMPLOYEE',
           employeeData.date_embauche,
-          employeeData.poste
+          employeeData.solde_conge,
+          employeeData.image,
+          employeeData.contact
         ]
       );
       return result;
@@ -29,7 +31,7 @@ const Employee = {
   findAll: async () => {
     try {
       const [rows] = await db.query(
-        `SELECT id, nom, prenom, email, role, date_embauche, poste 
+        `SELECT id, nom, prenom, email, role, date_embauche, poste, solde_conge, image, contact
          FROM users 
          ORDER BY nom ASC`
       );
@@ -43,7 +45,7 @@ const Employee = {
   findById: async (id) => {
     try {
       const [rows] = await db.query(
-        `SELECT id, nom, prenom, email, role, date_embauche, poste 
+        `SELECT id, nom, prenom, email, role, date_embauche, poste, solde_conge, image, contact
          FROM users 
          WHERE id = ?`,
         [id]
@@ -63,7 +65,10 @@ const Employee = {
         email = ?, 
         role = ?, 
         date_embauche = ?, 
-        poste = ?`;
+        poste = ?,
+        solde_conge = ?,
+        image = ?,
+        contact = ?`;
       
       const params = [
         employeeData.nom,
@@ -71,7 +76,10 @@ const Employee = {
         employeeData.email,
         employeeData.role,
         employeeData.date_embauche,
-        employeeData.poste
+        employeeData.poste,
+        employeeData.solde_conge,
+        employeeData.image,
+        employeeData.contact
       ];
 
       // Si un nouveau mot de passe est fourni
@@ -108,7 +116,7 @@ const Employee = {
   search: async (searchTerm) => {
     try {
       const [rows] = await db.query(
-        `SELECT id, nom, prenom, email, role, date_embauche, poste 
+        `SELECT id, nom, prenom, email, role, date_embauche, poste, solde_conge, image, contact
          FROM users 
          WHERE nom LIKE ? OR prenom LIKE ? OR email LIKE ?`,
         [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`]
