@@ -129,3 +129,102 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
+exports.updateCredentials = async (req, res) => {
+  try {
+    const updates = {};
+    
+    // Vérifier si une nouvelle photo est fournie
+    if (req.file) {
+      updates.image = req.file.filename;
+      console.log('Image reçue:', req.file);
+    }
+
+    // Ajouter les autres champs autorisés
+    const allowedFields = ['email', 'contact'];
+    allowedFields.forEach(field => {
+      if (req.body[field]) {
+        updates[field] = req.body[field];
+      }
+    });
+
+    // Si aucune mise à jour n'est nécessaire
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Aucune modification fournie'
+      });
+    }
+
+    console.log('Updates à appliquer:', updates);
+
+    const result = await Employee.updateCredentials(req.params.id, updates);
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employé non trouvé'
+      });
+    }
+
+    // Récupérer l'employé mis à jour
+    const updatedEmployee = await Employee.findById(req.params.id);
+
+    // Ajouter l'URL complète de l'image
+    if (updatedEmployee.image) {
+      updatedEmployee.imageUrl = `${process.env.API_URL}/uploads/${updatedEmployee.image}`;
+    }
+
+    res.json({
+      success: true,
+      message: 'Profil mis à jour avec succès',
+      data: updatedEmployee
+    });
+  } catch (error) {
+    console.error('Erreur complète:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la mise à jour des credentials',
+      error: error.message
+    });
+  }
+};
+
+exports.updateEmployee = async (req, res) => {
+  try {
+    const employeeId = req.params.id;
+    let updateData = {
+      nom: req.body.nom,
+      prenom: req.body.prenom,
+      role: req.body.role,
+      date_embauche: req.body.date_embauche,
+      solde_conge: req.body.solde_conge
+    };
+
+    // Si une nouvelle image est téléchargée
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      employeeId,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedEmployee) {
+      console.log('Employé non trouvé:', employeeId);
+      return res.status(404).json({ message: "Employé non trouvé" });
+    }
+
+    console.log('Employé mis à jour:', updatedEmployee);
+    res.status(200).json(updatedEmployee);
+    
+  } catch (error) {
+    console.error('Erreur détaillée:', error);
+    res.status(500).json({ 
+      message: "Erreur lors de la mise à jour de l'employé",
+      error: error.message 
+    });
+  }
+};

@@ -3,16 +3,62 @@ import { HiCalendar, HiClock, HiClipboardList, HiUser, HiMail, HiOfficeBuilding,
 import { useAuth } from '../../contexts/AuthContext';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const MonProfil = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [profileImage, setProfileImage] = useState(null);
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    contact: user.contact || '',
+    email: user.email || '',
+  });
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      console.log('Nouvelle image sélectionnée:', file);  // Debug
       setProfileImage(URL.createObjectURL(file));
+      // Ne pas mettre l'image dans formData ici
+      // Elle sera ajoutée lors du submit
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const updatedData = {
+      ...formData
+    };
+
+    // Si une nouvelle image a été sélectionnée
+    if (profileImage) {
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput.files[0]) {
+        updatedData.image = fileInput.files[0];
+        console.log('Image à envoyer:', fileInput.files[0]);  // Debug
+      }
+    }
+
+    console.log('Données à envoyer:', updatedData);  // Debug
+    
+    const result = await updateUser(updatedData);
+    
+    if (result.success) {
+      toast.success('Profile mis à jour avec succès');
+      setIsEditing(false);
+    } else {
+      toast.error(result.error || 'Erreur lors de la mise à jour du profile');
     }
   };
 
@@ -97,9 +143,11 @@ const MonProfil = () => {
                   </label>
                   <input
                     type="email"
-                    value={user.email}
-                    readOnly
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    name="email"
+                    value={isEditing ? formData.email : user.email}
+                    onChange={handleInputChange}
+                    readOnly={!isEditing}
+                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
                   />
                 </div>
                 <div className="space-y-2">
@@ -108,9 +156,11 @@ const MonProfil = () => {
                   </label>
                   <input
                     type="tel"
-                    value={user.contact || 'Non renseigné'}
-                    readOnly
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    name="contact"
+                    value={isEditing ? formData.contact : (user.contact || 'Non renseigné')}
+                    onChange={handleInputChange}
+                    readOnly={!isEditing}
+                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
                   />
                 </div>
               </div>
@@ -177,10 +227,30 @@ const MonProfil = () => {
             </div>
 
             {/* Bouton Modifier */}
-            <div className="flex justify-end mt-6">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
-                Modifier
-              </button>
+            <div className="flex justify-end mt-6 space-x-4">
+              {isEditing ? (
+                <>
+                  <button 
+                    onClick={() => setIsEditing(false)} 
+                    className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
+                  >
+                    Annuler
+                  </button>
+                  <button 
+                    onClick={handleSubmit}
+                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                  >
+                    Enregistrer
+                  </button>
+                </>
+              ) : (
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                >
+                  Modifier
+                </button>
+              )}
             </div>
           </div>
         </div>

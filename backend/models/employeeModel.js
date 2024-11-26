@@ -16,6 +16,7 @@ const Employee = {
           hashedPassword,
           employeeData.role || 'EMPLOYEE',
           employeeData.date_embauche,
+          employeeData.poste,
           employeeData.solde_conge,
           employeeData.image,
           employeeData.contact
@@ -59,42 +60,48 @@ const Employee = {
   // Mettre à jour un employé
   update: async (id, employeeData) => {
     try {
-      let query = `UPDATE users SET 
-        nom = ?, 
-        prenom = ?, 
-        email = ?, 
-        role = ?, 
-        date_embauche = ?, 
-        poste = ?,
-        solde_conge = ?,
-        image = ?,
-        contact = ?`;
-      
-      const params = [
-        employeeData.nom,
-        employeeData.prenom,
-        employeeData.email,
-        employeeData.role,
-        employeeData.date_embauche,
-        employeeData.poste,
-        employeeData.solde_conge,
-        employeeData.image,
-        employeeData.contact
+      // Créer un objet avec uniquement les champs non-vides
+      const updateFields = {};
+      const validFields = [
+        'nom', 
+        'prenom', 
+        'role', 
+        'date_embauche', 
+        'poste',
+        'solde_conge',
+        'image',
+        'contact'
       ];
 
-      // Si un nouveau mot de passe est fourni
-      if (employeeData.password) {
-        const hashedPassword = await bcrypt.hash(employeeData.password, 10);
-        query += `, password = ?`;
-        params.push(hashedPassword);
+      // Traitement spécial pour l'email
+      if (employeeData.email && employeeData.email.trim() !== '') {
+        updateFields.email = employeeData.email;
       }
 
-      query += ` WHERE id = ?`;
-      params.push(id);
+      // Traiter les autres champs
+      validFields.forEach(field => {
+        if (employeeData[field] !== undefined && employeeData[field] !== null) {
+          updateFields[field] = employeeData[field];
+        }
+      });
+
+      // Si aucun champ à mettre à jour
+      if (Object.keys(updateFields).length === 0) {
+        return { affectedRows: 0 };
+      }
+
+      // Construire la requête dynamiquement
+      const setClause = Object.keys(updateFields)
+        .map(key => `${key} = ?`)
+        .join(', ');
+      
+      const query = `UPDATE users SET ${setClause} WHERE id = ?`;
+      const params = [...Object.values(updateFields), id];
 
       const [result] = await db.query(query, params);
       return result;
     } catch (error) {
+      console.error('Erreur dans la mise à jour:', error);
       throw error;
     }
   },
@@ -122,6 +129,19 @@ const Employee = {
         [`%${searchTerm}%`, `%${searchTerm}%`, `%${searchTerm}%`]
       );
       return rows;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  // Ajouter cette méthode au modèle Employee
+  updateCredentials: async (id, updates) => {
+    try {
+      const [result] = await db.query(
+        'UPDATE users SET ? WHERE id = ?',
+        [updates, id]
+      );
+      return result;
     } catch (error) {
       throw error;
     }
