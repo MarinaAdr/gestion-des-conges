@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaCalendarAlt, FaFileAlt, FaPaperPlane } from 'react-icons/fa';
 import { MdWorkOff } from 'react-icons/md';
+import axios from 'axios';
 
 const DemandeConges = () => {
   const [formData, setFormData] = useState({
@@ -9,11 +10,44 @@ const DemandeConges = () => {
     dateFin: '',
     motif: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', content: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Ajouter la logique d'envoi ici
+    setLoading(true);
+    setMessage({ type: '', content: '' });
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        'http://localhost:3000/api/conges/demande',
+        formData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      setMessage({
+        type: 'success',
+        content: 'Votre demande a été soumise avec succès'
+      });
+      setFormData({
+        typeConge: '',
+        dateDebut: '',
+        dateFin: '',
+        motif: ''
+      });
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        content: error.response?.data?.message || 'Une erreur est survenue'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -23,6 +57,14 @@ const DemandeConges = () => {
           <MdWorkOff className="text-blue-500 text-3xl md:text-4xl" />
           Demande de Congés
         </h1>
+
+        {message.content && (
+          <div className={`p-4 rounded-lg mb-4 ${
+            message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+          }`}>
+            {message.content}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
@@ -91,10 +133,17 @@ const DemandeConges = () => {
 
           <button 
             type="submit" 
-            className="w-full bg-blue-500 text-xl hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+            disabled={loading}
+            className="w-full bg-blue-500 text-xl hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400"
           >
-            <FaPaperPlane />
-            Soumettre la demande
+            {loading ? (
+              'Envoi en cours...'
+            ) : (
+              <>
+                <FaPaperPlane />
+                Soumettre la demande
+              </>
+            )}
           </button>
         </form>
       </div>

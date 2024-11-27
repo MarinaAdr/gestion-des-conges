@@ -13,7 +13,7 @@ import EmployeeModify from './pages/Employees/EmployeeModify';
 import EmployeeDashboard from './pages/Dashboard/EmployeeDashboard';
 import SoldeConges from './pages/employee/SoldeConges';
 import DemandeConges from './pages/employee/DemandeConges';
-import MonProfil from './pages/employee/MonProfil';
+import MonProfil from './pages/Employee/MonProfil';
 import CalendrierEquipe from './pages/employee/CalendrierEquipe';
 import { useAuth } from './contexts/AuthContext'; 
 import EmployeeLayout from './components/layout/EmployeeLayout';
