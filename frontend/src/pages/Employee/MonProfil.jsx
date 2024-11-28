@@ -8,12 +8,14 @@ import { toast } from 'react-toastify';
 
 const MonProfil = () => {
   const { user, updateUser } = useAuth();
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(user.image || null);
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
+    nom: user.nom || '',
+    prenom: user.prenom || '',
     contact: user.contact || '',
-    email: user.email || '',
+    password: '',
   });
 
   const handleImageChange = (e) => {
@@ -79,7 +81,9 @@ const MonProfil = () => {
             <div className="relative w-48 h-48 mx-auto mb-4">
               {profileImage ? (
                 <img
-                  src={profileImage}
+                  src={profileImage.startsWith('http') 
+                    ? profileImage 
+                    : `${import.meta.env.VITE_API_URL}/uploads/${profileImage}`}
                   alt="Profile"
                   className="w-full h-full object-cover rounded-full"
                 />
@@ -103,7 +107,7 @@ const MonProfil = () => {
 
         {/* Section Informations */}
         <div className="col-span-2">
-          <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
+          <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-6">
             {/* Informations personnelles */}
             <div>
               <h2 className="text-xl font-semibold mb-4 text-gray-700">Informations personnelles</h2>
@@ -114,9 +118,11 @@ const MonProfil = () => {
                   </label>
                   <input
                     type="text"
-                    value={user.nom}
-                    readOnly
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    name="nom"
+                    value={isEditing ? formData.nom : user.nom}
+                    onChange={handleInputChange}
+                    readOnly={!isEditing}
+                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
                   />
                 </div>
                 <div className="space-y-2">
@@ -125,9 +131,11 @@ const MonProfil = () => {
                   </label>
                   <input
                     type="text"
-                    value={user.prenom}
-                    readOnly
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    name="prenom"
+                    value={isEditing ? formData.prenom : user.prenom}
+                    onChange={handleInputChange}
+                    readOnly={!isEditing}
+                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
                   />
                 </div>
               </div>
@@ -144,10 +152,9 @@ const MonProfil = () => {
                   <input
                     type="email"
                     name="email"
-                    value={isEditing ? formData.email : user.email}
-                    onChange={handleInputChange}
-                    readOnly={!isEditing}
-                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
+                    value={user.email}
+                    readOnly={true}
+                    className="w-full p-2 border rounded-md bg-gray-50"
                   />
                 </div>
                 <div className="space-y-2">
@@ -219,9 +226,12 @@ const MonProfil = () => {
                 </label>
                 <input
                   type="password"
-                  value="••••••••"
-                  readOnly
-                  className="w-full p-2 border rounded-md bg-gray-50"
+                  name="password"
+                  value={isEditing ? formData.password : '••••••••'}
+                  onChange={handleInputChange}
+                  readOnly={!isEditing}
+                  placeholder={isEditing ? "Nouveau mot de passe" : ""}
+                  className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
                 />
               </div>
             </div>
@@ -231,13 +241,14 @@ const MonProfil = () => {
               {isEditing ? (
                 <>
                   <button 
+                    type="button"
                     onClick={() => setIsEditing(false)} 
                     className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
                   >
                     Annuler
                   </button>
                   <button 
-                    onClick={handleSubmit}
+                    type="submit"
                     className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
                   >
                     Enregistrer
@@ -245,6 +256,7 @@ const MonProfil = () => {
                 </>
               ) : (
                 <button 
+                  type="button"
                   onClick={() => setIsEditing(true)}
                   className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
                 >
@@ -252,7 +264,7 @@ const MonProfil = () => {
                 </button>
               )}
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

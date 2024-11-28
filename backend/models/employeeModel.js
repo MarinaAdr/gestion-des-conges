@@ -137,12 +137,39 @@ const Employee = {
   // Ajouter cette méthode au modèle Employee
   updateCredentials: async (id, updates) => {
     try {
-      const [result] = await db.query(
-        'UPDATE users SET ? WHERE id = ?',
-        [updates, id]
-      );
+      console.log('Mise à jour pour ID:', id);
+      console.log('Updates dans le modèle:', updates);
+
+      // Si un mot de passe est fourni, le hasher
+      if (updates.password) {
+        updates.password = await bcrypt.hash(updates.password, 10);
+      }
+
+      // Construire la requête SQL dynamiquement
+      const updateFields = [];
+      const values = [];
+      
+      Object.keys(updates).forEach(key => {
+        updateFields.push(`${key} = ?`);
+        values.push(updates[key]);
+      });
+      
+      // Ajouter l'ID à la fin des valeurs
+      values.push(id);
+
+      const sql = `
+        UPDATE users 
+        SET ${updateFields.join(', ')} 
+        WHERE id = ?
+      `;
+
+      console.log('Requête SQL:', sql);
+      console.log('Valeurs:', values);
+
+      const [result] = await db.query(sql, values);
       return result;
     } catch (error) {
+      console.error('Erreur dans updateCredentials:', error);
       throw error;
     }
   }

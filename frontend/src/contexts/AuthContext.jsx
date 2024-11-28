@@ -50,20 +50,25 @@ export const AuthProvider = ({ children }) => {
     try {
       const formData = new FormData();
       
-      console.log('userData reçu:', userData);  // Debug
+      console.log('userData reçu:', userData);
 
-      // Vérifier et ajouter l'image
-      if (userData.image) {
-        console.log('Image trouvée:', userData.image);  // Debug
-        formData.append('photo', userData.image);
+      // Ajouter tous les champs au FormData
+      if (userData.nom) {
+        formData.append('nom', userData.nom);
       }
-
-      // Ajouter email et contact seulement s'ils sont différents des valeurs actuelles
-      if (userData.email && userData.email !== user.email) {
-        formData.append('email', userData.email);
+      if (userData.prenom) {
+        formData.append('prenom', userData.prenom);
       }
-      if (userData.contact && userData.contact !== user.contact) {
+      if (userData.contact) {
         formData.append('contact', userData.contact);
+      }
+      if (userData.password) {
+        formData.append('password', userData.password);
+      }
+
+      // Gérer l'image
+      if (userData.image) {
+        formData.append('photo', userData.image);
       }
 
       // Debug - vérifier le contenu du FormData
@@ -71,16 +76,8 @@ export const AuthProvider = ({ children }) => {
         console.log('FormData contient:', pair[0], pair[1]);
       }
 
-      // Vérifier si le FormData n'est pas vide
-      if ([...formData.entries()].length === 0) {
-        return { 
-          success: false, 
-          error: 'Aucune modification à envoyer' 
-        };
-      }
-
       const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/employees/${user.id}/update-credentials`, 
+        `${import.meta.env.VITE_API_URL}/api/employees/${user.id}/update-credentials`,
         formData,
         {
           headers: {
@@ -91,10 +88,18 @@ export const AuthProvider = ({ children }) => {
 
       if (response.data?.success) {
         const updatedUser = response.data.data;
-        setUser(updatedUser);
-        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setUser(prevUser => ({
+          ...prevUser,
+          ...updatedUser
+        }));
+        localStorage.setItem('user', JSON.stringify({
+          ...user,
+          ...updatedUser
+        }));
         return { success: true, data: updatedUser };
       }
+
+      return response.data;
     } catch (error) {
       console.error('Erreur détaillée:', error.response?.data);
       return { 

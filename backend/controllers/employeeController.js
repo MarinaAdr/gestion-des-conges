@@ -133,20 +133,25 @@ exports.delete = async (req, res) => {
 exports.updateCredentials = async (req, res) => {
   try {
     const updates = {};
+    console.log('Données reçues brutes:', req.body);
     
     // Vérifier si une nouvelle photo est fournie
     if (req.file) {
       updates.image = req.file.filename;
-      console.log('Image reçue:', req.file);
+      console.log('Nouvelle image:', req.file.filename);
     }
 
-    // Ajouter les autres champs autorisés
-    const allowedFields = ['email', 'contact'];
+    // Ajouter tous les champs autorisés s'ils sont présents dans req.body
+    const allowedFields = ['nom', 'prenom', 'contact', 'password'];
     allowedFields.forEach(field => {
-      if (req.body[field]) {
+      // Vérifier si le champ existe dans req.body (même s'il est vide)
+      if (req.body[field] !== undefined) {
         updates[field] = req.body[field];
       }
     });
+
+    console.log('Updates à appliquer après traitement:', updates);
+    console.log('ID employé:', req.params.id);
 
     // Si aucune mise à jour n'est nécessaire
     if (Object.keys(updates).length === 0) {
@@ -156,9 +161,9 @@ exports.updateCredentials = async (req, res) => {
       });
     }
 
-    console.log('Updates à appliquer:', updates);
-
+    // Appeler la méthode du modèle pour mettre à jour
     const result = await Employee.updateCredentials(req.params.id, updates);
+    console.log('Résultat de la mise à jour:', result);
     
     if (result.affectedRows === 0) {
       return res.status(404).json({
@@ -169,11 +174,6 @@ exports.updateCredentials = async (req, res) => {
 
     // Récupérer l'employé mis à jour
     const updatedEmployee = await Employee.findById(req.params.id);
-
-    // Ajouter l'URL complète de l'image
-    if (updatedEmployee.image) {
-      updatedEmployee.imageUrl = `${process.env.API_URL}/uploads/${updatedEmployee.image}`;
-    }
 
     res.json({
       success: true,
