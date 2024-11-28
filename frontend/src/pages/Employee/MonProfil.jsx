@@ -6,6 +6,11 @@ import { fr } from 'date-fns/locale';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+const formatDateEmbauche = (dateString) => {
+  if (!dateString) return 'Non renseigné';
+  return format(new Date(dateString), 'dd/MM/yyyy', { locale: fr });
+};
+
 const MonProfil = () => {
   const { user, updateUser } = useAuth();
   const [profileImage, setProfileImage] = useState(user.image || null);
@@ -207,7 +212,7 @@ const MonProfil = () => {
                   </label>
                   <input
                     type="text"
-                    value={user.date_embauche}
+                    value={formatDateEmbauche(user.date_embauche)}
                     readOnly
                     className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
                   />
