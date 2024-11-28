@@ -64,57 +64,66 @@ const MonProfil = () => {
     }
   };
 
+  // Style global pour tous les inputs
+  const inputClassName = `w-full p-5 border-2 rounded-xl text-xl outline-none transition-all duration-200 ${
+    isEditing 
+      ? 'bg-white border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200' 
+      : 'bg-blue-50 border-blue-100'
+  }`;
+
+  // Style pour les boutons
+  const buttonBaseClass = "px-10 py-4 rounded-xl text-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg";
+  const primaryButtonClass = `${buttonBaseClass} bg-blue-600 text-white hover:bg-blue-700 hover:scale-105`;
+  const secondaryButtonClass = `${buttonBaseClass} bg-gray-500 text-white hover:bg-gray-600 hover:scale-105`;
+
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-10">
       {/* En-tête */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Mon Profil</h1>
-        <p className="text-gray-600 bg-blue-100 rounded-full px-3 py-1">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
+        <h1 className="text-4xl font-bold text-blue-800">Mon Profil</h1>
+        <p className="text-xl text-blue-600 bg-blue-50 rounded-full px-6 py-3">
           {formattedDate}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Section Photo de profil */}
         <div className="col-span-1">
-          <div className="bg-white p-6 rounded-lg shadow-md text-center">
-            <div className="relative w-48 h-48 mx-auto mb-4">
+          <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+            <div className="relative w-56 h-56 mx-auto mb-6">
               {profileImage ? (
                 <img
                   src={profileImage.startsWith('http') 
                     ? profileImage 
                     : `${import.meta.env.VITE_API_URL}/uploads/${profileImage}`}
                   alt="Profile"
-                  className="w-full h-full object-cover rounded-full"
+                  className="w-full h-full object-cover rounded-full border-4 border-blue-200"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center">
-                  <HiUser className="w-20 h-20 text-gray-400" />
+                <div className="w-full h-full bg-blue-50 rounded-full flex items-center justify-center border-4 border-blue-200">
+                  <HiUser className="w-24 h-24 text-blue-400" />
                 </div>
               )}
             </div>
-            <label className="bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-blue-600 transition">
+            <label className="bg-blue-600 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-700 transition text-lg inline-block">
               Changer la photo
-              <input
-                type="file"
-                className="hidden"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
+              <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
             </label>
           </div>
         </div>
 
         {/* Section Informations */}
-        <div className="col-span-2">
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-6">
+        <div className="col-span-1 lg:col-span-2">
+          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg space-y-12">
             {/* Informations personnelles */}
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-700">Informations personnelles</h2>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="flex items-center text-gray-600">
-                    <HiUser className="mr-2" /> Nom
+              <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
+                <HiUser className="w-8 h-8" /> Informations personnelles
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                    <HiUser className="w-7 h-7" /> Nom
                   </label>
                   <input
                     type="text"
@@ -122,12 +131,12 @@ const MonProfil = () => {
                     value={isEditing ? formData.nom : user.nom}
                     onChange={handleInputChange}
                     readOnly={!isEditing}
-                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
+                    className={inputClassName}
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="flex items-center text-gray-600">
-                    <HiUser className="mr-2" /> Prénom
+                <div className="space-y-4">
+                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                    <HiUser className="w-7 h-7" /> Prénom
                   </label>
                   <input
                     type="text"
@@ -135,7 +144,7 @@ const MonProfil = () => {
                     value={isEditing ? formData.prenom : user.prenom}
                     onChange={handleInputChange}
                     readOnly={!isEditing}
-                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
+                    className={inputClassName}
                   />
                 </div>
               </div>
@@ -143,23 +152,25 @@ const MonProfil = () => {
 
             {/* Contact */}
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-700">Contact</h2>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="flex items-center text-gray-600">
-                    <HiMail className="mr-2" /> Email
+              <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
+                <HiPhone className="w-8 h-8" /> Contact
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                    <HiMail className="w-7 h-7" /> Email
                   </label>
                   <input
                     type="email"
                     name="email"
                     value={user.email}
                     readOnly={true}
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="flex items-center text-gray-600">
-                    <HiPhone className="mr-2" /> Téléphone
+                <div className="space-y-4">
+                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                    <HiPhone className="w-7 h-7" /> Téléphone
                   </label>
                   <input
                     type="tel"
@@ -167,7 +178,7 @@ const MonProfil = () => {
                     value={isEditing ? formData.contact : (user.contact || 'Non renseigné')}
                     onChange={handleInputChange}
                     readOnly={!isEditing}
-                    className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
+                    className={inputClassName}
                   />
                 </div>
               </div>
@@ -175,54 +186,60 @@ const MonProfil = () => {
 
             {/* Informations professionnelles */}
             <div>
-              <h2 className="text-xl font-semibold mb-4 text-gray-700">Informations professionnelles</h2>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="flex items-center text-gray-600">
-                    <HiUserGroup className="mr-2" /> Rôle
+              <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
+                <HiOfficeBuilding className="w-8 h-8" /> Informations professionnelles
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                    <HiUserGroup className="w-7 h-7" /> Rôle
                   </label>
                   <input
                     type="text"
                     value={user.role || 'Non renseigné'}
                     readOnly
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="flex items-center text-gray-600">
-                    <HiCalendar className="mr-2" /> Date d'embauche
+                <div className="space-y-4">
+                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                    <HiCalendar className="w-7 h-7" /> Date d'embauche
                   </label>
                   <input
                     type="text"
                     value={user.date_embauche}
                     readOnly
-                    className="w-full p-2 border rounded-md bg-gray-50"
+                    className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Congés et Sécurité - Structure corrigée */}
-            <div className="grid grid-cols-2 gap-6">
+            {/* Congés et Sécurité */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Congés */}
-              <div className="space-y-2">
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">Congés</h2>
-                <label className="flex items-center text-gray-600">
-                  <HiSun className="mr-2" /> Solde congés 
+              <div className="space-y-4">
+                <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
+                  <HiSun className="w-8 h-8" /> Congés
+                </h2>
+                <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <HiSun className="w-7 h-7" /> Solde congés
                 </label>
                 <input
                   type="text"
                   value={`${user.solde_conge || 0} jours`}
                   readOnly
-                  className="w-full p-2 border rounded-md bg-gray-50"
+                  className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
                 />
               </div>
 
               {/* Sécurité */}
-              <div className="space-y-2">
-                <h2 className="text-xl font-semibold mb-4 text-gray-700">Sécurité</h2>
-                <label className="flex items-center text-gray-600">
-                  <HiKey className="mr-2" /> Mot de passe
+              <div className="space-y-4">
+                <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
+                  <HiKey className="w-8 h-8" /> Sécurité
+                </h2>
+                <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <HiKey className="w-7 h-7" /> Mot de passe
                 </label>
                 <input
                   type="password"
@@ -231,25 +248,25 @@ const MonProfil = () => {
                   onChange={handleInputChange}
                   readOnly={!isEditing}
                   placeholder={isEditing ? "Nouveau mot de passe" : ""}
-                  className={`w-full p-2 border rounded-md ${isEditing ? 'bg-white' : 'bg-gray-50'}`}
+                  className={inputClassName}
                 />
               </div>
             </div>
 
-            {/* Bouton Modifier */}
-            <div className="flex justify-end mt-6 space-x-4">
+            {/* Boutons de contrôle */}
+            <div className="flex flex-col md:flex-row justify-end gap-6 pt-8">
               {isEditing ? (
                 <>
                   <button 
                     type="button"
                     onClick={() => setIsEditing(false)} 
-                    className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
+                    className={secondaryButtonClass}
                   >
                     Annuler
                   </button>
                   <button 
                     type="submit"
-                    className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                    className={primaryButtonClass}
                   >
                     Enregistrer
                   </button>
@@ -258,7 +275,7 @@ const MonProfil = () => {
                 <button 
                   type="button"
                   onClick={() => setIsEditing(true)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                  className={primaryButtonClass}
                 >
                   Modifier
                 </button>
