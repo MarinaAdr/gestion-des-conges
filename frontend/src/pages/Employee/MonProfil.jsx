@@ -110,7 +110,7 @@ const MonProfil = () => {
                 </div>
               )}
             </div>
-            <label className="bg-blue-600 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-700 transition text-lg inline-block">
+            <label className="bg-blue-700 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-800 transition text-xl inline-block">
               Changer la photo
               <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
             </label>

@@ -29,7 +29,17 @@ const NavbarAdmin = ({ onMenuClick }) => {
             </button>
             
             <button className="flex items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors">
-              <RiUserLine className="text-indigo-900 text-3xl" />
+              {user?.image ? (
+                <img 
+                  src={user.image.startsWith('http') 
+                    ? user.image 
+                    : `${import.meta.env.VITE_API_URL}/uploads/${user.image}`}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-indigo-200"
+                />
+              ) : (
+                <RiUserLine className="text-indigo-900 text-3xl" />
+              )}
               <span className="ml-2 text-indigo-900 text-xl font-medium hidden md:block">
                 {user?.nom || 'Undefined'}
               </span>
