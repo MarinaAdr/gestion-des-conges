@@ -5,6 +5,17 @@ const congeController = {
   createConge: async (req, res) => {
     const { user_id, date_debut, date_fin, motif } = req.body;
 
+    // Validation des dates
+    const dateDebut = new Date(date_debut);
+    const dateFin = new Date(date_fin);
+
+    if (dateFin < dateDebut) {
+      return res.status(400).json({
+        success: false,
+        message: 'La date de fin ne peut pas être antérieure à la date de début'
+      });
+    }
+
     try {
       const [result] = await pool.query(
         'INSERT INTO conges (user_id, date_debut, date_fin, motif, statut, date_creation) VALUES (?, ?, ?, ?, "en_attente", NOW())',

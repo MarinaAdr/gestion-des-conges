@@ -15,6 +15,19 @@ const DemandeConges = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validation des dates côté client
+    const dateDebut = new Date(formData.dateDebut);
+    const dateFin = new Date(formData.dateFin);
+
+    if (dateFin < dateDebut) {
+      setMessage({
+        type: 'error',
+        content: 'La date de fin ne peut pas être antérieure à la date de début'
+      });
+      return;
+    }
+
     setLoading(true);
     setMessage({ type: '', content: '' });
 
