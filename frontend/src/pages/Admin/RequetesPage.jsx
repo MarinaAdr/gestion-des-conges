@@ -10,6 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const RequetesPage = () => {
   const [conges, setConges] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCongeId, setSelectedCongeId] = useState(null);
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
   const { user } = useAuth();
   // Fonction pour récupérer toutes les demandes en attente
@@ -24,7 +25,9 @@ const RequetesPage = () => {
           }
         }
       );
-      setConges(response.data.data);
+      // Filtrer pour ne garder que les congés en attente
+      const congesEnAttente = response.data.data.filter(conge => conge.statut === 'en_attente');
+      setConges(congesEnAttente);
     } catch (error) {
       console.error('Erreur lors de la récupération des congés:', error);
       toast.error('Erreur lors de la récupération des congés');
@@ -118,7 +121,8 @@ const RequetesPage = () => {
               {conges.map((conge) => (
                 <div 
                   key={conge.id} 
-                  className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300"
+                  className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 cursor-pointer"
+                  onClick={() => setSelectedCongeId(selectedCongeId === conge.id ? null : conge.id)}
                 >
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                     <div className="flex items-center gap-3">
@@ -127,20 +131,32 @@ const RequetesPage = () => {
                         {conges.user_nom} {conges.employee_prenom}
                       </span>
                     </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleApprove(conge.id)}
-                        className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-                      >
-                        Approuver
-                      </button>
-                      <button
-                        onClick={() => handleReject(conge.id)}
-                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                      >
-                        Refuser
-                      </button>
-                    </div>
+                    {selectedCongeId === conge.id ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleApprove(conge.id);
+                          }}
+                          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                        >
+                          Approuver
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleReject(conge.id);
+                          }}
+                          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                          Refuser
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg">
+                        En attente
+                      </span>
+                    )}
                   </div>
                   <div className="text-lg space-y-3">
                     <p className="flex items-center gap-3 text-gray-600">
