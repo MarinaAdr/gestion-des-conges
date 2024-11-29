@@ -96,7 +96,7 @@ const EmployeesForm = () => {
   };
 
   return (
-    <AdminLayout>
+    
       <div className="min-h-screen md:mr-80 bg-gradient-to-br from-blue-50 to-white py-4 md:py-8 px-2 sm:px-4 md:px-6 lg:px-8 animate-fadeIn">
         <div className="max-w-5xl mx-auto">
           <div className="mb-4 md:mb-8 bg-white p-4 md:p-8 rounded-xl shadow-lg border-l-4 border-blue-600 transform hover:scale-[1.02] transition-all duration-300">
@@ -253,7 +253,7 @@ const EmployeesForm = () => {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    
   );
 };
 
