@@ -73,19 +73,21 @@ const DemandeConges = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 h-screen max-w-3xl mx-auto">
-      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-        <h1 className="flex items-center gap-3 text-2xl md:text-3xl font-bold text-gray-800 mb-8">
-          <MdWorkOff className="text-blue-500 text-3xl md:text-4xl" />
+    <div className="mt-10 flex justify-center p-4 md:p-8 bg-gray-50">
+      <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 w-full max-w-3xl transform transition-all duration-300 hover:shadow-2xl">
+        <h1 className="flex items-center gap-3 text-3xl md:text-4xl font-bold text-blue-700 mb-12 animate-fade-in">
+          <MdWorkOff className="text-blue-500 text-4xl md:text-5xl transform hover:scale-110 transition-transform" />
           Demande de Congés
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="dateDebut" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
-                <FaCalendarAlt className="text-blue-500" />
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4 transform hover:scale-105 transition-all duration-300">
+              <label 
+                htmlFor="dateDebut" 
+                className="flex text-xl items-center gap-2 text-gray-700 font-medium mb-2"
+              >
+                <FaCalendarAlt className="text-blue-500 text-2xl" />
                 Date de début <span className="text-red-500">*</span>
               </label>
               <input
@@ -94,13 +96,16 @@ const DemandeConges = () => {
                 required
                 value={formData.dateDebut}
                 onChange={(e) => setFormData({...formData, dateDebut: e.target.value})}
-                className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full p-4 text-xl border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all hover:border-blue-300"
               />
             </div>
 
-            <div className="space-y-2">
-              <label htmlFor="dateFin" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
-                <FaCalendarAlt className="text-blue-500" />
+            <div className="space-y-4 transform hover:scale-105 transition-all duration-300">
+              <label 
+                htmlFor="dateFin" 
+                className="flex text-xl items-center gap-2 text-gray-700 font-medium mb-2"
+              >
+                <FaCalendarAlt className="text-blue-500 text-2xl" />
                 Date de fin <span className="text-red-500">*</span>
               </label>
               <input
@@ -109,14 +114,17 @@ const DemandeConges = () => {
                 required
                 value={formData.dateFin}
                 onChange={(e) => setFormData({...formData, dateFin: e.target.value})}
-                className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
+                className="w-full p-4 text-xl border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all hover:border-blue-300"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="motif" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
-              <FaFileAlt className="text-blue-500" />
+          <div className="space-y-4 transform hover:scale-105 transition-all duration-300">
+            <label 
+              htmlFor="motif" 
+              className="flex text-xl items-center gap-2 text-gray-700 font-medium mb-2"
+            >
+              <FaFileAlt className="text-blue-500 text-2xl" />
               Motif <span className="text-red-500">*</span>
             </label>
             <textarea
@@ -126,20 +134,26 @@ const DemandeConges = () => {
               value={formData.motif}
               onChange={(e) => setFormData({...formData, motif: e.target.value})}
               placeholder="Décrivez la raison de votre demande..."
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
+              className="w-full p-4 text-xl border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none hover:border-blue-300"
             />
           </div>
 
           <button 
             type="submit" 
             disabled={loading || !formData.dateDebut || !formData.dateFin || !formData.motif}
-            className="w-full bg-blue-500 text-xl hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400"
+            className="w-full bg-blue-500 text-xl hover:bg-blue-600 text-white font-medium py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 disabled:bg-gray-400 transform hover:scale-105 hover:shadow-lg"
           >
             {loading ? (
-              'Envoi en cours...'
+              <div className="flex items-center gap-3">
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Envoi en cours...
+              </div>
             ) : (
               <>
-                <FaPaperPlane />
+                <FaPaperPlane className="text-2xl" />
                 Soumettre la demande
               </>
             )}
