@@ -67,7 +67,7 @@ function App() {
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="employees" element={<EmployeesPage />} />
-          <Route path="employees-form" element={<EmployeesForm />} />
+          <Route path="employees/new" element={<EmployeesForm />} />
           <Route path="employee-modify" element={<EmployeeModify />} />
          
           <Route path="requests" element={<RequetesPage />} />

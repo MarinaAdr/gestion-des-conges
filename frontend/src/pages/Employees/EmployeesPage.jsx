@@ -118,7 +118,7 @@ const EmployeesPage = () => {
   };
 
   return (
-    <AdminLayout>
+   
       <div className="bg-white rounded-lg shadow w-[98%] mx-auto p-6">
         <div className="mb-8 border-b border-gray-200 pb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -281,7 +281,7 @@ const EmployeesPage = () => {
           </div>
         </div>
       </div>
-    </AdminLayout>
+    
   );
 };
 
