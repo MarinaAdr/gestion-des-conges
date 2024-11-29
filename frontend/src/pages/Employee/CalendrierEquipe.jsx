@@ -2,19 +2,28 @@ import React, { useState } from 'react';
 
 const CalendrierEquipe = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   // Données des congés (à remplacer par vos données réelles)
   const conges = {
-    '2024-03-15': { name: 'Marie Dupont', type: 'CP' },
-    '2024-03-16': { name: 'Marie Dupont', type: 'CP' },
-    '2024-03-18': { name: 'Jean Martin', type: 'RTT' },
+    '2024-03-15': { name: 'Marie Dupont', type: 'CP', status: 'approved' },
+    '2024-03-16': { name: 'Marie Dupont', type: 'CP', status: 'approved' },
+    '2024-03-18': { name: 'Jean Martin', type: 'RTT', status: 'pending' },
   };
 
-  // Jours fériés
+  // Liste complète des jours fériés en France pour 2024
   const joursFeries = {
     '2024-01-01': "Jour de l'an",
-    '2024-05-01': 'Fête du travail',
-    // Ajoutez d'autres jours fériés...
+    '2024-04-01': "Lundi de Pâques",
+    '2024-05-01': "Fête du travail",
+    '2024-05-08': "Victoire 1945",
+    '2024-05-09': "Ascension",
+    '2024-05-20': "Lundi de Pentecôte",
+    '2024-07-14': "Fête nationale",
+    '2024-08-15': "Assomption",
+    '2024-11-01': "Toussaint",
+    '2024-11-11': "Armistice 1918",
+    '2024-12-25': "Noël"
   };
 
   const getDaysInMonth = (date) => {
@@ -61,21 +70,40 @@ const CalendrierEquipe = () => {
       days.push(
         <div 
           key={day}
-          className={`p-2 border relative min-h-[80px] ${
-            isToday ? 'bg-blue-50' : ''
-          } ${jourFerie ? 'bg-indigo-50' : ''}`}
+          onClick={() => setSelectedDate(date)}
+          className={`
+            p-3 rounded-lg relative min-h-[100px] cursor-pointer
+            transition-all duration-200 ease-in-out
+            ${isToday ? 'bg-blue-50 ring-2 ring-blue-200' : 'hover:bg-gray-50'}
+            ${jourFerie ? 'bg-violet-50' : ''}
+          `}
         >
-          <span className="text-sm">{day}</span>
+          <span className={`text-sm font-medium ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
+            {day}
+          </span>
           {jourFerie && (
-            <div className="text-xs p-1 text-indigo-600">
+            <div className="text-xs p-1.5 text-violet-600 font-medium">
               {jourFerie}
             </div>
           )}
           {conge && (
             <div className={`text-xs p-1 rounded mt-1 ${
-              conge.type === 'CP' ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'
+              conge.type === 'CP' 
+                ? conge.status === 'approved' 
+                  ? 'bg-orange-200 text-orange-800' 
+                  : 'bg-orange-100 text-orange-800'
+                : conge.status === 'approved'
+                  ? 'bg-green-200 text-green-800'
+                  : 'bg-green-100 text-green-800'
             }`}>
               {conge.name} ({conge.type})
+            </div>
+          )}
+          {selectedDate === date && conge && (
+            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white p-2 rounded shadow">
+                {conge.name}
+              </div>
             </div>
           )}
         </div>
@@ -86,58 +114,64 @@ const CalendrierEquipe = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Calendrier des Congés</h2>
-      </div>
-
-      {/* Légende */}
-      <div className="mb-4 flex gap-4 bg-gray-50 p-3 rounded-lg">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-orange-100 rounded"></div>
-          <span className="text-sm">Congés payés</span>
+    <div className="max-w-6xl mx-auto p-8">
+      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 tracking-tight">Calendrier des Congés</h2>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-100 rounded"></div>
-          <span className="text-sm">RTT</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-indigo-50 rounded"></div>
-          <span className="text-sm">Jours fériés</span>
-        </div>
-      </div>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center mb-4">
-        <button 
-          onClick={previousMonth}
-          className="p-2 hover:bg-gray-100 rounded"
-        >
-          ←
-        </button>
-        <h2 className="text-xl font-semibold">
-          {months[currentDate.getMonth()]} {currentDate.getFullYear()}
-        </h2>
-        <button 
-          onClick={nextMonth}
-          className="p-2 hover:bg-gray-100 rounded"
-        >
-          →
-        </button>
-      </div>
-
-      {/* Jours de la semaine */}
-      <div className="grid grid-cols-7 gap-1 mb-2">
-        {days.map(day => (
-          <div key={day} className="p-2 text-center font-semibold text-sm">
-            {day}
+        {/* Légende */}
+        <div className="mb-6 flex flex-wrap gap-6 bg-gray-50/50 p-4 rounded-xl">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-orange-200 rounded-md"></div>
+            <span className="text-sm text-gray-600">Congés payés</span>
           </div>
-        ))}
-      </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-green-200 rounded-md"></div>
+            <span className="text-sm text-gray-600">RTT</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-violet-100 rounded-md"></div>
+            <span className="text-sm text-gray-600">Jours fériés</span>
+          </div>
+        </div>
 
-      {/* Calendrier */}
-      <div className="grid grid-cols-7 gap-1">
-        {renderCalendar()}
+        {/* Navigation */}
+        <div className="flex justify-between items-center mb-6">
+          <button 
+            onClick={previousMonth}
+            className="p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h2 className="text-2xl font-semibold text-gray-800">
+            {months[currentDate.getMonth()]} {currentDate.getFullYear()}
+          </h2>
+          <button 
+            onClick={nextMonth}
+            className="p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+          >
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Jours de la semaine */}
+        <div className="grid grid-cols-7 gap-2 mb-4">
+          {days.map(day => (
+            <div key={day} className="p-2 text-center font-medium text-sm text-gray-600">
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Calendrier */}
+        <div className="grid grid-cols-7 gap-2">
+          {renderCalendar()}
+        </div>
       </div>
     </div>
   );
