@@ -20,9 +20,18 @@ const DemandeConges = () => {
 
     try {
       const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      const congeData = {
+        user_id: user.id,
+        date_debut: formData.dateDebut,
+        date_fin: formData.dateFin,
+        motif: formData.motif
+      };
+
       const response = await axios.post(
-        'http://localhost:8080/api/conges/demande',
-        formData,
+        `${import.meta.env.VITE_API_URL}/api/conges`,
+        congeData,
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -30,6 +39,7 @@ const DemandeConges = () => {
           }
         }
       );
+
       setMessage({
         type: 'success',
         content: 'Votre demande a été soumise avec succès'
@@ -41,6 +51,7 @@ const DemandeConges = () => {
         motif: ''
       });
     } catch (error) {
+      console.error('Erreur:', error);
       setMessage({
         type: 'error',
         content: error.response?.data?.message || 'Une erreur est survenue'
@@ -67,24 +78,6 @@ const DemandeConges = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-2">
-            <label htmlFor="typeConge" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
-              <FaFileAlt className="text-blue-500" />
-              Type de congé
-            </label>
-            <select
-              id="typeConge"
-              value={formData.typeConge}
-              onChange={(e) => setFormData({...formData, typeConge: e.target.value})}
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
-            >
-              <option value="">Sélectionnez un type</option>
-              <option value="congé payé">Congé payé</option>
-              <option value="congé sans solde">Congé sans solde</option>
-              <option value="congé maladie">Congé maladie</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
