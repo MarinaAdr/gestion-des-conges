@@ -16,6 +16,15 @@ const DemandeConges = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validation des champs obligatoires
+    if (!formData.dateDebut || !formData.dateFin || !formData.motif) {
+      setMessage({
+        type: 'error',
+        content: 'Tous les champs sont obligatoires'
+      });
+      return;
+    }
+    
     // Validation des dates côté client
     const dateDebut = new Date(formData.dateDebut);
     const dateFin = new Date(formData.dateFin);
@@ -96,11 +105,12 @@ const DemandeConges = () => {
             <div className="space-y-2">
               <label htmlFor="dateDebut" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
                 <FaCalendarAlt className="text-blue-500" />
-                Date de début
+                Date de début <span className="text-red-500">*</span>
               </label>
               <input
                 type="date"
                 id="dateDebut"
+                required
                 value={formData.dateDebut}
                 onChange={(e) => setFormData({...formData, dateDebut: e.target.value})}
                 className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
@@ -110,11 +120,12 @@ const DemandeConges = () => {
             <div className="space-y-2">
               <label htmlFor="dateFin" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
                 <FaCalendarAlt className="text-blue-500" />
-                Date de fin
+                Date de fin <span className="text-red-500">*</span>
               </label>
               <input
                 type="date"
                 id="dateFin"
+                required
                 value={formData.dateFin}
                 onChange={(e) => setFormData({...formData, dateFin: e.target.value})}
                 className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all"
@@ -125,11 +136,12 @@ const DemandeConges = () => {
           <div className="space-y-2">
             <label htmlFor="motif" className="flex text-xl items-center gap-2 text-gray-700 font-medium">
               <FaFileAlt className="text-blue-500" />
-              Motif
+              Motif <span className="text-red-500">*</span>
             </label>
             <textarea
               id="motif"
               rows={4}
+              required
               value={formData.motif}
               onChange={(e) => setFormData({...formData, motif: e.target.value})}
               placeholder="Décrivez la raison de votre demande..."
@@ -139,7 +151,7 @@ const DemandeConges = () => {
 
           <button 
             type="submit" 
-            disabled={loading}
+            disabled={loading || !formData.dateDebut || !formData.dateFin || !formData.motif}
             className="w-full bg-blue-500 text-xl hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:bg-gray-400"
           >
             {loading ? (
