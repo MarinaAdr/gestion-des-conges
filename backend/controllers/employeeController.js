@@ -11,7 +11,6 @@ exports.create = async (req, res) => {
       'date_embauche',
       'poste',
       'solde_conge',
-      'image',
       'contact'
     ];
     for (const field of requiredFields) {
@@ -23,7 +22,12 @@ exports.create = async (req, res) => {
       }
     }
 
-    const result = await Employee.create (req.body);
+    const employeeData = {
+      ...req.body,
+      image: req.file ? req.file.filename : null
+    };
+
+    const result = await Employee.create (employeeData);
     res.status (201).json ({
       success: true,
       message: 'Employé créé avec succès',

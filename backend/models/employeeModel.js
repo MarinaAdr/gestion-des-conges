@@ -7,8 +7,19 @@ const Employee = {
     try {
       const hashedPassword = await bcrypt.hash(employeeData.password, 10);
       const [result] = await db.query(
-        `INSERT INTO users (nom, prenom, email, password, role, date_embauche, poste, solde_conge, image, contact) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO users (
+          nom, 
+          prenom, 
+          email, 
+          password, 
+          role, 
+          date_embauche, 
+          poste, 
+          solde_conge, 
+          contact,
+          image
+        ) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           employeeData.nom,
           employeeData.prenom,
@@ -17,9 +28,9 @@ const Employee = {
           employeeData.role || 'EMPLOYEE',
           employeeData.date_embauche,
           employeeData.poste,
-          employeeData.solde_conge,
-          employeeData.image,
-          employeeData.contact
+          employeeData.solde_conge || 10,
+          employeeData.contact,
+          employeeData.image || null
         ]
       );
       return result;
