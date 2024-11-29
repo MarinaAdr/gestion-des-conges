@@ -63,6 +63,9 @@ const EmployeeDashboard = () => {
     return statusTranslations[status] || status;
   };
 
+  // Calculer le nombre de demandes en attente
+  const demandesEnAttente = conges.filter(conge => conge.statut === 'en_attente').length;
+
   return (
     <div className="space-y-6">
       {/* En-tête */}
@@ -76,7 +79,7 @@ const EmployeeDashboard = () => {
       </div>
 
       {/* Cartes statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Solde congés */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div className="flex items-center gap-4">
@@ -85,7 +88,7 @@ const EmployeeDashboard = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500">Solde congés</p>
-              <p className="text-2xl font-bold text-gray-800">25 jours</p>
+              <p className="text-2xl font-bold text-gray-800">{user.solde_conge} jours</p>
             </div>
           </div>
         </div>
@@ -104,54 +107,66 @@ const EmployeeDashboard = () => {
         </div>
 
         {/* Demandes en cours */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transform hover:scale-105 transition-all duration-300">
           <div className="flex items-center gap-4">
             <div className="p-2 bg-yellow-100 rounded-lg">
               <HiClipboardList className="w-6 h-6 text-yellow-600" />
             </div>
             <div>
               <p className="text-sm text-gray-500">Demandes en cours</p>
-              <p className="text-2xl font-bold text-gray-800">2</p>
+              <div className="flex flex-col">
+                <p className="text-2xl font-bold text-gray-800">
+                  {loading ? (
+                    <span className="animate-pulse">...</span>
+                  ) : (
+                    demandesEnAttente
+                  )}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {demandesEnAttente === 0 ? 'Aucune demande en attente' :
+                   demandesEnAttente === 1 ? '1 demande en attente' :
+                   `${demandesEnAttente} demandes en attente`}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-
-        
       </div>
 
-      {/* Sections principales */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Dernières demandes */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h2 className="text-lg font-semibold mb-4">Mes dernières demandes</h2>
-          {loading ? (
-            <div className="flex justify-center items-center h-40">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-            </div>
-          ) : conges.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              Aucune demande de congés
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {conges.map((conge) => (
-                <div key={conge.id} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium">Congés</span>
-                    <span className={`px-2 py-1 rounded-full text-sm ${getStatusColor(conge.statut)}`}>
-                      {translateStatus(conge.statut)}
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p>Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}</p>
-                    <p className="text-gray-500 italic">"{conge.motif}"</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+      {/* Dernières demandes */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Mes dernières demandes</h2>
+          <span className="text-sm text-gray-500">
+            {conges.length} {conges.length > 1 ? 'demandes' : 'demande'} au total
+          </span>
         </div>
-    
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          </div>
+        ) : conges.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            Aucune demande de congés
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {conges.map((conge) => (
+              <div key={conge.id} className="p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium">Congés</span>
+                  <span className={`px-2 py-1 rounded-full text-sm ${getStatusColor(conge.statut)}`}>
+                    {translateStatus(conge.statut)}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p>Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}</p>
+                  <p className="text-gray-500 italic">"{conge.motif}"</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
