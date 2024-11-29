@@ -4,6 +4,7 @@ const cors = require ('cors');
 const employeeRoutes = require ('./routes/employeeRoutes');
 const authRoutes = require ('./routes/authRoutes');
 const path = require('path');
+const congeRoutes = require('./routes/congeRoutes');
 
 const app = express ();
 
@@ -17,6 +18,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use ('/api/auth', authRoutes);
 app.use ('/api/employees', employeeRoutes);
+app.use('/api/conges', congeRoutes);
 
 // Route de test API
 app.get ('/api/test', (req, res) => {
