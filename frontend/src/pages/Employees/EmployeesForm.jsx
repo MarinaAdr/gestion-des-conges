@@ -110,7 +110,7 @@ const EmployeesForm = () => {
 
       console.log('Réponse du serveur:', response.data);
       toast.success('Employé créé avec succès');
-      navigate('/employees', { replace: true });
+      navigate('/admin/employees', { replace: true });
 
     } catch (error) {
       console.error('Erreur complète:', error);
@@ -127,7 +127,7 @@ const EmployeesForm = () => {
         <div className="max-w-5xl mx-auto">
           <div className="mb-4 md:mb-8 bg-white p-4 md:p-8 rounded-xl shadow-lg border-l-4 border-blue-600 transform hover:scale-[1.02] transition-all duration-300">
             <button
-              onClick={() => navigate('/employees')}
+              onClick={() => navigate('/admin/employees')}
               className="mb-4 flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
             >
               <FaArrowLeft className="mr-2" />
