@@ -26,10 +26,8 @@ const MonProfil = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log('Nouvelle image sélectionnée:', file);  // Debug
-      setProfileImage(URL.createObjectURL(file));
-      // Ne pas mettre l'image dans formData ici
-      // Elle sera ajoutée lors du submit
+      const imageUrl = URL.createObjectURL(file);
+      setProfileImage(imageUrl);
     }
   };
 
@@ -112,9 +110,11 @@ const MonProfil = () => {
             <div className="relative w-56 h-56 mx-auto mb-6">
               {profileImage ? (
                 <img
-                  src={profileImage.startsWith('http') 
+                  src={typeof profileImage === 'string' && profileImage.startsWith('blob:') 
                     ? profileImage 
-                    : `${import.meta.env.VITE_API_URL}/uploads/${profileImage}`}
+                    : profileImage.startsWith('http') 
+                      ? profileImage 
+                      : `${import.meta.env.VITE_API_URL}/uploads/${profileImage}`}
                   alt="Profile"
                   className="w-full h-full object-cover rounded-full border-4 border-blue-200"
                 />
