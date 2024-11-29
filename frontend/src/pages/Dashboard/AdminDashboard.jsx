@@ -151,14 +151,14 @@ const AdminDashboard = () => {
 
       {/* Liste des employés */}
       <Card className="shadow-xl bg-white rounded-xl">
-        <div className="p-8">
+        <div className="p-8 ">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800">Liste des employés</h2>
             <div className="flex gap-2">
               <span className="text-xl text-gray-500">Total: {employeeBalances.length} employés</span>
             </div>
           </div>
-          <div className="overflow-x-auto rounded-lg border border-gray-100">
+          <div className="overflow-x-auto  rounded-lg border border-gray-100">
             <Table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50">
@@ -182,12 +182,12 @@ const AdminDashboard = () => {
                           </span>
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{employee.nom}</div>
+                          <div className="text-ml font-medium text-gray-900">{employee.nom}</div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-sm text-gray-900">{employee.prenom}</div>
+                      <div className="text-md text-gray-900">{employee.prenom}</div>
                     </td>
                     <td className="px-6 py-4">
                       <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">
