@@ -33,51 +33,64 @@ function App() {
   };
 
   return (
-    <Routes>
-      {/* Route publique */}
-      <Route path="/login" element={<Login />} />
+    <div>
+      <Routes>
+        {/* Route publique */}
+        <Route path="/login" element={<Login />} />
 
-      {/* Routes protégées employé */}
-      <Route
-        path="/"
-        element={
-          <PrivateRoute>
-            <EmployeeLayout />
-          </PrivateRoute>
-        }
-      >
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="dashboard" element={<EmployeeDashboard />} />
-        <Route path="solde-conges" element={<SoldeConges />} />
-        <Route path="demande-conges" element={<DemandeConges />} />
-        <Route path="mon-profil" element={<MonProfil />} />
-        <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
-      </Route>
+        {/* Routes protégées employé */}
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <EmployeeLayout />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<EmployeeDashboard />} />
+          <Route path="solde-conges" element={<SoldeConges />} />
+          <Route path="demande-conges" element={<DemandeConges />} />
+          <Route path="mon-profil" element={<MonProfil />} />
+          <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
+        </Route>
 
-      {/* Routes protégées admin */}
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <AdminLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="employees" element={<EmployeesPage />} />
-        <Route path="employees-form" element={<EmployeesForm />} />
-        <Route path="employee-modify" element={<EmployeeModify />} />
-       
-        <Route path="requests" element={<RequetesPage />} />
-       
-        <Route path="calendrier" element={<CalendrierPage />} />
-        <Route path="jours-feries" element={<JoursFeries />} />
-      </Route>
+        {/* Routes protégées admin */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="employees" element={<EmployeesPage />} />
+          <Route path="employees-form" element={<EmployeesForm />} />
+          <Route path="employee-modify" element={<EmployeeModify />} />
+         
+          <Route path="requests" element={<RequetesPage />} />
+         
+          <Route path="calendrier" element={<CalendrierPage />} />
+          <Route path="jours-feries" element={<JoursFeries />} />
+        </Route>
 
-      {/* Route 404 */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-    </Routes>
+        {/* Route 404 */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </div>
   );
 }
 
