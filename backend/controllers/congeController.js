@@ -1,5 +1,12 @@
 const pool = require('../config/db.config');
 
+// Définir les statuts possibles comme constantes
+const CONGE_STATUS = {
+  EN_ATTENTE: 'en_attente',
+  APPROUVE: 'approuve',
+  REFUSE: 'refuse'
+};
+
 const congeController = {
   // Créer une nouvelle demande de congé
   createConge: async (req, res) => {
@@ -18,8 +25,8 @@ const congeController = {
 
     try {
       const [result] = await pool.query(
-        'INSERT INTO conges (user_id, date_debut, date_fin, motif, statut, date_creation) VALUES (?, ?, ?, ?, "en_attente", NOW())',
-        [user_id, date_debut, date_fin, motif]
+        'INSERT INTO conges (user_id, date_debut, date_fin, motif, statut, date_creation) VALUES (?, ?, ?, ?, ?, NOW())',
+        [user_id, date_debut, date_fin, motif, CONGE_STATUS.EN_ATTENTE]
       );
 
       res.status(201).json({ 
@@ -73,6 +80,14 @@ const congeController = {
     const { congeId } = req.params;
     const { statut } = req.body;
 
+    // Vérifier si le statut est valide
+    if (!Object.values(CONGE_STATUS).includes(statut)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Statut invalide. Les statuts possibles sont : en_attente, approuve, refuse'
+      });
+    }
+
     try {
       const [result] = await pool.query(
         'UPDATE conges SET statut = ? WHERE id = ?',
@@ -95,6 +110,22 @@ const congeController = {
       res.status(500).json({ 
         success: false, 
         message: 'Erreur lors de la mise à jour du statut' 
+      });
+    }
+  },
+
+  // Obtenir les statuts possibles
+  getStatuts: async (req, res) => {
+    try {
+      res.status(200).json({ 
+        success: true, 
+        data: CONGE_STATUS 
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Erreur lors de la récupération des statuts' 
       });
     }
   }

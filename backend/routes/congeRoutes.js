@@ -14,4 +14,7 @@ router.get('/user/:userId', congeController.getCongesByUser);
 // Route pour mettre à jour le statut d'un congé
 router.patch('/:congeId/status', congeController.updateCongeStatus);
 
+// Nouvelle route pour obtenir les statuts possibles
+router.get('/statuts', congeController.getStatuts);
+
 module.exports = router;
