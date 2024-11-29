@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { RiMenuLine, RiNotificationLine, RiUserLine } from 'react-icons/ri';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 const NavbarAdmin = ({ onMenuClick }) => {
   const { user } = useAuth();
+  const [pendingRequests, setPendingRequests] = useState(0);
+
+  // Fonction pour récupérer le nombre de demandes en attente
+  const fetchPendingRequests = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/conges`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      setPendingRequests(response.data.data.length);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des demandes en attente:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPendingRequests();
+    // Optionnel : Mettre à jour toutes les X secondes
+    const interval = setInterval(fetchPendingRequests, 30000); // 30 secondes
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-200">
@@ -24,9 +51,16 @@ const NavbarAdmin = ({ onMenuClick }) => {
 
           {/* Icônes de droite */}
           <div className="flex items-center gap-2 sm:gap-4 ml-auto">
-            <button className="p-2 hover:bg-indigo-50 rounded-lg transition-colors">
-              <RiNotificationLine className="text-indigo-900 text-3xl" />
-            </button>
+            <div className="relative">
+              <button className="p-2 hover:bg-indigo-50 rounded-lg transition-colors">
+                <RiNotificationLine className="text-indigo-900 text-3xl" />
+                {pendingRequests > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {pendingRequests}
+                  </span>
+                )}
+              </button>
+            </div>
             
             <button className="flex items-center p-2 hover:bg-indigo-50 rounded-lg transition-colors">
               {user?.image ? (
