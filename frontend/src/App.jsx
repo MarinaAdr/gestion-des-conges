@@ -68,7 +68,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="employees" element={<EmployeesPage />} />
           <Route path="employees/new" element={<EmployeesForm />} />
-          <Route path="employee-modify" element={<EmployeeModify />} />
+          <Route path="employees/edit/:id" element={<EmployeeModify />} />
          
           <Route path="requests" element={<RequetesPage />} />
          
