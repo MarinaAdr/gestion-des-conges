@@ -44,6 +44,20 @@ const MonProfil = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Vérifier si des modifications ont été apportées
+    const hasChanges = 
+      formData.nom !== user.nom ||
+      formData.prenom !== user.prenom ||
+      formData.contact !== user.contact ||
+      formData.password !== '' ||
+      (document.querySelector('input[type="file"]')?.files[0] !== undefined);
+
+    if (!hasChanges) {
+      toast.info('Aucune modification effectuée');
+      setIsEditing(false);
+      return;
+    }
+
     const updatedData = {
       ...formData
     };
