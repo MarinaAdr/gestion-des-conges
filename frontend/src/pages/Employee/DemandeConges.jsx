@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaCalendarAlt, FaFileAlt, FaPaperPlane } from 'react-icons/fa';
 import { MdWorkOff } from 'react-icons/md';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const DemandeConges = () => {
   const [formData, setFormData] = useState({
@@ -11,17 +12,13 @@ const DemandeConges = () => {
     motif: ''
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', content: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validation des champs obligatoires
     if (!formData.dateDebut || !formData.dateFin || !formData.motif) {
-      setMessage({
-        type: 'error',
-        content: 'Tous les champs sont obligatoires'
-      });
+      toast.error('Tous les champs sont obligatoires');
       return;
     }
     
@@ -30,15 +27,11 @@ const DemandeConges = () => {
     const dateFin = new Date(formData.dateFin);
 
     if (dateFin < dateDebut) {
-      setMessage({
-        type: 'error',
-        content: 'La date de fin ne peut pas être antérieure à la date de début'
-      });
+      toast.error('La date de fin ne peut pas être antérieure à la date de début');
       return;
     }
 
     setLoading(true);
-    setMessage({ type: '', content: '' });
 
     try {
       const token = localStorage.getItem('token');
@@ -62,10 +55,9 @@ const DemandeConges = () => {
         }
       );
 
-      setMessage({
-        type: 'success',
-        content: 'Votre demande a été soumise avec succès'
-      });
+      toast.success('Votre demande a été soumise avec succès');
+      
+      // Réinitialiser le formulaire
       setFormData({
         typeConge: '',
         dateDebut: '',
@@ -74,10 +66,7 @@ const DemandeConges = () => {
       });
     } catch (error) {
       console.error('Erreur:', error);
-      setMessage({
-        type: 'error',
-        content: error.response?.data?.message || 'Une erreur est survenue'
-      });
+      toast.error(error.response?.data?.message || 'Une erreur est survenue');
     } finally {
       setLoading(false);
     }
@@ -90,14 +79,6 @@ const DemandeConges = () => {
           <MdWorkOff className="text-blue-500 text-3xl md:text-4xl" />
           Demande de Congés
         </h1>
-
-        {message.content && (
-          <div className={`p-4 rounded-lg mb-4 ${
-            message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-          }`}>
-            {message.content}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
 
