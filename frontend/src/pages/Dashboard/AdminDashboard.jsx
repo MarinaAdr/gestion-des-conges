@@ -209,10 +209,10 @@ const AdminDashboard = () => {
             <Table className="w-full">
               <thead>
                 <tr className="bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50">
-                  <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Nom</th>
-                  <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Prénom</th>
-                  <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Solde de congé</th>
-                  <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Jours restants</th>
+                  <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Nom</th>
+                  <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Prénom</th>
+                  <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Solde de congé</th>
+                  <th className="px-6 py-5 text-left text-sm font-bold text-gray-700 uppercase tracking-wider">Jours restants</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 bg-white">
