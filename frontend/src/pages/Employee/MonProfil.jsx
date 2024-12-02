@@ -65,11 +65,11 @@ const MonProfil = () => {
       const fileInput = document.querySelector('input[type="file"]');
       if (fileInput.files[0]) {
         updatedData.image = fileInput.files[0];
-        console.log('Image à envoyer:', fileInput.files[0]);  // Debug
+        console.log('Image à envoyer:', fileInput.files[0]);  
       }
     }
 
-    console.log('Données à envoyer:', updatedData);  // Debug
+    // console.log('Données à envoyer:', updatedData);  
     
     const result = await updateUser(updatedData);
     
