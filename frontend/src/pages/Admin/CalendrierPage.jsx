@@ -3,16 +3,9 @@ import React, { useState } from 'react';
 const CalendrierPage  = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-
-  // Données des congés (à remplacer par vos données réelles)
-  const conges = {
-    '2024-03-15': { name: 'Marie Dupont', type: 'CP', status: 'approved' },
-    '2024-03-16': { name: 'Marie Dupont', type: 'CP', status: 'approved' },
-    '2024-03-18': { name: 'Jean Martin', type: 'RTT', status: 'pending' },
-  };
-
-  // Liste complète des jours fériés en France pour 2024
-  const joursFeries = {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newHolidayName, setNewHolidayName] = useState('');
+  const [joursFeries, setJoursFeries] = useState({
     '2024-01-01': "Jour de l'an",
     '2024-04-01': "Lundi de Pâques",
     '2024-05-01': "Fête du travail",
@@ -24,6 +17,13 @@ const CalendrierPage  = () => {
     '2024-11-01': "Toussaint",
     '2024-11-11': "Armistice 1918",
     '2024-12-25': "Noël"
+  });
+
+  // Données des congés (à remplacer par vos données réelles)
+  const conges = {
+    '2024-03-15': { name: 'Marie Dupont', type: 'CP', status: 'approved' },
+    '2024-03-16': { name: 'Marie Dupont', type: 'CP', status: 'approved' },
+    '2024-03-18': { name: 'Jean Martin', type: 'RTT', status: 'pending' },
   };
 
   const getDaysInMonth = (date) => {
@@ -50,6 +50,18 @@ const CalendrierPage  = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
   };
 
+  const handleAddHoliday = (date) => {
+    if (newHolidayName.trim()) {
+      setJoursFeries(prev => ({
+        ...prev,
+        [date]: newHolidayName.trim()
+      }));
+      setNewHolidayName('');
+      setIsEditing(false);
+      setSelectedDate(null);
+    }
+  };
+
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(currentDate);
     const firstDayOfMonth = getFirstDayOfMonth(currentDate);
@@ -70,7 +82,6 @@ const CalendrierPage  = () => {
       days.push(
         <div 
           key={day}
-          onClick={() => setSelectedDate(date)}
           className={`
             p-3 rounded-lg relative min-h-[100px] cursor-pointer
             transition-all duration-200 ease-in-out
@@ -78,9 +89,24 @@ const CalendrierPage  = () => {
             ${jourFerie ? 'bg-violet-50' : ''}
           `}
         >
-          <span className={`text-sm font-medium ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
-            {day}
-          </span>
+          <div className="flex justify-between">
+            <span className={`text-sm font-medium ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
+              {day}
+            </span>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedDate(date);
+                setIsEditing(true);
+                setNewHolidayName(joursFeries[date] || '');
+              }}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </button>
+          </div>
           {jourFerie && (
             <div className="text-xs p-1.5 text-violet-600 font-medium">
               {jourFerie}
@@ -99,10 +125,49 @@ const CalendrierPage  = () => {
               {conge.name} ({conge.type})
             </div>
           )}
-          {selectedDate === date && conge && (
-            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-              <div className="bg-white p-2 rounded shadow">
-                {conge.name}
+          {selectedDate === date && isEditing && (
+            <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-10">
+              <div className="bg-white p-4 rounded shadow-lg" onClick={e => e.stopPropagation()}>
+                <input
+                  type="text"
+                  value={newHolidayName}
+                  onChange={(e) => setNewHolidayName(e.target.value)}
+                  placeholder="Nom du jour férié"
+                  className="border rounded p-2 mb-2 w-full"
+                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleAddHoliday(date)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                  >
+                    Ajouter
+                  </button>
+                  <button
+                    onClick={() => {
+                      setJoursFeries(prev => {
+                        const newJoursFeries = { ...prev };
+                        delete newJoursFeries[selectedDate];
+                        return newJoursFeries;
+                      });
+                      setIsEditing(false);
+                      setNewHolidayName('');
+                      setSelectedDate(null);
+                    }}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setNewHolidayName('');
+                      setSelectedDate(null);
+                    }}
+                    className="bg-gray-300 text-gray-700 px-3 py-1 rounded hover:bg-gray-400"
+                  >
+                    Fermer
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -122,14 +187,7 @@ const CalendrierPage  = () => {
 
         {/* Légende */}
         <div className="mb-6 flex flex-wrap gap-6 bg-gray-50/50 p-4 rounded-xl">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-orange-200 rounded-md"></div>
-            <span className="text-sm text-gray-600">Congés payés</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-200 rounded-md"></div>
-            <span className="text-sm text-gray-600">RTT</span>
-          </div>
+          
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 bg-violet-100 rounded-md"></div>
             <span className="text-sm text-gray-600">Jours fériés</span>
