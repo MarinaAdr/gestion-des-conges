@@ -82,6 +82,11 @@ const CalendrierPage  = () => {
       days.push(
         <div 
           key={day}
+          onClick={() => {
+            setSelectedDate(date);
+            setIsEditing(true);
+            setNewHolidayName(joursFeries[date] || '');
+          }}
           className={`
             p-3 rounded-lg relative min-h-[100px] cursor-pointer
             transition-all duration-200 ease-in-out
@@ -93,19 +98,6 @@ const CalendrierPage  = () => {
             <span className={`text-sm font-medium ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
               {day}
             </span>
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedDate(date);
-                setIsEditing(true);
-                setNewHolidayName(joursFeries[date] || '');
-              }}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </button>
           </div>
           {jourFerie && (
             <div className="text-xs p-1.5 text-violet-600 font-medium">
@@ -189,7 +181,7 @@ const CalendrierPage  = () => {
         <div className="mb-6 flex flex-wrap gap-6 bg-gray-50/50 p-4 rounded-xl">
           
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-violet-100 rounded-md"></div>
+            <div className="w-4 h-4 bg-violet-200 rounded-md"></div>
             <span className="text-sm text-gray-600">Jours fériés</span>
           </div>
         </div>
