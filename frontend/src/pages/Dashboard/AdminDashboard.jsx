@@ -6,6 +6,7 @@ import { Table } from '../../components/Table';
 import { FiDownload } from 'react-icons/fi';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import * as XLSX from 'xlsx';
 
 const AdminDashboard = () => {
   const [leaveOverview, setLeaveOverview] = useState({
@@ -83,8 +84,54 @@ const AdminDashboard = () => {
   }, []);
 
   const handleExportData = () => {
-    // Implémentez la logique d'export ici
-    console.log("Exporting data...");
+    try {
+      // Préparer les données pour l'export
+      const dataToExport = employeeBalances.map(employee => ({
+        'Nom': employee.nom,
+        'Prénom': employee.prenom,
+        'Solde de congé': employee.solde_conge || 10,
+        'Jours restants': employee.jours_restants || 10,
+      }));
+
+      // Créer un nouveau classeur
+      const wb = XLSX.utils.book_new();
+      
+      // Convertir les données en feuille de calcul
+      const ws = XLSX.utils.json_to_sheet(dataToExport);
+
+      // Ajuster la largeur des colonnes
+      const colWidths = [
+        { wch: 20 }, // Nom
+        { wch: 20 }, // Prénom
+        { wch: 15 }, // Solde de congé
+        { wch: 15 }, // Jours restants
+      ];
+      ws['!cols'] = colWidths;
+
+      // Styliser l'en-tête
+      const range = XLSX.utils.decode_range(ws['!ref']);
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const address = XLSX.utils.encode_col(C) + "1";
+        if (!ws[address]) continue;
+        ws[address].s = {
+          font: { bold: true },
+          fill: { fgColor: { rgb: "EFEFEF" } },
+        };
+      }
+
+      // Ajouter la feuille au classeur
+      XLSX.utils.book_append_sheet(wb, ws, "Liste des employés");
+
+      // Générer le fichier Excel et le télécharger
+      const date = new Date().toISOString().split('T')[0];
+      XLSX.writeFile(wb, `liste_employes_${date}.xlsx`);
+
+      // Notification de succès
+      toast.success('Export Excel réussi !');
+    } catch (error) {
+      console.error('Erreur lors de l\'export:', error);
+      toast.error('Une erreur est survenue lors de l\'export');
+    }
   };
 
   return (
