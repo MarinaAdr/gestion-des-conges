@@ -128,6 +128,38 @@ const congeController = {
         message: 'Erreur lors de la récupération des statuts' 
       });
     }
+  },
+
+  getCongesByUserAndStatus: async (req, res) => {
+    const { userId, statut } = req.params;
+    
+    console.log('Params reçus:', { userId, statut }); // Log des paramètres
+    console.log('Statuts valides:', CONGE_STATUS); // Log des statuts valides
+
+    // Vérifier si le statut est valide
+    if (!Object.values(CONGE_STATUS).includes(statut)) {
+      console.log('Statut invalide détecté'); // Log en cas de statut invalide
+      return res.status(400).json({
+        success: false,
+        message: 'Statut invalide. Les statuts possibles sont : en_attente, approuve, refuse'
+      });
+    }
+
+    try {
+      const query = 'SELECT * FROM conges WHERE user_id = ? AND statut = ? ORDER BY date_creation DESC';
+      console.log('Exécution de la requête:', query, [userId, statut]); // Log de la requête
+
+      const [conges] = await pool.query(query, [userId, statut]);
+      console.log('Résultats trouvés:', conges.length); // Log du nombre de résultats
+
+      res.status(200).json({ success: true, data: conges });
+    } catch (error) {
+      console.error('Erreur détaillée:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Erreur lors de la récupération des congés par statut' 
+      });
+    }
   }
 };
 
