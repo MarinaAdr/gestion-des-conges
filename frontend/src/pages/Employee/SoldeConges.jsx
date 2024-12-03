@@ -57,7 +57,20 @@ const SoldeConges = () => {
   }, [user.id]);
 
   // Calcul des congés pris (approuvés)
-  const congesPris = conges.filter(c => c.statut === 'approuve').length;
+  const congesPris = conges
+    .filter(c => c.statut === 'approuve')
+    .reduce((total, conge) => {
+      const dateDebut = new Date(conge.date_debut);
+      const dateFin = new Date(conge.date_fin);
+      let days = 0;
+      for (let d = new Date(dateDebut); d <= dateFin; d.setDate(d.getDate() + 1)) {
+        const day = d.getDay();
+        if (day !== 0 && day !== 6) { // Exclure les week-ends
+          days++;
+        }
+      }
+      return total + days;
+    }, 0);
 
   // Mise à jour du soldes object
   const soldes = {
@@ -94,9 +107,9 @@ const SoldeConges = () => {
                     <CalendarOutlined className="text-4xl" />
                   </div>
                   <div>
-                    <Text className="text-white/90 text-xl block mb-1">Total disponible</Text>
+                    <Text className="text-white/90 text-xl block mb-1">Total disponible (annuel)</Text>
                     <Title level={1} className="!mb-0 !text-white !text-5xl">
-                      {employeeData ? `${employeeData.solde_conge} jours` : 'Chargement...'}
+                      22 jours
                     </Title>
                   </div>
                 </div>
@@ -107,7 +120,7 @@ const SoldeConges = () => {
                 <div className="text-center px-6">
                   <Text className="text-gray-600 text-lg block mb-2">Pris</Text>
                   <Text className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    {conges.filter(c => c.statut === 'approuve').length}
+                    {congesPris}
                   </Text>
                 </div>
                 <div className="h-16 w-px bg-gradient-to-b from-blue-200 to-purple-200"></div>
@@ -163,20 +176,39 @@ const SoldeConges = () => {
             <div className="space-y-6">
               {conges
                 .filter(c => c.statut === 'approuve')
+                .sort((a, b) => new Date(b.date_debut) - new Date(a.date_debut)) // Tri par date décroissante
                 .slice(0, 3)
-                .map((conge, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-center gap-6 p-6 rounded-2xl bg-gradient-to-r from-indigo-50/50 to-purple-50/50 hover:from-indigo-100/50 hover:to-purple-100/50 transition-all duration-300"
-                  >
-                    <div className="flex items-center justify-center w-12 h-12 bg-indigo-100 rounded-xl">
-                      <CalendarOutlined className="text-2xl text-indigo-600" />
+                .map((conge, index) => {
+                  // Calcul du nombre de jours pour chaque congé
+                  const dateDebut = new Date(conge.date_debut);
+                  const dateFin = new Date(conge.date_fin);
+                  let days = 0;
+                  for (let d = new Date(dateDebut); d <= dateFin; d.setDate(d.getDate() + 1)) {
+                    const day = d.getDay();
+                    if (day !== 0 && day !== 6) { // Exclure les week-ends
+                      days++;
+                    }
+                  }
+
+                  return (
+                    <div 
+                      key={index}
+                      className="flex items-center gap-6 p-6 rounded-2xl bg-gradient-to-r from-indigo-50/50 to-purple-50/50 hover:from-indigo-100/50 hover:to-purple-100/50 transition-all duration-300"
+                    >
+                      <div className="flex items-center justify-center w-12 h-12 bg-indigo-100 rounded-xl">
+                        <CalendarOutlined className="text-2xl text-indigo-600" />
+                      </div>
+                      <div className="flex-grow">
+                        <Text className="text-xl text-gray-700 block">
+                          Du {format(new Date(conge.date_debut), 'dd/MM/yyyy')} au {format(new Date(conge.date_fin), 'dd/MM/yyyy')}
+                        </Text>
+                        <Text className="text-sm text-gray-500">
+                          {days} jour{days > 1 ? 's' : ''} de congés
+                        </Text>
+                      </div>
                     </div>
-                    <Text className="text-xl text-gray-700">
-                      Du {format(new Date(conge.date_debut), 'dd/MM/yyyy')} au {format(new Date(conge.date_fin), 'dd/MM/yyyy')}
-                    </Text>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           </Card>
         </div>
