@@ -37,7 +37,7 @@ const SoldeConges = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/conges/user/${user.id}`,
+        `${import.meta.env.VITE_API_URL}/api/conges/user/${user.id}/statut/approuve`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -177,7 +177,6 @@ const SoldeConges = () => {
               {conges
                 .filter(c => c.statut === 'approuve')
                 .sort((a, b) => new Date(b.date_debut) - new Date(a.date_debut)) // Tri par date décroissante
-                .slice(0, 3)
                 .map((conge, index) => {
                   // Calcul du nombre de jours pour chaque congé
                   const dateDebut = new Date(conge.date_debut);
