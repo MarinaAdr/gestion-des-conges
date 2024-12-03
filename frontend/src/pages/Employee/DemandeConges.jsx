@@ -32,6 +32,19 @@ const DemandeConges = () => {
       return;
     }
 
+    // Calcul du nombre de jours de congés en excluant les week-ends
+    let diffDays = 0;
+    
+    for (let d = new Date(dateDebut); d <= dateFin; d.setDate(d.getDate() + 1)) {
+      const day = d.getDay();
+      if (day !== 0 && day !== 6) { // 0 = Sunday, 6 = Saturday
+        diffDays++;
+      }
+    }
+    
+    // Affichage en console
+    console.log('Nombre de jours de congés demandés (hors week-ends):', diffDays);
+
     setLoading(true);
 
     try {
@@ -64,6 +77,7 @@ const DemandeConges = () => {
         start_date: formData.dateDebut,
         end_date: formData.dateFin,
         motif: formData.motif,
+        nombre_jours: diffDays // Ajout du nombre de jours
       };
 
       // Envoi de l'email avec EmailJS
@@ -74,7 +88,9 @@ const DemandeConges = () => {
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
-      toast.success('Votre demande a été soumise avec succès et un email a été envoyé à l\'administrateur');
+      toast.success(
+        `Vous avez soumis ${diffDays} jour${diffDays > 1 ? 's' : ''} de congés. Un email a été envoyé à l'administrateur`
+      );
       
       // Réinitialiser le formulaire
       setFormData({
