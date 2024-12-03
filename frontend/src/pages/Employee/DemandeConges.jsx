@@ -3,6 +3,7 @@ import { FaCalendarAlt, FaFileAlt, FaPaperPlane } from 'react-icons/fa';
 import { MdWorkOff } from 'react-icons/md';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import emailjs from '@emailjs/browser';
 
 const DemandeConges = () => {
   const [formData, setFormData] = useState({
@@ -44,6 +45,7 @@ const DemandeConges = () => {
         motif: formData.motif
       };
 
+      // Envoi de la demande à l'API
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/conges`,
         congeData,
@@ -55,7 +57,24 @@ const DemandeConges = () => {
         }
       );
 
-      toast.success('Votre demande a été soumise avec succès');
+      // Préparation des données pour l'email
+      const emailParams = {
+        to_email: user.email, // Email de l'employé
+        to_name: `${user.firstname} ${user.lastname}`,
+        start_date: formData.dateDebut,
+        end_date: formData.dateFin,
+        motif: formData.motif,
+      };
+
+      // Envoi de l'email avec EmailJS
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        emailParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      toast.success('Votre demande a été soumise avec succès et un email a été envoyé à l\'administrateur');
       
       // Réinitialiser le formulaire
       setFormData({
