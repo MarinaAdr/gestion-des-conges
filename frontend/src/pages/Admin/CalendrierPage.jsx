@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { motion, AnimatePresence } from 'framer-motion';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 const CalendrierPage  = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -82,10 +84,19 @@ const CalendrierPage  = () => {
     const firstDayOfMonth = getFirstDayOfMonth(currentDate);
     const days = [];
 
+    // Jours vides du mois précédent
     for (let i = 0; i < firstDayOfMonth; i++) {
-      days.push(<div key={`empty-${i}`} className="p-2 text-gray-400"></div>);
+      days.push(
+        <motion.div 
+          key={`empty-${i}`} 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.3 }}
+          className="p-2 text-gray-400 bg-gray-50/30 rounded-lg"
+        />
+      );
     }
 
+    // Jours du mois
     for (let day = 1; day <= daysInMonth; day++) {
       const date = formatDate(currentDate.getFullYear(), currentDate.getMonth(), day);
       const isToday = new Date().toDateString() === new Date(date).toDateString();
@@ -98,57 +109,92 @@ const CalendrierPage  = () => {
       });
 
       days.push(
-        <div 
+        <motion.div 
           key={day}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ 
+            delay: day * 0.01,
+            type: "spring",
+            stiffness: 100
+          }}
+          whileHover={{ 
+            scale: 1.02,
+            transition: { duration: 0.2 }
+          }}
           onClick={() => {
             setSelectedDate(date);
             setIsEditing(true);
             setNewHolidayName(joursFeries[date] || '');
           }}
           className={`
-            p-3 rounded-lg relative min-h-[100px] cursor-pointer
-            transition-all duration-200 ease-in-out
-            ${isToday ? 'bg-blue-50 ring-2 ring-blue-200' : 'hover:bg-gray-50'}
-            ${joursFeries[date] ? 'bg-violet-50' : ''}
-            ${congesJour.length > 0 ? 'bg-orange-50' : ''}
+            p-4 rounded-xl relative min-h-[120px] cursor-pointer
+            transition-all duration-300 ease-in-out
+            backdrop-blur-sm border
+            hover:shadow-lg
+            ${isToday ? 'bg-blue-50/70 ring-2 ring-blue-200 border-blue-200' : 'hover:bg-gray-50/80 border-gray-100'}
+            ${joursFeries[date] ? 'bg-violet-50/70 border-violet-200' : ''}
+            ${congesJour.length > 0 ? 'bg-orange-50/70 border-orange-200' : ''}
           `}
         >
-          <div className="flex justify-between">
-            <span className={`text-sm font-medium ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
+          {/* En-tête du jour */}
+          <div className="flex justify-between items-center mb-2">
+            <span className={`
+              font-medium rounded-full w-7 h-7 flex items-center justify-center
+              ${isToday ? 'bg-blue-500 text-white' : 'text-gray-700'}
+            `}>
               {day}
             </span>
+            {joursFeries[date] && (
+              <div className="text-xs px-2 py-1 bg-violet-100 text-violet-700 rounded-full font-medium">
+                Férié
+              </div>
+            )}
           </div>
-          {joursFeries[date] && (
-            <div className="text-xs p-1.5 text-violet-600 font-medium group flex justify-between items-center">
-              <span>{joursFeries[date]}</span>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const newJoursFeries = { ...joursFeries };
-                  delete newJoursFeries[date];
-                  setJoursFeries(newJoursFeries);
-                }}
-                className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+
+          {/* Contenu du jour */}
+          <div className="space-y-1.5">
+            {joursFeries[date] && (
+              <div className="text-xs p-1.5 text-violet-600 font-medium group flex justify-between items-center bg-violet-50 rounded-lg">
+                <span>{joursFeries[date]}</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newJoursFeries = { ...joursFeries };
+                    delete newJoursFeries[date];
+                    setJoursFeries(newJoursFeries);
+                  }}
+                  className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-50 rounded-full p-1"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+            {congesJour.map((conge, index) => (
+              <motion.div
+                key={`${conge.id}-${index}`}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="text-xs p-2 bg-orange-100/80 text-orange-800 rounded-lg font-medium shadow-sm"
               >
-                ×
-              </button>
-            </div>
-          )}
-          {congesJour.map((conge, index) => (
-            <div
-              key={`${conge.id}-${index}`}
-              className="text-xs p-1.5 mt-1 bg-orange-100 text-orange-800 rounded-md"
-            >
-              {conge.nom} {conge.prenom}
-            </div>
-          ))}
+                {conge.nom} {conge.prenom}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Modal d'édition */}
           {selectedDate === date && isEditing && (
-            <div className="absolute inset-0 bg-white bg-opacity-90 p-2 flex flex-col gap-2">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute inset-0 bg-white/95 backdrop-blur-sm p-3 rounded-xl flex flex-col gap-2 border border-gray-200 shadow-lg"
+            >
               <input
                 type="text"
                 value={newHolidayName}
                 onChange={(e) => setNewHolidayName(e.target.value)}
-                className="border p-1 rounded"
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 placeholder="Nom du jour férié"
               />
               <div className="flex gap-2">
@@ -157,7 +203,7 @@ const CalendrierPage  = () => {
                     e.stopPropagation();
                     handleAddHoliday(date);
                   }}
-                  className="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600"
+                  className="flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
                 >
                   {joursFeries[date] ? 'Modifier' : 'Ajouter'}
                 </button>
@@ -171,7 +217,7 @@ const CalendrierPage  = () => {
                       setIsEditing(false);
                       setSelectedDate(null);
                     }}
-                    className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
+                    className="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
                   >
                     Supprimer
                   </button>
@@ -182,14 +228,14 @@ const CalendrierPage  = () => {
                     setIsEditing(false);
                     setSelectedDate(null);
                   }}
-                  className="bg-gray-300 text-gray-700 px-2 py-1 rounded text-sm hover:bg-gray-400"
+                  className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
                 >
                   Annuler
                 </button>
               </div>
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       );
     }
 
@@ -197,66 +243,108 @@ const CalendrierPage  = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8">
-      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 tracking-tight">Calendrier des Congés</h2>
-        </div>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-6xl mx-auto p-4 md:p-8"
+    >
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+        className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-gray-100"
+      >
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h2 className="text-3xl font-bold text-gray-800 tracking-tight">
+            Calendrier des Congés
+          </h2>
+        </motion.div>
 
-        {/* Légende mise à jour */}
-        <div className="mb-6 flex flex-wrap gap-6 bg-gray-50/50 p-4 rounded-xl">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-violet-50 border border-violet-200 rounded-md"></div>
-            <span className="text-sm text-gray-600">Jours fériés</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-orange-50 border border-orange-200 rounded-md"></div>
-            <span className="text-sm text-gray-600">Congés approuvés</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-blue-50 border border-blue-200 rounded-md"></div>
-            <span className="text-sm text-gray-600">Aujourd'hui</span>
-          </div>
-        </div>
+        {/* Légende modernisée */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-6 flex flex-wrap gap-4 bg-gray-50/50 p-4 rounded-xl backdrop-blur-sm"
+        >
+          {[
+            { bg: 'bg-violet-50', border: 'border-violet-200', text: 'Jours fériés' },
+            { bg: 'bg-orange-50', border: 'border-orange-200', text: 'Congés approuvés' },
+            { bg: 'bg-blue-50', border: 'border-blue-200', text: 'Aujourd\'hui' }
+          ].map((item, index) => (
+            <motion.div
+              key={item.text}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/50 transition-colors duration-300"
+            >
+              <div className={`w-4 h-4 ${item.bg} border ${item.border} rounded-md`}></div>
+              <span className="text-sm text-gray-600 whitespace-nowrap">{item.text}</span>
+            </motion.div>
+          ))}
+        </motion.div>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center mb-6">
-          <button 
+        {/* Navigation modernisée */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-between items-center mb-6"
+        >
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={previousMonth}
             className="p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h2 className="text-2xl font-semibold text-gray-800">
+            <HiChevronLeft className="w-6 h-6 text-gray-600" />
+          </motion.button>
+          <motion.h2 
+            className="text-2xl font-semibold text-gray-800 px-4 py-2 rounded-full bg-gray-50"
+          >
             {months[currentDate.getMonth()]} {currentDate.getFullYear()}
-          </h2>
-          <button 
+          </motion.h2>
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             onClick={nextMonth}
             className="p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
           >
-            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+            <HiChevronRight className="w-6 h-6 text-gray-600" />
+          </motion.button>
+        </motion.div>
 
-        {/* Jours de la semaine */}
+        {/* Jours de la semaine modernisés */}
         <div className="grid grid-cols-7 gap-2 mb-4">
           {days.map(day => (
-            <div key={day} className="p-2 text-center font-medium text-sm text-gray-600">
+            <motion.div 
+              key={day}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-2 text-center font-medium text-sm text-gray-600 rounded-lg bg-gray-50"
+            >
               {day}
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Calendrier */}
-        <div className="grid grid-cols-7 gap-2">
-          {renderCalendar()}
-        </div>
-      </div>
-    </div>
+        {/* Calendrier avec animation */}
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={currentDate.getMonth()}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            className="grid grid-cols-7 gap-2"
+          >
+            {renderCalendar()}
+          </motion.div>
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   );
 };
 
