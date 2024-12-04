@@ -2,6 +2,9 @@ const express = require ('express');
 const router = express.Router ();
 const congeController = require ('../controllers/congeController');
 
+// Route pour obtenir les utilisateurs avec des congés
+router.get('/users-with-conges', congeController.getUsersWithConges);
+
 // Modifier la route pour correspondre à l'appel du frontend
 router.post ('/', congeController.createConge);
 
