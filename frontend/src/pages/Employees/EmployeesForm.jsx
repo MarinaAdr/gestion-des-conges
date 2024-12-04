@@ -31,7 +31,7 @@ const EmployeesForm = () => {
     role: 'EMPLOYEE',
     date_embauche: '',
     poste: '',
-    solde_conge: 10,
+    solde_conge: 22,
     contact: '',
     image_profile: null,
     image_preview: null
@@ -255,7 +255,7 @@ const EmployeesForm = () => {
                     onChange={handleChange}
                     className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     min="0"
-                    placeholder="10"
+                    placeholder="22"
                   />
                 </div>
 
@@ -271,7 +271,7 @@ const EmployeesForm = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
-                    placeholder="Ex: +33612345678"
+                    placeholder="Ex: +261 34 00 000 00"
                   />
                 </div>
 
