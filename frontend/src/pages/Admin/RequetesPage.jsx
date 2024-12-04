@@ -9,10 +9,33 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const RequetesPage = () => {
   const [conges, setConges] = useState([]);
+  const [filteredConges, setFilteredConges] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedUserId, setSelectedUserId] = useState('');
   const [selectedCongeId, setSelectedCongeId] = useState(null);
+  const [usersWithConges, setUsersWithConges] = useState([]);
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
   const { user } = useAuth();
+
+  // Fonction pour récupérer la liste des utilisateurs avec des congés
+  const fetchUsersWithConges = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/conges/users-with-conges`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      setUsersWithConges(response.data.data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des utilisateurs:', error);
+      toast.error('Erreur lors de la récupération des utilisateurs');
+    }
+  };
+
   // Fonction pour récupérer toutes les demandes en attente
   const fetchConges = async () => {
     try {
@@ -25,7 +48,6 @@ const RequetesPage = () => {
           }
         }
       );
-      // Filtrer pour ne garder que les congés en attente
       const congesEnAttente = response.data.data.filter(conge => conge.statut === 'en_attente');
       setConges(congesEnAttente);
     } catch (error) {
@@ -36,9 +58,27 @@ const RequetesPage = () => {
     }
   };
 
+  // Fonction pour gérer le changement d'utilisateur sélectionné
+  const handleUserChange = (e) => {
+    const userId = e.target.value;
+    setSelectedUserId(userId);
+    
+    if (userId) {
+      const filtered = conges.filter(conge => conge.user_id.toString() === userId);
+      setFilteredConges(filtered);
+    } else {
+      setFilteredConges(conges);
+    }
+  };
+
   useEffect(() => {
     fetchConges();
+    fetchUsersWithConges();
   }, []);
+
+  useEffect(() => {
+    setFilteredConges(conges);
+  }, [conges]);
 
   // Fonction pour formater la date
   const formatDate = (date) => {
@@ -94,9 +134,23 @@ const RequetesPage = () => {
             Demandes en attente
             <HiClipboardList className="text-blue-600" />
           </h1>
-          <p className="text-xl bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium">
-            {formattedDate}
-          </p>
+          <div className="flex items-center gap-4">
+            <select 
+              className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-blue-500 outline-none"
+              value={selectedUserId}
+              onChange={handleUserChange}
+            >
+              <option value="">Tous les utilisateurs</option>
+              {usersWithConges.map(user => (
+                <option key={user.id} value={user.id}>
+                  {user.nom} {user.prenom}
+                </option>
+              ))}
+            </select>
+            <p className="text-xl bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium">
+              {formattedDate}
+            </p>
+          </div>
         </div>
 
         {/* Liste des demandes */}
@@ -104,7 +158,7 @@ const RequetesPage = () => {
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
             <h2 className="text-2xl font-bold text-gray-800">Liste des requêtes</h2>
             <span className="text-xl bg-blue-50 text-blue-600 px-6 py-2 rounded-full font-medium">
-              {conges.length} {conges.length > 1 ? 'demandes' : 'demande'} en attente
+              {filteredConges.length} {filteredConges.length > 1 ? 'demandes' : 'demande'} en attente
             </span>
           </div>
 
@@ -112,13 +166,13 @@ const RequetesPage = () => {
             <div className="flex justify-center items-center h-40">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
             </div>
-          ) : conges.length === 0 ? (
+          ) : filteredConges.length === 0 ? (
             <div className="text-center py-12 text-xl text-gray-500">
               Aucune demande en attente
             </div>
           ) : (
             <div className="space-y-6">
-              {conges.map((conge) => (
+              {(filteredConges || []).map((conge) => (
                 <div 
                   key={conge.id} 
                   className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 cursor-pointer"
@@ -128,7 +182,7 @@ const RequetesPage = () => {
                     <div className="flex items-center gap-3">
                       <FaUser className="text-blue-500" />
                       <span className="text-xl font-medium text-gray-700">
-                        {conges.user_nom} {conges.employee_prenom}
+                        {conge.nom} {conge.prenom}
                       </span>
                     </div>
                     {selectedCongeId === conge.id ? (
