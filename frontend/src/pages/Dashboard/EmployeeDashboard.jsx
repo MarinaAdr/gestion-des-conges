@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HiCalendar, HiClock, HiClipboardList } from 'react-icons/hi';
+import { HiCalendar, HiClock, HiClipboardList, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { useAuth } from '../../contexts/AuthContext';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -12,6 +12,8 @@ const EmployeeDashboard = () => {
   const [conges, setConges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [employeeData, setEmployeeData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const congesPerPage = 10;
 
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
 
@@ -109,6 +111,17 @@ const EmployeeDashboard = () => {
       return total + calculateWorkingDays(conge.date_debut, conge.date_fin);
     }, 0);
 
+  // Calcul pour la pagination
+  const indexOfLastConge = currentPage * congesPerPage;
+  const indexOfFirstConge = indexOfLastConge - congesPerPage;
+  const currentConges = conges.slice(indexOfFirstConge, indexOfLastConge);
+  const totalPages = Math.ceil(conges.length / congesPerPage);
+
+  // Fonction pour changer de page
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -199,44 +212,81 @@ const EmployeeDashboard = () => {
             <div className="flex justify-center items-center h-40">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
             </div>
-          ) : conges.length === 0 ? (
+          ) : currentConges.length === 0 ? (
             <div className="text-center py-12 text-xl text-gray-500">
               Aucune demande de congés
             </div>
           ) : (
-            <div className="space-y-6">
-              {conges.map((conge) => {
-                const nombreJours = calculateWorkingDays(conge.date_debut, conge.date_fin);
-                return (
-                  <div 
-                    key={conge.id} 
-                    className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300"
-                  >
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-                      <div className="flex items-center gap-3">
-                        <span className="text-xl font-medium text-gray-700">Congés</span>
-                        <span className="text-lg text-gray-500">
-                          ({nombreJours} jour{nombreJours > 1 ? 's' : ''})
+            <>
+              <div className="space-y-6">
+                {currentConges.map((conge) => {
+                  const nombreJours = calculateWorkingDays(conge.date_debut, conge.date_fin);
+                  return (
+                    <div 
+                      key={conge.id} 
+                      className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300"
+                    >
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl font-medium text-gray-700">Congés</span>
+                          <span className="text-lg text-gray-500">
+                            ({nombreJours} jour{nombreJours > 1 ? 's' : ''})
+                          </span>
+                        </div>
+                        <span className={`px-4 py-2 rounded-full text-lg font-medium ${getStatusColor(conge.statut)}`}>
+                          {translateStatus(conge.statut)}
                         </span>
                       </div>
-                      <span className={`px-4 py-2 rounded-full text-lg font-medium ${getStatusColor(conge.statut)}`}>
-                        {translateStatus(conge.statut)}
-                      </span>
+                      <div className="text-lg space-y-3">
+                        <p className="flex items-center gap-3 text-gray-600">
+                          <HiCalendar className="text-blue-500 w-6 h-6" />
+                          Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
+                        </p>
+                        <p className="flex items-center gap-3 text-gray-500 italic">
+                          <FaFileAlt className="text-blue-500 w-5 h-5" />
+                          "{conge.motif}"
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-lg space-y-3">
-                      <p className="flex items-center gap-3 text-gray-600">
-                        <HiCalendar className="text-blue-500 w-6 h-6" />
-                        Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
-                      </p>
-                      <p className="flex items-center gap-3 text-gray-500 italic">
-                        <FaFileAlt className="text-blue-500 w-5 h-5" />
-                        "{conge.motif}"
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex justify-center items-center gap-2">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <HiChevronLeft className="w-6 h-6 text-gray-600" />
+                  </button>
+                  
+                  {[...Array(totalPages)].map((_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-4 py-2 rounded-lg transition-all ${
+                        currentPage === index + 1
+                          ? 'bg-blue-500 text-white'
+                          : 'hover:bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <HiChevronRight className="w-6 h-6 text-gray-600" />
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
