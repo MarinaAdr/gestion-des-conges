@@ -72,12 +72,13 @@ const DemandeConges = () => {
 
       // Préparation des données pour l'email
       const emailParams = {
-        to_email: user.email, // Email de l'employé
-        to_name: `${user.firstname} ${user.lastname}`,
-        start_date: formData.dateDebut,
-        end_date: formData.dateFin,
+        to_email: user.email,
+        to_name: `${user.nom} ${user.prenom}`,
+        from_name: "Gestion des Congés - ME",
+        user_name: `${user.nom} ${user.prenom}`,
         motif: formData.motif,
-        nombre_jours: diffDays // Ajout du nombre de jours
+        nombre_jours: diffDays,
+        reply_to: "no-reply@me-company.com"
       };
 
       // Envoi de l'email avec EmailJS
