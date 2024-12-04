@@ -3,43 +3,68 @@ import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
-const CalendrierPage  = () => {
+const CalendrierPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [newHolidayName, setNewHolidayName] = useState('');
+  const [congesApprouves, setCongesApprouves] = useState([]);
   const [joursFeries, setJoursFeries] = useState({
-    '2025-01-01': "Jour de l'an",
+    '2024-01-01': "Jour de l'an",
     '2024-04-01': "Lundi de Pâques",
-    '2025-05-01': "Fête du travail",
+    '2024-05-01': "Fête du travail",
     '2024-05-08': "Victoire 1945",
     '2024-05-09': "Ascension",
     '2024-05-20': "Lundi de Pentecôte",
-    '2025-06-26': "Fête nationale",
+    '2024-07-14': "Fête nationale",
     '2024-08-15': "Assomption",
     '2024-11-01': "Toussaint",
+    '2024-11-11': "Armistice 1918",
     '2024-12-25': "Noël"
   });
-  const [congesApprouves, setCongesApprouves] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newHolidayName, setNewHolidayName] = useState('');
 
-  const fetchCongesApprouves = async () => {
+  // Fonction pour gérer l'ajout/modification d'un jour férié
+  const handleAddHoliday = (date) => {
+    if (newHolidayName.trim()) {
+      setJoursFeries(prev => ({
+        ...prev,
+        [date]: newHolidayName.trim()
+      }));
+      setIsEditing(false);
+      setSelectedDate(null);
+      setNewHolidayName('');
+    }
+  };
+
+  // Fonction pour supprimer un jour férié
+  const handleDeleteHoliday = (date) => {
+    const newJoursFeries = { ...joursFeries };
+    delete newJoursFeries[date];
+    setJoursFeries(newJoursFeries);
+    setIsEditing(false);
+    setSelectedDate(null);
+  };
+
+  const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(
+      const congesResponse = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/conges`,
         {
           headers: { 'Authorization': `Bearer ${token}` }
         }
       );
-      const approuves = response.data.data.filter(conge => conge.statut === 'approuve');
+      const approuves = congesResponse.data.data.filter(conge => conge.statut === 'approuve');
+      console.log('Congés approuvés:', approuves);
       setCongesApprouves(approuves);
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Erreur lors de la récupération des données:', error);
+      setCongesApprouves([]);
     }
   };
 
   useEffect(() => {
-    fetchCongesApprouves();
+    fetchData();
   }, []);
 
   const getDaysInMonth = (date) => {
@@ -66,18 +91,6 @@ const CalendrierPage  = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
   };
 
-  const handleAddHoliday = (date) => {
-    if (newHolidayName.trim()) {
-      setJoursFeries(prev => ({
-        ...prev,
-        [date]: newHolidayName.trim()
-      }));
-      setNewHolidayName('');
-      setIsEditing(false);
-      setSelectedDate(null);
-    }
-  };
-
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(currentDate);
     const firstDayOfMonth = getFirstDayOfMonth(currentDate);
@@ -101,10 +114,15 @@ const CalendrierPage  = () => {
       const isToday = new Date().toDateString() === new Date(date).toDateString();
       
       const congesJour = congesApprouves.filter(conge => {
-        const debut = new Date(conge.date_debut);
-        const fin = new Date(conge.date_fin);
+        const debutDate = new Date(conge.date_debut);
+        const finDate = new Date(conge.date_fin);
         const currentDate = new Date(date);
-        return currentDate >= debut && currentDate <= fin;
+        
+        debutDate.setHours(0, 0, 0, 0);
+        finDate.setHours(0, 0, 0, 0);
+        currentDate.setHours(0, 0, 0, 0);
+        
+        return currentDate >= debutDate && currentDate <= finDate;
       });
 
       days.push(
@@ -112,15 +130,7 @@ const CalendrierPage  = () => {
           key={day}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ 
-            delay: day * 0.01,
-            type: "spring",
-            stiffness: 100
-          }}
-          whileHover={{ 
-            scale: 1.02,
-            transition: { duration: 0.2 }
-          }}
+          transition={{ delay: day * 0.01 }}
           onClick={() => {
             setSelectedDate(date);
             setIsEditing(true);
@@ -130,13 +140,12 @@ const CalendrierPage  = () => {
             p-4 rounded-xl relative min-h-[120px] cursor-pointer
             transition-all duration-300 ease-in-out
             backdrop-blur-sm border
-            hover:shadow-lg
-            ${isToday ? 'bg-blue-50/70 ring-2 ring-blue-200 border-blue-200' : 'hover:bg-gray-50/80 border-gray-100'}
+            ${isToday ? 'bg-blue-50/70 ring-2 ring-blue-200 border-blue-200' : 'border-gray-100'}
             ${joursFeries[date] ? 'bg-violet-50/70 border-violet-200' : ''}
             ${congesJour.length > 0 ? 'bg-orange-50/70 border-orange-200' : ''}
+            hover:shadow-lg
           `}
         >
-          {/* En-tête du jour */}
           <div className="flex justify-between items-center mb-2">
             <span className={`
               font-medium rounded-full w-7 h-7 flex items-center justify-center
@@ -144,29 +153,12 @@ const CalendrierPage  = () => {
             `}>
               {day}
             </span>
-            {joursFeries[date] && (
-              <div className="text-xs px-2 py-1 bg-violet-100 text-violet-700 rounded-full font-medium">
-                Férié
-              </div>
-            )}
           </div>
 
-          {/* Contenu du jour */}
           <div className="space-y-1.5">
             {joursFeries[date] && (
-              <div className="text-xs p-1.5 text-violet-600 font-medium group flex justify-between items-center bg-violet-50 rounded-lg">
-                <span>{joursFeries[date]}</span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const newJoursFeries = { ...joursFeries };
-                    delete newJoursFeries[date];
-                    setJoursFeries(newJoursFeries);
-                  }}
-                  className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-50 rounded-full p-1"
-                >
-                  ×
-                </button>
+              <div className="text-xs p-1.5 text-violet-600 font-medium bg-violet-50 rounded-lg">
+                {joursFeries[date]}
               </div>
             )}
             {congesJour.map((conge, index) => (
@@ -182,58 +174,51 @@ const CalendrierPage  = () => {
             ))}
           </div>
 
-          {/* Modal d'édition */}
-          {selectedDate === date && isEditing && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="absolute inset-0 bg-white/95 backdrop-blur-sm p-3 rounded-xl flex flex-col gap-2 border border-gray-200 shadow-lg"
-            >
-              <input
-                type="text"
-                value={newHolidayName}
-                onChange={(e) => setNewHolidayName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                placeholder="Nom du jour férié"
-              />
-              <div className="flex gap-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddHoliday(date);
-                  }}
-                  className="flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
-                >
-                  {joursFeries[date] ? 'Modifier' : 'Ajouter'}
-                </button>
-                {joursFeries[date] && (
+          {/* Modal d'édition des jours fériés */}
+          <AnimatePresence>
+            {isEditing && selectedDate === date && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="absolute inset-0 bg-white/95 backdrop-blur-sm p-3 rounded-xl flex flex-col gap-2 border border-gray-200 shadow-lg z-10"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <input
+                  type="text"
+                  value={newHolidayName}
+                  onChange={(e) => setNewHolidayName(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  placeholder="Nom du jour férié"
+                />
+                <div className="flex gap-2">
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const newJoursFeries = { ...joursFeries };
-                      delete newJoursFeries[date];
-                      setJoursFeries(newJoursFeries);
+                    onClick={() => handleAddHoliday(date)}
+                    className="flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors"
+                  >
+                    {joursFeries[date] ? 'Modifier' : 'Ajouter'}
+                  </button>
+                  {joursFeries[date] && (
+                    <button
+                      onClick={() => handleDeleteHoliday(date)}
+                      className="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+                    >
+                      Supprimer
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
                       setIsEditing(false);
                       setSelectedDate(null);
                     }}
-                    className="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+                    className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
                   >
-                    Supprimer
+                    Annuler
                   </button>
-                )}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsEditing(false);
-                    setSelectedDate(null);
-                  }}
-                  className="flex-1 bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition-colors"
-                >
-                  Annuler
-                </button>
-              </div>
-            </motion.div>
-          )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       );
     }
