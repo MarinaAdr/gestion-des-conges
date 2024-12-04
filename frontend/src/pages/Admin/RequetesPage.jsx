@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { HiCalendar, HiClipboardList } from 'react-icons/hi';
+import { HiCalendar, HiClipboardList, HiChevronDown, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaFileAlt, FaUser } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const RequetesPage = () => {
   const [conges, setConges] = useState([]);
@@ -16,6 +17,20 @@ const RequetesPage = () => {
   const [usersWithConges, setUsersWithConges] = useState([]);
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
   const { user } = useAuth();
+  const [currentPage, setCurrentPage] = useState(1);
+  const demandesParPage = 10;
+
+  // Calcul pour la pagination
+  const indexOfLastDemande = currentPage * demandesParPage;
+  const indexOfFirstDemande = indexOfLastDemande - demandesParPage;
+  const currentDemandes = filteredConges.slice(indexOfFirstDemande, indexOfLastDemande);
+  const totalPages = Math.ceil(filteredConges.length / demandesParPage);
+
+  // Fonction pour changer de page
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Fonction pour récupérer la liste des utilisateurs avec des congés
   const fetchUsersWithConges = async () => {
@@ -126,109 +141,222 @@ const RequetesPage = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* En-tête */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 flex items-center gap-3">
-            Demandes en attente
-            <HiClipboardList className="text-blue-600" />
-          </h1>
-          <div className="flex items-center gap-4">
-            <select 
-              className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-blue-500 outline-none"
-              value={selectedUserId}
-              onChange={handleUserChange}
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-4 md:p-8 bg-gray-50 min-h-screen"
+    >
+      <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+        {/* En-tête avec animation */}
+        <motion.div 
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
+          className="bg-white rounded-2xl shadow-sm p-6 md:p-8"
+        >
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <motion.h1 
+              whileHover={{ scale: 1.02 }}
+              className="text-2xl md:text-4xl font-bold text-gray-800 flex items-center gap-3"
             >
-              <option value="">Tous les utilisateurs</option>
-              {usersWithConges.map(user => (
-                <option key={user.id} value={user.id}>
-                  {user.nom} {user.prenom}
-                </option>
-              ))}
-            </select>
-            <p className="text-xl bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium">
-              {formattedDate}
-            </p>
+              <HiClipboardList className="text-blue-600 text-3xl md:text-4xl" />
+              Demandes en attente
+            </motion.h1>
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+              <select 
+                className="w-full md:w-auto px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-blue-500 outline-none transition-all duration-300 hover:border-blue-300"
+                value={selectedUserId}
+                onChange={handleUserChange}
+              >
+                <option value="">Tous les utilisateurs</option>
+                {usersWithConges.map(user => (
+                  <option key={user.id} value={user.id}>
+                    {user.nom} {user.prenom}
+                  </option>
+                ))}
+              </select>
+              <motion.p 
+                whileHover={{ scale: 1.05 }}
+                className="text-lg md:text-xl bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium shadow-sm"
+              >
+                {formattedDate}
+              </motion.p>
+            </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Liste des demandes */}
-        <div className="bg-white p-8 rounded-2xl shadow-sm">
+        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <h2 className="text-2xl font-bold text-gray-800">Liste des requêtes</h2>
-            <span className="text-xl bg-blue-50 text-blue-600 px-6 py-2 rounded-full font-medium">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800">Liste des requêtes</h2>
+            <motion.span 
+              whileHover={{ scale: 1.05 }}
+              className="text-lg md:text-xl bg-blue-50 text-blue-600 px-6 py-2 rounded-full font-medium"
+            >
               {filteredConges.length} {filteredConges.length > 1 ? 'demandes' : 'demande'} en attente
-            </span>
+            </motion.span>
           </div>
 
           {loading ? (
-            <div className="flex justify-center items-center h-40">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex justify-center items-center h-40"
+            >
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
-            </div>
+            </motion.div>
           ) : filteredConges.length === 0 ? (
-            <div className="text-center py-12 text-xl text-gray-500">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-12 text-xl text-gray-500"
+            >
               Aucune demande en attente
-            </div>
+            </motion.div>
           ) : (
-            <div className="space-y-6">
-              {(filteredConges || []).map((conge) => (
-                <div 
-                  key={conge.id} 
-                  className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 cursor-pointer"
-                  onClick={() => setSelectedCongeId(selectedCongeId === conge.id ? null : conge.id)}
-                >
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-                    <div className="flex items-center gap-3">
-                      <FaUser className="text-blue-500" />
-                      <span className="text-xl font-medium text-gray-700">
-                        {conge.nom} {conge.prenom}
-                      </span>
-                    </div>
-                    {selectedCongeId === conge.id ? (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleApprove(conge.id);
-                          }}
-                          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-                        >
-                          Approuver
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleReject(conge.id);
-                          }}
-                          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                        >
-                          Refuser
-                        </button>
+            <AnimatePresence>
+              <div className="grid gap-6">
+                {currentDemandes.map((conge, index) => (
+                  <motion.div 
+                    key={conge.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group"
+                  >
+                    <div 
+                      onClick={() => setSelectedCongeId(selectedCongeId === conge.id ? null : conge.id)}
+                      className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300 cursor-pointer transform hover:scale-[1.01] hover:shadow-lg"
+                    >
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 rounded-full group-hover:bg-blue-200 transition-colors">
+                            <FaUser className="text-blue-500 w-5 h-5" />
+                          </div>
+                          <span className="text-lg md:text-xl font-medium text-gray-700">
+                            {conge.nom} {conge.prenom}
+                          </span>
+                        </div>
+                        
+                        <AnimatePresence mode="wait">
+                          {selectedCongeId === conge.id ? (
+                            <motion.div 
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              className="flex gap-2"
+                            >
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleApprove(conge.id);
+                                }}
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-300 hover:shadow-md transform hover:scale-105"
+                              >
+                                Approuver
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleReject(conge.id);
+                                }}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 hover:shadow-md transform hover:scale-105"
+                              >
+                                Refuser
+                              </button>
+                            </motion.div>
+                          ) : (
+                            <motion.span 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg font-medium"
+                            >
+                              En attente
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
                       </div>
-                    ) : (
-                      <span className="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg">
-                        En attente
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-lg space-y-3">
-                    <p className="flex items-center gap-3 text-gray-600">
-                      <HiCalendar className="text-blue-500 w-6 h-6" />
-                      Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
-                    </p>
-                    <p className="flex items-center gap-3 text-gray-500 italic">
-                      <FaFileAlt className="text-blue-500 w-5 h-5" />
-                      "{conge.motif}"
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                      
+                      <div className="text-base md:text-lg space-y-3">
+                        <p className="flex items-center gap-3 text-gray-600">
+                          <HiCalendar className="text-blue-500 w-6 h-6" />
+                          Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
+                        </p>
+                        <p className="flex items-center gap-3 text-gray-500 italic">
+                          <FaFileAlt className="text-blue-500 w-5 h-5" />
+                          "{conge.motif}"
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </AnimatePresence>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8 flex flex-wrap justify-center items-center gap-2"
+            >
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+              >
+                <HiChevronLeft className="w-6 h-6 text-gray-600" />
+              </button>
+
+              {Array.from({ length: totalPages }).map((_, index) => {
+                const pageNumber = index + 1;
+                // Afficher seulement les 3 pages autour de la page courante
+                if (
+                  pageNumber === 1 ||
+                  pageNumber === totalPages ||
+                  (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+                ) {
+                  return (
+                    <motion.button
+                      key={pageNumber}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handlePageChange(pageNumber)}
+                      className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                        currentPage === pageNumber
+                          ? 'bg-blue-500 text-white'
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      {pageNumber}
+                    </motion.button>
+                  );
+                } else if (
+                  pageNumber === currentPage - 2 ||
+                  pageNumber === currentPage + 2
+                ) {
+                  return (
+                    <span key={pageNumber} className="px-2">
+                      ...
+                    </span>
+                  );
+                }
+                return null;
+              })}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+              >
+                <HiChevronRight className="w-6 h-6 text-gray-600" />
+              </button>
+            </motion.div>
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
