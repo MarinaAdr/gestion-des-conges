@@ -9,16 +9,15 @@ const CalendrierPage  = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newHolidayName, setNewHolidayName] = useState('');
   const [joursFeries, setJoursFeries] = useState({
-    '2024-01-01': "Jour de l'an",
+    '2025-01-01': "Jour de l'an",
     '2024-04-01': "Lundi de Pâques",
-    '2024-05-01': "Fête du travail",
+    '2025-05-01': "Fête du travail",
     '2024-05-08': "Victoire 1945",
     '2024-05-09': "Ascension",
     '2024-05-20': "Lundi de Pentecôte",
-    '2024-07-14': "Fête nationale",
+    '2025-06-26': "Fête nationale",
     '2024-08-15': "Assomption",
     '2024-11-01': "Toussaint",
-    '2024-11-11': "Armistice 1918",
     '2024-12-25': "Noël"
   });
   const [congesApprouves, setCongesApprouves] = useState([]);
