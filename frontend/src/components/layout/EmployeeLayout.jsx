@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import NavbarAdmin from '../../components/NavbarAdmin';
+import NavbarEmployee from '../../components/NavbarEmployee';
 import EmployeeSidebar from '../../components/Sidebar/EmployeeSidebar';
 
 const EmployeeLayout = () => {
@@ -13,7 +13,7 @@ const EmployeeLayout = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Navbar en haut */}
-      <NavbarAdmin onMenuClick={handleMenuClick} />
+      <NavbarEmployee onMenuClick={handleMenuClick} />
 
       {/* Container pour Sidebar et Contenu Principal */}
       <div className="flex flex-1 overflow-hidden">
