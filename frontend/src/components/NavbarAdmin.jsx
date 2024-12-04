@@ -7,7 +7,6 @@ const NavbarAdmin = ({ onMenuClick }) => {
   const { user } = useAuth();
   const [pendingRequests, setPendingRequests] = useState(0);
 
-  // Fonction pour récupérer le nombre de demandes en attente
   const fetchPendingRequests = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -19,7 +18,13 @@ const NavbarAdmin = ({ onMenuClick }) => {
           }
         }
       );
-      setPendingRequests(response.data.data.length);
+      if (Array.isArray(response.data.data)) {
+        const pending = response.data.data.filter(conge => conge.statut === "en_attente");
+        console.log('Demandes en attente:', pending.length);
+        setPendingRequests(pending.length);
+      } else {
+        console.error('Les données reçues ne sont pas un tableau:', response.data);
+      }
     } catch (error) {
       console.error('Erreur lors de la récupération des demandes en attente:', error);
     }
@@ -27,8 +32,7 @@ const NavbarAdmin = ({ onMenuClick }) => {
 
   useEffect(() => {
     fetchPendingRequests();
-    // Optionnel : Mettre à jour toutes les X secondes
-    const interval = setInterval(fetchPendingRequests, 30000); // 30 secondes
+    const interval = setInterval(fetchPendingRequests, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -42,7 +46,7 @@ const NavbarAdmin = ({ onMenuClick }) => {
               onClick={onMenuClick}
               className="p-2 hover:bg-indigo-50 rounded-lg transition-colors"
             >
-              {/* <RiMenuLine className="text-indigo-900 text-4xl" /> */}
+              <RiMenuLine className="text-indigo-900 text-4xl" />
             </button>
             <h1 className="text-2xl sm:text-2xl text-indigo-900 sans-serif font-medium ml-2 truncate">
               Gestion des congés
