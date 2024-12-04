@@ -46,7 +46,12 @@ const congeController = {
   // Obtenir toutes les demandes de congés
   getAllConges: async (req, res) => {
     try {
-      const [conges] = await pool.query('SELECT * FROM conges ORDER BY date_creation DESC');
+      const [conges] = await pool.query(`
+        SELECT c.*, u.nom, u.prenom 
+        FROM conges c
+        JOIN users u ON c.user_id = u.id 
+        ORDER BY c.date_creation DESC
+      `);
       res.status(200).json({ success: true, data: conges });
     } catch (error) {
       console.error(error);
@@ -158,6 +163,28 @@ const congeController = {
       res.status(500).json({ 
         success: false, 
         message: 'Erreur lors de la récupération des congés par statut' 
+      });
+    }
+  },
+
+  getUsersWithConges: async (req, res) => {
+    try {
+      const [users] = await pool.query(`
+        SELECT DISTINCT u.id, u.nom, u.prenom 
+        FROM users u
+        JOIN conges c ON u.id = c.user_id
+        ORDER BY u.nom, u.prenom
+      `);
+      
+      res.status(200).json({ 
+        success: true, 
+        data: users 
+      });
+    } catch (error) {
+      console.error('Erreur lors de la récupération des utilisateurs:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Erreur lors de la récupération des utilisateurs avec des congés' 
       });
     }
   }
