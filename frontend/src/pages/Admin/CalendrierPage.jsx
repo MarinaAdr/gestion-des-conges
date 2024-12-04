@@ -91,6 +91,12 @@ const CalendrierPage = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
   };
 
+  // Fonction pour vérifier si une date est un weekend
+  const isWeekend = (date) => {
+    const day = new Date(date).getDay();
+    return day === 0 || day === 6; // 0 = Dimanche, 6 = Samedi
+  };
+
   const renderCalendar = () => {
     const daysInMonth = getDaysInMonth(currentDate);
     const firstDayOfMonth = getFirstDayOfMonth(currentDate);
@@ -112,6 +118,7 @@ const CalendrierPage = () => {
     for (let day = 1; day <= daysInMonth; day++) {
       const date = formatDate(currentDate.getFullYear(), currentDate.getMonth(), day);
       const isToday = new Date().toDateString() === new Date(date).toDateString();
+      const isWeekendDay = isWeekend(date);
       
       const congesJour = congesApprouves.filter(conge => {
         const debutDate = new Date(conge.date_debut);
@@ -132,51 +139,58 @@ const CalendrierPage = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: day * 0.01 }}
           onClick={() => {
-            setSelectedDate(date);
-            setIsEditing(true);
-            setNewHolidayName(joursFeries[date] || '');
+            if (!isWeekendDay) {
+              setSelectedDate(date);
+              setIsEditing(true);
+              setNewHolidayName(joursFeries[date] || '');
+            }
           }}
           className={`
-            p-4 rounded-xl relative min-h-[120px] cursor-pointer
+            p-4 rounded-xl relative min-h-[120px]
             transition-all duration-300 ease-in-out
             backdrop-blur-sm border
             ${isToday ? 'bg-blue-50/70 ring-2 ring-blue-200 border-blue-200' : 'border-gray-100'}
-            ${joursFeries[date] ? 'bg-violet-50/70 border-violet-200' : ''}
-            ${congesJour.length > 0 ? 'bg-orange-50/70 border-orange-200' : ''}
-            hover:shadow-lg
+            ${!isWeekendDay && joursFeries[date] ? 'bg-violet-50/70 border-violet-200' : ''}
+            ${!isWeekendDay && congesJour.length > 0 ? 'bg-orange-50/70 border-orange-200' : ''}
+            ${isWeekendDay ? 'bg-gray-50/70 cursor-not-allowed' : 'cursor-pointer hover:shadow-lg'}
           `}
         >
           <div className="flex justify-between items-center mb-2">
             <span className={`
               font-medium rounded-full w-7 h-7 flex items-center justify-center
-              ${isToday ? 'bg-blue-500 text-white' : 'text-gray-700'}
+              ${isToday ? 'bg-blue-500 text-white' : ''}
+              ${isWeekendDay ? 'text-gray-400' : 'text-gray-700'}
             `}>
               {day}
             </span>
           </div>
 
           <div className="space-y-1.5">
-            {joursFeries[date] && (
-              <div className="text-xs p-1.5 text-violet-600 font-medium bg-violet-50 rounded-lg">
-                {joursFeries[date]}
-              </div>
+            {!isWeekendDay && (
+              <>
+                {joursFeries[date] && (
+                  <div className="text-xs p-1.5 text-violet-600 font-medium bg-violet-50 rounded-lg">
+                    {joursFeries[date]}
+                  </div>
+                )}
+                {congesJour.map((conge, index) => (
+                  <motion.div
+                    key={`${conge.id}-${index}`}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="text-xs p-2 bg-orange-100/80 text-orange-800 rounded-lg font-medium shadow-sm"
+                  >
+                    {conge.nom} {conge.prenom}
+                  </motion.div>
+                ))}
+              </>
             )}
-            {congesJour.map((conge, index) => (
-              <motion.div
-                key={`${conge.id}-${index}`}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="text-xs p-2 bg-orange-100/80 text-orange-800 rounded-lg font-medium shadow-sm"
-              >
-                {conge.nom} {conge.prenom}
-              </motion.div>
-            ))}
           </div>
 
           {/* Modal d'édition des jours fériés */}
           <AnimatePresence>
-            {isEditing && selectedDate === date && (
+            {isEditing && selectedDate === date && !isWeekendDay && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
