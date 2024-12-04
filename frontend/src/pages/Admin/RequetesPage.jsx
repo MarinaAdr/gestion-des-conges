@@ -202,6 +202,24 @@ const RequetesPage = () => {
     });
   }, []);
 
+  // Fonction pour calculer le nombre de jours ouvrables entre deux dates
+  const calculateWorkingDays = (startDate, endDate) => {
+    let count = 0;
+    let currentDate = new Date(startDate);
+    const lastDate = new Date(endDate);
+    
+    while (currentDate <= lastDate) {
+      // Si ce n'est pas un weekend (0 = dimanche, 6 = samedi)
+      const day = currentDate.getDay();
+      if (day !== 0 && day !== 6) {
+        count++;
+      }
+      // Passer au jour suivant
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return count;
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -343,6 +361,9 @@ const RequetesPage = () => {
                         <p className="flex items-center gap-3 text-gray-600">
                           <HiCalendar className="text-blue-500 w-6 h-6" />
                           Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
+                          <span className="text-sm text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                            {calculateWorkingDays(conge.date_debut, conge.date_fin)} jours
+                          </span>
                         </p>
                         <p className="flex items-center gap-3 text-gray-500 italic">
                           <FaFileAlt className="text-blue-500 w-5 h-5" />
