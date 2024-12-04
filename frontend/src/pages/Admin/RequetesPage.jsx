@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { FaFileAlt, FaUser } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,20 +18,6 @@ const RequetesPage = () => {
   const [usersWithConges, setUsersWithConges] = useState([]);
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
   const { user } = useAuth();
-  const [currentPage, setCurrentPage] = useState(1);
-  const demandesParPage = 10;
-
-  // Calcul pour la pagination
-  const indexOfLastDemande = currentPage * demandesParPage;
-  const indexOfFirstDemande = indexOfLastDemande - demandesParPage;
-  const currentDemandes = filteredConges.slice(indexOfFirstDemande, indexOfLastDemande);
-  const totalPages = Math.ceil(filteredConges.length / demandesParPage);
-
-  // Fonction pour changer de page
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   // Fonction pour récupérer la liste des utilisateurs avec des congés
   const fetchUsersWithConges = async () => {
@@ -113,10 +100,33 @@ const RequetesPage = () => {
           }
         }
       );
-      toast.success('Demande approuvée avec succès');
-      fetchConges(); // Rafraîchir la liste
+      
+      // Notification de succès
+      toast.success('Demande de congé approuvée avec succès', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      // Rafraîchir les données
+      fetchConges();
     } catch (error) {
-      toast.error('Erreur lors de l\'approbation de la demande');
+      console.error('Erreur lors de l\'approbation:', error);
+      toast.error('Erreur lors de l\'approbation de la demande', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -133,12 +143,64 @@ const RequetesPage = () => {
           }
         }
       );
-      toast.success('Demande refusée');
-      fetchConges(); // Rafraîchir la liste
+      
+      // Notification de succès
+      toast.success('Demande de congé refusée', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      // Rafraîchir les données
+      fetchConges();
     } catch (error) {
-      toast.error('Erreur lors du refus de la demande');
+      console.error('Erreur lors du refus:', error);
+      toast.error('Erreur lors du refus de la demande', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
+
+  // Notification pour les erreurs de chargement
+  useEffect(() => {
+    fetchConges().catch(() => {
+      toast.error('Erreur lors du chargement des demandes', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    });
+    
+    fetchUsersWithConges().catch(() => {
+      toast.error('Erreur lors du chargement des utilisateurs', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    });
+  }, []);
 
   return (
     <motion.div 
@@ -215,7 +277,7 @@ const RequetesPage = () => {
           ) : (
             <AnimatePresence>
               <div className="grid gap-6">
-                {currentDemandes.map((conge, index) => (
+                {filteredConges.map((conge, index) => (
                   <motion.div 
                     key={conge.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -292,67 +354,6 @@ const RequetesPage = () => {
                 ))}
               </div>
             </AnimatePresence>
-          )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-8 flex flex-wrap justify-center items-center gap-2"
-            >
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
-              >
-                <HiChevronLeft className="w-6 h-6 text-gray-600" />
-              </button>
-
-              {Array.from({ length: totalPages }).map((_, index) => {
-                const pageNumber = index + 1;
-                // Afficher seulement les 3 pages autour de la page courante
-                if (
-                  pageNumber === 1 ||
-                  pageNumber === totalPages ||
-                  (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
-                ) {
-                  return (
-                    <motion.button
-                      key={pageNumber}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handlePageChange(pageNumber)}
-                      className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-                        currentPage === pageNumber
-                          ? 'bg-blue-500 text-white'
-                          : 'text-gray-600 hover:bg-gray-100'
-                      }`}
-                    >
-                      {pageNumber}
-                    </motion.button>
-                  );
-                } else if (
-                  pageNumber === currentPage - 2 ||
-                  pageNumber === currentPage + 2
-                ) {
-                  return (
-                    <span key={pageNumber} className="px-2">
-                      ...
-                    </span>
-                  );
-                }
-                return null;
-              })}
-
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
-              >
-                <HiChevronRight className="w-6 h-6 text-gray-600" />
-              </button>
-            </motion.div>
           )}
         </div>
       </div>
