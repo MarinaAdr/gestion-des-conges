@@ -27,7 +27,6 @@ const EmployeesForm = () => {
     nom: '',
     prenom: '',
     email: '',
-    password: '',
     role: 'EMPLOYEE',
     date_embauche: '',
     poste: '',
@@ -66,12 +65,12 @@ const EmployeesForm = () => {
     e.preventDefault();
     
     try {
-      // Créer l'objet de données
+      // Créer l'objet de données avec le mot de passe par défaut
       const employeeData = {
         nom: formData.nom.trim(),
         prenom: formData.prenom.trim(),
         email: formData.email.trim(),
-        password: formData.password,
+        password: '123456', // Mot de passe par défaut
         role: formData.role,
         date_embauche: formData.date_embauche,
         poste: formData.poste.trim(),
@@ -192,23 +191,6 @@ const EmployeesForm = () => {
                     required
                     className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="exemple@email.com"
-                  />
-                </div>
-
-                <div className="form-group transform hover:scale-[1.02] transition-all duration-300">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaLock /></span> 
-                    Mot de passe
-                    <span className="text-yellow-500 ml-1">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
-                    placeholder="••••••••"
                   />
                 </div>
 
