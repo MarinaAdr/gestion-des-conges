@@ -59,7 +59,7 @@ const LoginPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="flex items-center justify-center min-h-screen bg-gray-100 p-4"
+      className="flex items-center justify-center min-h-screen bg-slate-50 p-4"
     >
       <motion.div 
         initial={{ scale: 0.9, opacity: 0 }}
