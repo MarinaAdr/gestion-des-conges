@@ -14,6 +14,7 @@ const EmployeeDashboard = () => {
   const [employeeData, setEmployeeData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const congesPerPage = 5;
+  const [statusFilter, setStatusFilter] = useState(null);
 
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
 
@@ -111,15 +112,26 @@ const EmployeeDashboard = () => {
       return total + calculateWorkingDays(conge.date_debut, conge.date_fin);
     }, 0);
 
-  // Calcul pour la pagination
+  // Modifier la logique de filtrage des congés
+  const filteredConges = statusFilter 
+    ? conges.filter(conge => conge.statut === statusFilter)
+    : conges;
+
+  // Mettre à jour le calcul de la pagination pour utiliser les congés filtrés
   const indexOfLastConge = currentPage * congesPerPage;
   const indexOfFirstConge = indexOfLastConge - congesPerPage;
-  const currentConges = conges.slice(indexOfFirstConge, indexOfLastConge);
-  const totalPages = Math.ceil(conges.length / congesPerPage);
+  const currentConges = filteredConges.slice(indexOfFirstConge, indexOfLastConge);
+  const totalPages = Math.ceil(filteredConges.length / congesPerPage);
 
   // Fonction pour changer de page
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  // Ajouter un gestionnaire de clic pour les cartes
+  const handleCardClick = (filter) => {
+    setStatusFilter(filter === statusFilter ? null : filter);
+    setCurrentPage(1); // Réinitialiser la pagination
   };
 
   return (
@@ -160,7 +172,10 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* Congés pris */}
-          <div className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group">
+          <div 
+            onClick={() => handleCardClick('approuve')}
+            className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group cursor-pointer"
+          >
             <div className="absolute inset-0 rounded-2xl border-2 border-green-400/30 transition-all duration-500 group-hover:border-green-400/50"></div>
             <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-green-400 to-green-500 opacity-0 blur transition duration-500 group-hover:opacity-10"></div>
             <div className="relative flex items-center gap-4">
@@ -177,7 +192,10 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* Demandes en cours */}
-          <div className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group">
+          <div 
+            onClick={() => handleCardClick('en_attente')}
+            className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group cursor-pointer"
+          >
             <div className="absolute inset-0 rounded-2xl border-2 border-yellow-400/30 transition-all duration-500 group-hover:border-yellow-400/50"></div>
             <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-0 blur transition duration-500 group-hover:opacity-10"></div>
             <div className="relative flex items-center gap-4">
@@ -206,9 +224,13 @@ const EmployeeDashboard = () => {
         {/* Dernières demandes */}
         <div className="bg-white/80 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-md animate-fadeIn">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-700">Mes dernières demandes</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-700">
+              {statusFilter === 'approuve' ? 'Congés approuvés' :
+               statusFilter === 'en_attente' ? 'Demandes en attente' :
+               'Mes dernières demandes'}
+            </h2>
             <span className="text-base md:text-lg bg-blue-400/90 text-white px-4 md:px-5 py-1.5 md:py-2 rounded-full font-medium whitespace-nowrap">
-              {conges.length} {conges.length > 1 ? 'demandes' : 'demande'}
+              {filteredConges.length} {filteredConges.length > 1 ? 'demandes' : 'demande'}
             </span>
           </div>
 
