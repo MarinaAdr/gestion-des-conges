@@ -31,7 +31,7 @@ const EmployeeSidebar = () => {
       {/* Mobile Menu Button */}
       <button 
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md text-blue-900 hover:bg-blue-50"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-full text-white hover:bg-blue-500 transition-all duration-300"
       >
         <HiMenuAlt2 className="w-6 h-6" />
       </button>
@@ -39,7 +39,7 @@ const EmployeeSidebar = () => {
       {/* Overlay for mobile */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"
           onClick={toggleMobileMenu}
         />
       )}
@@ -48,10 +48,11 @@ const EmployeeSidebar = () => {
       <aside className={`
         fixed top-0 left-0 z-40
         h-full w-80 
-        bg-white shadow-lg
+        bg-gradient-to-b from-blue-400 to-blue-600
         transform transition-transform duration-300 ease-in-out
-        lg:translate-x-0 lg:static lg:h-[calc(100vh-64px)]
+        lg:translate-x-0 lg:static lg:h-[calc(100vh-80px)]
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        shadow-xl
       `}>
         {/* Sidebar Content */}
         <div className="flex flex-col h-full py-6">
@@ -66,17 +67,17 @@ const EmployeeSidebar = () => {
                 }}
                 className={`
                   w-full flex items-center gap-4 
-                  px-4 py-5 rounded-lg
+                  px-4 py-5 rounded-xl
                   text-left text-xl font-medium
-                  transition-colors duration-200
+                  transition-all duration-300 transform hover:scale-105
                   ${location.pathname === item.path
-                    ? 'bg-blue-50 text-blue-900'
-                    : 'text-blue-900 hover:bg-blue-50'
+                    ? 'bg-white bg-opacity-20 text-white shadow-lg'
+                    : 'text-white hover:bg-white hover:bg-opacity-10'
                   }
                 `}
               >
                 {item.icon}
-                <span>{item.text}</span>
+                <span className="tracking-wide">{item.text}</span>
               </button>
             ))}
           </nav>
@@ -90,13 +91,14 @@ const EmployeeSidebar = () => {
               }}
               className="
                 w-full flex items-center gap-4
-                px-4 py-9 rounded-lg
-                text-left text-xl font-medium text-blue-900
-                hover:bg-blue-50 transition-colors duration-200
+                px-4 py-5 rounded-xl
+                text-left text-xl font-medium text-white
+                hover:bg-white hover:bg-opacity-10
+                transition-all duration-300 transform hover:scale-105
               "
             >
               <HiLogout className="w-6 h-6" />
-              <span>Sign Out</span>
+              <span className="tracking-wide">Sign Out</span>
             </button>
           </div>
         </div>
