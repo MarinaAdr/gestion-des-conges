@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Logo from '../../assets/images/logo-png.png';
+import { motion } from 'framer-motion';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -53,29 +55,211 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-3xl overflow-hidden w-full max-w-[1000px] md:h-[600px]">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="flex items-center justify-center min-h-screen bg-gray-100 p-4"
+    >
+      <motion.div 
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex flex-col md:flex-row bg-white shadow-lg rounded-3xl overflow-hidden w-full max-w-[1000px] md:h-[600px]"
+      >
         {/* Section gauche avec l'image */}
-        <div className="hidden md:flex md:w-1/2 bg-gray-200 items-center justify-center p-4 lg:p-8">
-          <div className="relative">
-            <div className="w-48 h-48 lg:w-80 lg:h-80 bg-white rounded-full flex items-center justify-center transition-all duration-300">
+        <motion.div 
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="hidden md:flex md:w-1/2 bg-blue-200 items-center justify-center p-4 lg:p-8 relative overflow-hidden"
+        >
+          <div className="relative w-full h-full">
+            <motion.div 
+              animate={{ 
+                rotate: [0, 360],
+                scale: [1, 1.1, 1]
+              }}
+              transition={{ 
+                duration: 20,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="w-48 h-48 lg:w-80 lg:h-80 bg-white rounded-full flex items-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            >
               <FaUser className="text-gray-400 text-4xl lg:text-8xl" />
-            </div>
-            <div className="absolute top-0 left-0 w-3 h-3 lg:w-4 lg:h-4 bg-blue-400 rounded-full"></div>
-            <div className="absolute bottom-0 right-0 w-3 h-3 lg:w-4 lg:h-4 bg-green-400 rounded-full"></div>
-            <div className="absolute top-1/2 right-0 w-2 h-2 lg:w-3 lg:h-3 bg-yellow-400 rounded-full"></div>
-            <div className="absolute bottom-1/4 left-0 w-2 h-2 lg:w-3 lg:h-3 bg-purple-400 rounded-full"></div>
+            </motion.div>
+            
+            {/* Points décoratifs avec mouvement */}
+            <motion.div 
+              animate={{ 
+                x: [0, 100, -100, 0],
+                y: [0, -100, 100, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 10,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute top-1/4 left-1/4 w-4 h-4 lg:w-6 lg:h-6 bg-blue-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, -120, 120, 0],
+                y: [0, 120, -120, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 12,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute bottom-1/4 right-1/4 w-4 h-4 lg:w-6 lg:h-6 bg-green-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, 150, -150, 0],
+                y: [0, -150, 150, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 15,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute top-1/3 right-1/3 w-3 h-3 lg:w-5 lg:h-5 bg-yellow-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, -80, 80, 0],
+                y: [0, 80, -80, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 8,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute bottom-1/3 left-1/3 w-3 h-3 lg:w-5 lg:h-5 bg-purple-400 rounded-full shadow-lg"
+            />
+            
+            {/* Points additionnels avec mouvement */}
+            <motion.div 
+              animate={{ 
+                x: [0, 120, -120, 0],
+                y: [0, -120, 120, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 13,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute top-1/2 left-1/2 w-4 h-4 lg:w-6 lg:h-6 bg-pink-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, -100, 100, 0],
+                y: [0, 100, -100, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 11,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute bottom-1/2 right-1/2 w-3 h-3 lg:w-5 lg:h-5 bg-indigo-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, 90, -90, 0],
+                y: [0, -90, 90, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 9,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute top-2/3 left-1/3 w-4 h-4 lg:w-6 lg:h-6 bg-orange-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, -110, 110, 0],
+                y: [0, 110, -110, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 14,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute bottom-2/3 right-1/3 w-3 h-3 lg:w-5 lg:h-5 bg-teal-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, 130, -130, 0],
+                y: [0, -130, 130, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 16,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute top-1/4 right-1/4 w-4 h-4 lg:w-6 lg:h-6 bg-red-400 rounded-full shadow-lg"
+            />
+            <motion.div 
+              animate={{ 
+                x: [0, -140, 140, 0],
+                y: [0, 140, -140, 0],
+                scale: [1, 1.2, 0.8, 1]
+              }}
+              transition={{ 
+                duration: 17,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute bottom-1/4 left-1/4 w-3 h-3 lg:w-5 lg:h-5 bg-cyan-400 rounded-full shadow-lg"
+            />
           </div>
-        </div>
+        </motion.div>
 
         {/* Section droite avec le formulaire */}
-        <div className="w-full md:w-1/2 p-8 md:p-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">Gestion de congé</h2>
+        <motion.div 
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="w-full md:w-1/2 p-6 md:p-12 lg:p-16"
+        >
+    
+          {/* <motion.h2 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-6 md:mb-8"
+          >
+            LeaveLy
+          </motion.h2> */}
+          <motion.img 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            src={Logo} 
+            alt="Logo" 
+            className="w-100 h-32 md:w-90 md:h-40 mx-auto mb-4" 
+          />
           
-          <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-            <div className="relative">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="relative"
+            >
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <FaEnvelope className="h-5 w-5 md:h-6 md:w-6 text-gray-400" />
+                <FaEnvelope className="h-5 w-5 text-gray-400" />
               </div>
               <input
                 type="email"
@@ -84,13 +268,18 @@ const LoginPage = () => {
                 onChange={handleChange}
                 placeholder="Email"
                 required
-                className="w-full pl-12 pr-4 py-3 md:py-4 bg-slate-200 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-base md:text-lg"
+                className="w-full pl-12 pr-4 py-3 bg-slate-200 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
               />
-            </div>
+            </motion.div>
 
-            <div className="relative">
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              className="relative"
+            >
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <FaLock className="h-5 w-5 md:h-6 md:w-6 text-gray-400" />
+                <FaLock className="h-5 w-5 text-gray-400" />
               </div>
               <input
                 type="password"
@@ -99,29 +288,39 @@ const LoginPage = () => {
                 onChange={handleChange}
                 placeholder="Password"
                 required
-                className="w-full pl-12 pr-4 py-3 md:py-4 bg-slate-200 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-base md:text-lg"
+                className="w-full pl-12 pr-4 py-3 bg-slate-200 rounded-3xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
               />
-            </div>
+            </motion.div>
 
-            <button
+            <motion.button
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={loading}
               className={`w-full ${
-                loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
-              } text-white py-3 md:py-4 rounded-3xl transition duration-300 text-lg md:text-xl font-semibold`}
+                loading ? 'bg-blue-400' : 'bg-blue-400 hover:bg-blue-500'
+              } text-white py-3 rounded-3xl transition duration-300 text-lg font-semibold`}
             >
               {loading ? 'CONNEXION...' : 'LOGIN'}
-            </button>
+            </motion.button>
           </form>
 
-          <div className="text-center mt-8 md:mt-[120px] space-y-3">
-            <a href="#" className="text-base text-gray-600 hover:text-gray-800">
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.1 }}
+            className="text-center mt-6 md:mt-8"
+          >
+            <a href="#" className="text-sm md:text-base text-gray-600 hover:text-gray-800">
               Forgot Username / Password?
             </a>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 
