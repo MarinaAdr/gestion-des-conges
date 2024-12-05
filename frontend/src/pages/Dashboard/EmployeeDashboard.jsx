@@ -13,7 +13,7 @@ const EmployeeDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [employeeData, setEmployeeData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const congesPerPage = 10;
+  const congesPerPage = 5;
 
   const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
 
@@ -123,30 +123,32 @@ const EmployeeDashboard = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="p-4 md:p-8 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen animate-fadeIn">
+      <div className="max-w-[1400px] mx-auto space-y-8">
         {/* En-tête */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 flex items-center gap-3">
+        <div className=" p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-slideDown">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 flex items-center gap-3">
             Bonjour, {user.nom} {user.prenom} 
             <span className="animate-wave">👋</span>
           </h1>
-          <p className="text-xl bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium">
+          <p className="text-lg bg-blue-400/10 text-blue-600 rounded-full px-6 py-2 font-medium">
             {formattedDate}
           </p>
         </div>
 
         {/* Cartes statistiques */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 animate-slideUp">
           {/* Solde congés */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-6">
-              <div className="p-4 bg-blue-50 rounded-xl">
-                <HiCalendar className="w-8 h-8 text-blue-600" />
+          <div className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group">
+            <div className="absolute inset-0 rounded-2xl border-2 border-blue-400/30 transition-all duration-500 group-hover:border-blue-400/50"></div>
+            <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-blue-400 to-blue-500 opacity-0 blur transition duration-500 group-hover:opacity-10"></div>
+            <div className="relative flex items-center gap-4">
+              <div className="flex-shrink-0 p-3 bg-blue-400/10 rounded-xl group-hover:bg-blue-400/20 transition-colors duration-300">
+                <HiCalendar className="w-10 h-10 text-blue-500" />
               </div>
-              <div>
-                <p className="text-xl text-gray-600 font-medium mb-2">Solde congés</p>
-                <p className="text-3xl font-bold text-gray-800">
+              <div className="flex-grow text-center">
+                <p className="text-lg text-gray-600 font-medium mb-1 underline decoration-blue-500">Solde congés</p>
+                <p className="text-3xl font-bold text-blue-500">
                   {employeeData ? (
                     `${employeeData.solde_conge} jours`
                   ) : (
@@ -158,14 +160,16 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* Congés pris */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-6">
-              <div className="p-4 bg-green-50 rounded-xl">
-                <HiClock className="w-8 h-8 text-green-600" />
+          <div className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group">
+            <div className="absolute inset-0 rounded-2xl border-2 border-green-400/30 transition-all duration-500 group-hover:border-green-400/50"></div>
+            <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-green-400 to-green-500 opacity-0 blur transition duration-500 group-hover:opacity-10"></div>
+            <div className="relative flex items-center gap-4">
+              <div className="flex-shrink-0 p-3 bg-green-400/10 rounded-xl group-hover:bg-green-400/20 transition-colors duration-300">
+                <HiClock className="w-10 h-10 text-green-500" />
               </div>
-              <div>
-                <p className="text-xl text-gray-600 font-medium mb-2">Congés pris</p>
-                <p className="text-3xl font-bold text-gray-800">
+              <div className="flex-grow text-center">
+                <p className="text-lg text-gray-600 font-medium mb-1 underline decoration-green-500">Congés pris</p>
+                <p className="text-3xl font-bold text-green-500">
                   {congesPris} jours
                 </p>
               </div>
@@ -173,120 +177,135 @@ const EmployeeDashboard = () => {
           </div>
 
           {/* Demandes en cours */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-6">
-              <div className="p-4 bg-yellow-50 rounded-xl">
-                <HiClipboardList className="w-8 h-8 text-yellow-600" />
+          <div className="relative p-6 md:p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500 group">
+            <div className="absolute inset-0 rounded-2xl border-2 border-yellow-400/30 transition-all duration-500 group-hover:border-yellow-400/50"></div>
+            <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-yellow-500 opacity-0 blur transition duration-500 group-hover:opacity-10"></div>
+            <div className="relative flex items-center gap-4">
+              <div className="flex-shrink-0 p-3 bg-yellow-400/10 rounded-xl group-hover:bg-yellow-400/20 transition-colors duration-300">
+                <HiClipboardList className="w-10 h-10 text-yellow-500" />
               </div>
-              <div>
-                <p className="text-xl text-gray-600 font-medium mb-2">Demandes en cours</p>
-                <div className="space-y-1">
-                  <p className="text-3xl font-bold text-gray-800">
-                    {loading ? (
-                      <span className="animate-pulse">...</span>
-                    ) : (
-                      demandesEnAttente
-                    )}
-                  </p>
-                  <p className="text-lg text-gray-500">
-                    {demandesEnAttente === 0 ? 'Aucune demande en attente' :
-                     demandesEnAttente === 1 ? '1 demande en attente' :
-                     `${demandesEnAttente} demandes en attente`}
-                  </p>
-                </div>
+              <div className="flex-grow text-center">
+                <p className="text-lg text-gray-600 font-medium mb-1 underline decoration-yellow-500">Demandes en cours</p>
+                <p className="text-3xl font-bold text-yellow-500">
+                  {loading ? (
+                    <span className="animate-pulse">...</span>
+                  ) : (
+                    demandesEnAttente
+                  )}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {demandesEnAttente === 0 ? 'Aucune demande en attente' :
+                   demandesEnAttente === 1 ? '1 demande en attente' :
+                   `${demandesEnAttente} demandes en attente`}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Dernières demandes */}
-        <div className="bg-white p-8 rounded-2xl shadow-sm">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <h2 className="text-2xl font-bold text-gray-800">Mes dernières demandes</h2>
-            <span className="text-xl bg-blue-50 text-blue-600 px-6 py-2 rounded-full font-medium">
+        <div className="bg-white/80 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-md animate-fadeIn">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-700">Mes dernières demandes</h2>
+            <span className="text-base md:text-lg bg-blue-400/90 text-white px-4 md:px-5 py-1.5 md:py-2 rounded-full font-medium whitespace-nowrap">
               {conges.length} {conges.length > 1 ? 'demandes' : 'demande'}
             </span>
           </div>
 
           {loading ? (
-            <div className="flex justify-center items-center h-40">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+            <div className="flex justify-center items-center h-40 animate-pulse">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-transparent"></div>
             </div>
           ) : currentConges.length === 0 ? (
-            <div className="text-center py-12 text-xl text-gray-500">
-              Aucune demande de congés
+            <div className="text-center py-8 md:py-12 animate-fadeIn">
+              <div className="bg-blue-50 rounded-full w-16 md:w-20 h-16 md:h-20 mx-auto flex items-center justify-center mb-4">
+                <HiClipboardList className="w-8 md:w-10 h-8 md:h-10 text-blue-400" />
+              </div>
+              <p className="text-lg md:text-xl text-gray-500">Aucune demande de congés</p>
             </div>
           ) : (
-            <>
-              <div className="space-y-6">
-                {currentConges.map((conge) => {
-                  const nombreJours = calculateWorkingDays(conge.date_debut, conge.date_fin);
-                  return (
-                    <div 
-                      key={conge.id} 
-                      className="p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-300"
-                    >
-                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-                        <div className="flex items-center gap-3">
-                          <span className="text-xl font-medium text-gray-700">Congés</span>
-                          <span className="text-lg text-gray-500">
-                            ({nombreJours} jour{nombreJours > 1 ? 's' : ''})
-                          </span>
-                        </div>
-                        <span className={`px-4 py-2 rounded-full text-lg font-medium ${getStatusColor(conge.statut)}`}>
-                          {translateStatus(conge.statut)}
-                        </span>
-                      </div>
-                      <div className="text-lg space-y-3">
-                        <p className="flex items-center gap-3 text-gray-600">
-                          <HiCalendar className="text-blue-500 w-6 h-6" />
-                          Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
-                        </p>
-                        <p className="flex items-center gap-3 text-gray-500 italic">
-                          <FaFileAlt className="text-blue-500 w-5 h-5" />
-                          "{conge.motif}"
-                        </p>
-                      </div>
+            <div className="space-y-4">
+              {currentConges.map((conge, index) => (
+                <div 
+                  key={conge.id} 
+                  className="bg-white p-4 md:p-6 rounded-xl hover:shadow-md transition-all duration-300 border border-gray-100 animate-slideIn"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-lg font-medium text-gray-700">Congés</span>
+                      <span className="text-base bg-blue-50 text-blue-600 px-3 py-1 rounded-full">
+                        {calculateWorkingDays(conge.date_debut, conge.date_fin)} jour{calculateWorkingDays(conge.date_debut, conge.date_fin) > 1 ? 's' : ''}
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
+                    <span className={`px-4 py-1.5 rounded-md text-lg font-medium ${getStatusColor(conge.statut)}`}>
+                      {translateStatus(conge.statut)}
+                    </span>
+                  </div>
+                  <div className="text-base space-y-2">
+                    <p className="flex items-center gap-3 text-gray-600">
+                      <HiCalendar className="text-blue-400 w-5 h-5" />
+                      Du {formatDate(conge.date_debut)} au {formatDate(conge.date_fin)}
+                    </p>
+                    <p className="flex items-center gap-3 text-gray-500 italic">
+                      <FaFileAlt className="text-blue-400 w-4 h-4" />
+                      "{conge.motif}"
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-8 flex justify-center items-center gap-2">
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                  >
-                    <HiChevronLeft className="w-6 h-6 text-gray-600" />
-                  </button>
-                  
-                  {[...Array(totalPages)].map((_, index) => (
+          {/* Pagination responsive */}
+          {totalPages > 1 && (
+            <div className="mt-6 md:mt-8 flex justify-center items-center gap-1 md:gap-2 animate-fadeIn">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg bg-white hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-blue-200"
+              >
+                <HiChevronLeft className="w-5 h-5 text-blue-500" />
+              </button>
+              
+              {[...Array(totalPages)].map((_, index) => {
+                const pageNumber = index + 1;
+                // Afficher seulement les pages proches de la page courante
+                if (
+                  pageNumber === 1 ||
+                  pageNumber === totalPages ||
+                  (pageNumber >= currentPage - 1 && pageNumber <= currentPage + 1)
+                ) {
+                  return (
                     <button
-                      key={index + 1}
-                      onClick={() => handlePageChange(index + 1)}
+                      key={pageNumber}
+                      onClick={() => handlePageChange(pageNumber)}
                       className={`px-4 py-2 rounded-lg transition-all ${
-                        currentPage === index + 1
+                        currentPage === pageNumber
                           ? 'bg-blue-500 text-white'
-                          : 'hover:bg-gray-100 text-gray-600'
+                          : 'bg-white text-blue-500 hover:bg-blue-50 border border-blue-200'
                       }`}
                     >
-                      {index + 1}
+                      {pageNumber}
                     </button>
-                  ))}
+                  );
+                } else if (
+                  (pageNumber === currentPage - 2 && pageNumber > 1) ||
+                  (pageNumber === currentPage + 2 && pageNumber < totalPages)
+                ) {
+                  return <span key={pageNumber} className="px-2">...</span>;
+                }
+                return null;
+              })}
 
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                  >
-                    <HiChevronRight className="w-6 h-6 text-gray-600" />
-                  </button>
-                </div>
-              )}
-            </>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-lg bg-white hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-blue-200"
+              >
+                <HiChevronRight className="w-5 h-5 text-blue-500" />
+              </button>
+            </div>
           )}
         </div>
       </div>
