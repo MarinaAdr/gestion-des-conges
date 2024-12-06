@@ -15,11 +15,11 @@ const EmployeeSidebar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
-    { path: '/dashboard', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
-    { path: '/solde-conges', icon: <HiDocumentText className="w-6 h-6" />, text: 'Solde de congés' },
-    { path: '/demande-conges', icon: <HiDocumentText className="w-6 h-6" />, text: 'Demande de congés' },
-    { path: '/mon-profil', icon: <HiUser className="w-6 h-6" />, text: 'Mon profil' },
-    { path: '/calendrier-equipe', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier d\'équipe' },
+    { path: '/employee/dashboard', icon: <HiHome className="w-6 h-6" />, text: 'Dashboard' },
+    { path: '/employee/solde-conges', icon: <HiDocumentText className="w-6 h-6" />, text: 'Solde de congés' },
+    { path: '/employee/demande-conges', icon: <HiDocumentText className="w-6 h-6" />, text: 'Demande de congés' },
+    { path: '/employee/mon-profil', icon: <HiUser className="w-6 h-6" />, text: 'Mon profil' },
+    { path: '/employee/calendrier-equipe', icon: <HiCalendar className="w-6 h-6" />, text: 'Calendrier d\'équipe' },
   ];
 
   const toggleMobileMenu = () => {
