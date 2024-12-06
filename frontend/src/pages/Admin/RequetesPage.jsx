@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FaFileAlt, FaUser } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 
 const RequetesPage = () => {
   const [conges, setConges] = useState([]);
@@ -91,6 +92,8 @@ const RequetesPage = () => {
   const handleApprove = async (congeId) => {
     try {
       const token = localStorage.getItem('token');
+      const conge = conges.find(c => c.id === congeId);
+
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/api/conges/${congeId}/status`,
         { statut: 'approuve' },
@@ -100,9 +103,26 @@ const RequetesPage = () => {
           }
         }
       );
+
+      // Préparation et envoi de l'email
+      const emailParams = {
+        to_email: conge.email, // Email de l'employé
+        to_name: `${conge.nom} ${conge.prenom}`,
+        from_name: "Gestion des Congés - APP",
+        start_date: conge.date_debut,
+        end_date: conge.date_fin,
+        status: "approuvée",
+        motif: conge.motif
+      };
+
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID_RESPONSE, // Nouveau template pour les réponses
+        emailParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
       
-      // Notification de succès
-      toast.success('Demande de congé approuvée avec succès', {
+      toast.success('Demande de congé approuvée avec succès et email envoyé', {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -113,20 +133,10 @@ const RequetesPage = () => {
         theme: "light",
       });
 
-      // Rafraîchir les données
       fetchConges();
     } catch (error) {
-      console.error('Erreur lors de l\'approbation:', error);
-      toast.error('Erreur lors de l\'approbation de la demande', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      console.error('Erreur:', error);
+      toast.error('Erreur lors de l\'approbation de la demande');
     }
   };
 
@@ -134,6 +144,8 @@ const RequetesPage = () => {
   const handleReject = async (congeId) => {
     try {
       const token = localStorage.getItem('token');
+      const conge = conges.find(c => c.id === congeId);
+
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/api/conges/${congeId}/status`,
         { statut: 'refuse' },
@@ -143,9 +155,26 @@ const RequetesPage = () => {
           }
         }
       );
+
+      // Préparation et envoi de l'email
+      const emailParams = {
+        to_email: conge.email, // Email de l'employé
+        to_name: `${conge.nom} ${conge.prenom}`,
+        from_name: "Gestion des Congés - APP",
+        start_date: conge.date_debut,
+        end_date: conge.date_fin,
+        status: "refusée",
+        motif: conge.motif
+      };
+
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID_RESPONSE, // Nouveau template pour les réponses
+        emailParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
       
-      // Notification de succès
-      toast.success('Demande de congé refusée', {
+      toast.success('Demande de congé refusée et email envoyé', {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -156,20 +185,10 @@ const RequetesPage = () => {
         theme: "light",
       });
 
-      // Rafraîchir les données
       fetchConges();
     } catch (error) {
-      console.error('Erreur lors du refus:', error);
-      toast.error('Erreur lors du refus de la demande', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      console.error('Erreur:', error);
+      toast.error('Erreur lors du refus de la demande');
     }
   };
 
