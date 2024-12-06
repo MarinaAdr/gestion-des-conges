@@ -39,3 +39,8 @@ const PORT = process.env.PORT || 8080;
 app.listen (PORT, () => {
   console.log (`Serveur démarré sur le port ${PORT}`);
 });
+
+app.use(cors({
+  origin: 'https://gestion-des-conges-tn8p.vercel.app',
+  credentials: true
+}));
