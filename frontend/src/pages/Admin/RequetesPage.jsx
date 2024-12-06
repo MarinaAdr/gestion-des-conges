@@ -16,7 +16,7 @@ const RequetesPage = () => {
   const [selectedUserId, setSelectedUserId] = useState('');
   const [selectedCongeId, setSelectedCongeId] = useState(null);
   const [usersWithConges, setUsersWithConges] = useState([]);
-  const formattedDate = format(new Date(), 'dd MMMM', { locale: fr });
+  const formattedDate = format(new Date(), 'dd MMMM yyyy', { locale: fr });
   const { user } = useAuth();
 
   // Fonction pour récupérer la liste des utilisateurs avec des congés
@@ -231,15 +231,14 @@ const RequetesPage = () => {
         <motion.div 
           initial={{ y: -20 }}
           animate={{ y: 0 }}
-          className="bg-white rounded-2xl shadow-sm p-6 md:p-8"
+          className=" p-6 md:p-8"
         >
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <motion.h1 
               whileHover={{ scale: 1.02 }}
               className="text-2xl md:text-4xl font-bold text-gray-800 flex items-center gap-3"
             >
-              <HiClipboardList className="text-blue-600 text-3xl md:text-4xl" />
-              Demandes en attente
+              Les demandes en attente
             </motion.h1>
             <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
               <select 
