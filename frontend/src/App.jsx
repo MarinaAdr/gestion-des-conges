@@ -20,7 +20,7 @@ import EmployeeLayout from './components/layout/EmployeeLayout';
 import AdminLayout from './components/layout/AdminLayout';
 import RequetesPage from './pages/Admin/RequetesPage';
 import CalendrierPage from './pages/Admin/CalendrierPage';
-import JoursFeries from './pages/Admin/JoursFeries';
+import ArchivesDemandes from './pages/Admin/ArchivesDemandes';
 
 
 
@@ -46,6 +46,7 @@ function App() {
           <Route path="demande-conges" element={<DemandeConges />} />
           <Route path="mon-profil" element={<MonProfil />} />
           <Route path="calendrier-equipe" element={<CalendrierEquipe />} />
+          
         </Route>
 
         {/* Routes protégées admin */}
@@ -64,7 +65,7 @@ function App() {
           <Route path="employees/edit/:id" element={<EmployeeModify />} />
           <Route path="requests" element={<RequetesPage />} />
           <Route path="calendrier" element={<CalendrierPage />} />
-          <Route path="jours-feries" element={<JoursFeries />} />
+          <Route path="archives" element={<ArchivesDemandes />} />
         </Route>
 
         {/* Route 404 */}
