@@ -118,7 +118,7 @@ const EmployeesPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-lg w-[98%] mx-auto p-8">
+    <div className="  w-[98%] mx-auto p-8">
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h1 className="text-4xl font-extrabold text-indigo-800">Gestion des employés</h1>
