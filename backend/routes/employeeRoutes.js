@@ -47,5 +47,7 @@ router.put('/:id', upload.single('image'), employeeController.update);
 // Supprimer un employé
 router.delete('/:id', employeeController.delete);
 
+// Ajouter cette nouvelle route pour l'upload d'image
+router.post('/:id/image', upload.single('image'), employeeController.uploadImage);
 
 module.exports = router; 

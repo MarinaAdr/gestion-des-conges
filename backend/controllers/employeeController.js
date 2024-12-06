@@ -232,3 +232,39 @@ exports.updateEmployee = async (req, res) => {
     });
   }
 };
+
+exports.uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'Aucune image fournie'
+      });
+    }
+
+    const result = await Employee.update(req.params.id, {
+      image: req.file.filename
+    });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Employé non trouvé'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Image mise à jour avec succès',
+      data: {
+        image: req.file.filename
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Erreur lors de l'upload de l'image",
+      error: error.message
+    });
+  }
+};
