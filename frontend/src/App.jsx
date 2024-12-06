@@ -25,13 +25,6 @@ import JoursFeries from './pages/Admin/JoursFeries';
 
 
 function App() {
-  const { user } = useAuth();
-
-  // Redirection si non authentifié
-  const PrivateRoute = ({ children }) => {
-    return user ? children : <Navigate to="/login" />;
-  };
-
   return (
     <div>
       <Routes>
@@ -40,14 +33,14 @@ function App() {
 
         {/* Routes protégées employé */}
         <Route
-          path="/"
+          path="/employee"
           element={
-            <PrivateRoute>
+            <ProtectedRoute allowedRoles={["EMPLOYEE"]}>
               <EmployeeLayout />
-            </PrivateRoute>
+            </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route index element={<Navigate to="/employee/dashboard" replace />} />
           <Route path="dashboard" element={<EmployeeDashboard />} />
           <Route path="solde-conges" element={<SoldeConges />} />
           <Route path="demande-conges" element={<DemandeConges />} />
@@ -69,15 +62,13 @@ function App() {
           <Route path="employees" element={<EmployeesPage />} />
           <Route path="employees/new" element={<EmployeesForm />} />
           <Route path="employees/edit/:id" element={<EmployeeModify />} />
-         
           <Route path="requests" element={<RequetesPage />} />
-         
           <Route path="calendrier" element={<CalendrierPage />} />
           <Route path="jours-feries" element={<JoursFeries />} />
         </Route>
 
         {/* Route 404 */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
       <ToastContainer
         position="top-right"
