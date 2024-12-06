@@ -151,7 +151,6 @@ const CalendrierPage = () => {
             backdrop-blur-sm border
             ${isToday ? 'bg-blue-50/70 ring-2 ring-blue-200 border-blue-200' : 'border-gray-100'}
             ${!isWeekendDay && joursFeries[date] ? 'bg-violet-50/70 border-violet-200' : ''}
-            ${!isWeekendDay && congesJour.length > 0 ? 'bg-orange-50/70 border-orange-200' : ''}
             ${isWeekendDay ? 'bg-gray-50/70 cursor-not-allowed' : 'cursor-pointer hover:shadow-lg'}
           `}
         >
@@ -179,7 +178,7 @@ const CalendrierPage = () => {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="text-xs p-2 bg-orange-100/80 text-orange-800 rounded-lg font-medium shadow-sm"
+                    className="text-xs p-2 bg-orange-50 text-orange-800 rounded-lg font-medium shadow-sm border border-orange-200"
                   >
                     {conge.nom} {conge.prenom}
                   </motion.div>
