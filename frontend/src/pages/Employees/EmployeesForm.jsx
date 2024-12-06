@@ -78,21 +78,14 @@ const EmployeesForm = () => {
         contact: formData.contact.trim()
       };
 
-      console.log('Données à envoyer:', employeeData);
-
       // Premier appel pour créer l'employé
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/employees`,
-        employeeData,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+        employeeData
       );
 
       // Si une image est sélectionnée, faire un deuxième appel pour l'upload
-      if (formData.image_profile) {
+      if (formData.image_profile && response.data.data.id) {
         const imageFormData = new FormData();
         imageFormData.append('image', formData.image_profile);
 
@@ -107,9 +100,8 @@ const EmployeesForm = () => {
         );
       }
 
-      console.log('Réponse du serveur:', response.data);
       toast.success('Employé créé avec succès');
-      navigate('/admin/employees', { replace: true });
+      navigate('/admin/employees');
 
     } catch (error) {
       console.error('Erreur complète:', error);
