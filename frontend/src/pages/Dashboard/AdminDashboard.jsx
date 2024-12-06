@@ -60,6 +60,42 @@ const AdminDashboard = () => {
 
   // Modifier la structure des données employés
   const [employeeBalances, setEmployeeBalances] = useState([]);
+  const [employeeConges, setEmployeeConges] = useState({});
+
+  // Fonction pour calculer les jours de congés pris
+  const calculateTakenDays = (conges) => {
+    return conges.reduce((total, conge) => {
+      const dateDebut = new Date(conge.date_debut);
+      const dateFin = new Date(conge.date_fin);
+      let days = 0;
+      for (let d = new Date(dateDebut); d <= dateFin; d.setDate(d.getDate() + 1)) {
+        const day = d.getDay();
+        if (day !== 0 && day !== 6) { // Exclure les week-ends
+          days++;
+        }
+      }
+      return total + days;
+    }, 0);
+  };
+
+  // Fonction pour récupérer les congés approuvés pour chaque employé
+  const fetchEmployeeConges = async (employeeId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/conges/user/${employeeId}/statut/approuve`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      return response.data.data;
+    } catch (error) {
+      console.error(`Erreur lors de la récupération des congés pour l'employé ${employeeId}:`, error);
+      return [];
+    }
+  };
 
   const fetchEmployeeBalances = async () => {
     try {
@@ -73,6 +109,20 @@ const AdminDashboard = () => {
         }
       );
       setEmployeeBalances(response.data.data);
+
+      // Récupérer les congés pour chaque employé
+      const congesPromises = response.data.data.map(employee => 
+        fetchEmployeeConges(employee.id)
+      );
+      const congesResults = await Promise.all(congesPromises);
+      
+      // Créer un objet avec les congés pris par employé
+      const congesMap = {};
+      response.data.data.forEach((employee, index) => {
+        congesMap[employee.id] = calculateTakenDays(congesResults[index]);
+      });
+      setEmployeeConges(congesMap);
+
     } catch (error) {
       console.error('Erreur lors de la récupération des soldes:', error);
       toast.error('Erreur lors de la récupération des soldes');
@@ -216,48 +266,50 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 bg-white">
-                {employeeBalances.map((employee) => (
-                  <tr 
-                    key={employee.id} 
-                    className="hover:bg-gray-50 transition-colors duration-200"
-                  >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-blue-100 to-blue-200 flex items-center justify-center">
-                          <span className="text-blue-700 font-medium text-sm">
-                            {employee.nom.charAt(0)}{employee.prenom.charAt(0)}
-                          </span>
+                {employeeBalances.map((employee) => {
+                  const congesPris = employeeConges[employee.id] || 0;
+                  const joursRestants = congesPris > 0 ? 22 - congesPris : 22;
+                  
+                  return (
+                    <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-200">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gradient-to-r from-blue-100 to-blue-200 flex items-center justify-center">
+                            <span className="text-blue-700 font-medium text-sm">
+                              {employee.nom.charAt(0)}{employee.prenom.charAt(0)}
+                            </span>
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-ml font-medium text-gray-900">{employee.nom}</div>
+                          </div>
                         </div>
-                        <div className="ml-4">
-                          <div className="text-ml font-medium text-gray-900">{employee.nom}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-md text-gray-900">{employee.prenom}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {employee.solde_conge || 10} jours
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                        (employee.jours_restants || 10) > 5 
-                          ? 'bg-green-50 text-green-700 border border-green-100'
-                          : 'bg-orange-50 text-orange-700 border border-orange-100'
-                      }`}>
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        {employee.jours_restants || 10} jours
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-md text-gray-900">{employee.prenom}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {employee.solde_conge || 10} jours
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                          joursRestants > 5 
+                            ? 'bg-green-50 text-green-700 border border-green-100'
+                            : 'bg-orange-50 text-orange-700 border border-orange-100'
+                        }`}>
+                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {joursRestants} jours
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </Table>
           </div>
