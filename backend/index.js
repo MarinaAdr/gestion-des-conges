@@ -40,7 +40,7 @@ app.listen (PORT, () => {
   console.log (`Serveur démarré sur le port ${PORT}`);
 });
 
-// app.use(cors({
-//   origin: 'https://gestion-des-conges-tn8p.vercel.app',
-//   credentials: true
-// }));
+app.use(cors({
+  origin: 'https://gestion-des-conges-tn8p.vercel.app',
+  credentials: true
+}));
