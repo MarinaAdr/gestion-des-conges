@@ -7,8 +7,8 @@ const NavbarEmployee = ({ onMenuClick }) => {
 
   return (
     <nav className="sticky top-0 z-50 bg-blue-400  border-blue-300">
-      <div className="min-h-[80px] px-4 sm:px-6">
-        <div className="flex flex-wrap items-center justify-between h-full py-4">
+      <div className="min-h-[20px] px-4 sm:px-6">
+        <div className="flex  items-center justify-center h-[60px] py-4">
           {/* Logo et Titre */}
           <div className="flex items-center flex-grow w-full sm:w-auto mb-4 sm:mb-0">
             <button 
