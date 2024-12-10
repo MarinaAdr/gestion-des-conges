@@ -126,7 +126,7 @@ const EmployeesPage = () => {
             onClick={() => navigate('/admin/employees/new')} 
             className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg hover:from-purple-600 hover:to-indigo-500 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
-            <RiAddLine className="mr-2 text-xl" />
+            <RiAddLine className="mr-2 text-base" />
             <span className="text-lg font-medium">Ajouter un employé</span>
           </button>
         </div>

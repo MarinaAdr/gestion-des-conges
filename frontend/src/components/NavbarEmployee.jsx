@@ -36,7 +36,7 @@ const NavbarEmployee = ({ onMenuClick }) => {
               ) : (
                 <RiUserLine className="text-white text-3xl" />
               )}
-              <span className="ml-2 text-white text-xl font-medium hidden md:block">
+              <span className="ml-2 text-white text-base font-medium hidden md:block">
                 {user?.nom || 'Utilisateur'}
               </span>
             </button>

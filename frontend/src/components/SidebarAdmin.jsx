@@ -61,7 +61,7 @@ const SidebarAdmin = () => {
                 className={`
                   w-full flex items-center gap-4 
                   px-4 py-5 rounded-lg
-                  text-left text-xl font-medium
+                  text-left text-base font-medium
                   transition-colors duration-200
                   ${location.pathname === item.path
                     ? 'bg-blue-50 text-blue-900'
@@ -85,7 +85,7 @@ const SidebarAdmin = () => {
               className="
                 w-full flex items-center gap-4
                 px-4 py-9 rounded-lg
-                text-left text-xl font-medium text-blue-900
+                text-left text-base font-medium text-blue-900
                 hover:bg-blue-150 transition-colors duration-200
               "
             >

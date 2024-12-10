@@ -121,7 +121,7 @@ const DemandeConges = () => {
             <div className="space-y-4 transform hover:scale-105 transition-all duration-300">
               <label 
                 htmlFor="dateDebut" 
-                className="flex text-xl items-center gap-2 text-gray-700 font-medium mb-2"
+                className="flex text-base items-center gap-2 text-gray-700 font-medium mb-2"
               >
                 <FaCalendarAlt className="text-blue-500 text-2xl" />
                 Date de début <span className="text-red-500">*</span>
@@ -132,14 +132,14 @@ const DemandeConges = () => {
                 required
                 value={formData.dateDebut}
                 onChange={(e) => setFormData({...formData, dateDebut: e.target.value})}
-                className="w-full p-4 text-xl border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all hover:border-blue-300"
+                className="w-full p-4 text-base border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all hover:border-blue-300"
               />
             </div>
 
             <div className="space-y-4 transform hover:scale-105 transition-all duration-300">
               <label 
                 htmlFor="dateFin" 
-                className="flex text-xl items-center gap-2 text-gray-700 font-medium mb-2"
+                className="flex text-base items-center gap-2 text-gray-700 font-medium mb-2"
               >
                 <FaCalendarAlt className="text-blue-500 text-2xl" />
                 Date de fin <span className="text-red-500">*</span>
@@ -150,7 +150,7 @@ const DemandeConges = () => {
                 required
                 value={formData.dateFin}
                 onChange={(e) => setFormData({...formData, dateFin: e.target.value})}
-                className="w-full p-4 text-xl border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all hover:border-blue-300"
+                className="w-full p-4 text-base border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all hover:border-blue-300"
               />
             </div>
           </div>
@@ -158,7 +158,7 @@ const DemandeConges = () => {
           <div className="space-y-4 transform hover:scale-105 transition-all duration-300">
             <label 
               htmlFor="motif" 
-              className="flex text-xl items-center gap-2 text-gray-700 font-medium mb-2"
+              className="flex text-base items-center gap-2 text-gray-700 font-medium mb-2"
             >
               <FaFileAlt className="text-blue-500 text-2xl" />
               Motif <span className="text-red-500">*</span>
@@ -170,14 +170,14 @@ const DemandeConges = () => {
               value={formData.motif}
               onChange={(e) => setFormData({...formData, motif: e.target.value})}
               placeholder="Décrivez la raison de votre demande..."
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none hover:border-blue-300"
+              className="w-full p-4 text-base border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none hover:border-blue-300"
             />
           </div>
 
           <button 
             type="submit" 
             disabled={loading || !formData.dateDebut || !formData.dateFin || !formData.motif}
-            className="w-full bg-blue-500 text-xl hover:bg-blue-600 text-white font-medium py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 disabled:bg-gray-400 transform hover:scale-105 hover:shadow-lg"
+            className="w-full bg-blue-500 text-base hover:bg-blue-600 text-white font-medium py-4 px-6 rounded-lg transition-all duration-300 flex items-center justify-center gap-3 disabled:bg-gray-400 transform hover:scale-105 hover:shadow-lg"
           >
             {loading ? (
               <div className="flex items-center gap-3">

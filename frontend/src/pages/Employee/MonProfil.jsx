@@ -82,14 +82,14 @@ const MonProfil = () => {
   };
 
   // Style global pour tous les inputs
-  const inputClassName = `w-full p-5 border-2 rounded-xl text-xl outline-none transition-all duration-200 ${
+  const inputClassName = `w-full p-5 border-2 rounded-xl text-base outline-none transition-all duration-200 ${
     isEditing 
       ? 'bg-white border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200' 
       : 'bg-blue-50 border-blue-100'
   }`;
 
   // Style pour les boutons
-  const buttonBaseClass = "px-10 py-4 rounded-xl text-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg";
+  const buttonBaseClass = "px-10 py-4 rounded-xl text-base font-semibold transition-all duration-200 shadow-md hover:shadow-lg";
   const primaryButtonClass = `${buttonBaseClass} bg-blue-600 text-white hover:bg-blue-700 hover:scale-105`;
   const secondaryButtonClass = `${buttonBaseClass} bg-gray-500 text-white hover:bg-gray-600 hover:scale-105`;
 
@@ -98,7 +98,7 @@ const MonProfil = () => {
       {/* En-tête */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-10">
         <h1 className="text-4xl font-bold text-blue-800">Mon Profil</h1>
-        <p className="text-xl text-blue-600 bg-blue-50 rounded-full px-6 py-3">
+        <p className="text-base text-blue-600 bg-blue-50 rounded-full px-6 py-3">
           {formattedDate}
         </p>
       </div>
@@ -124,7 +124,7 @@ const MonProfil = () => {
                 </div>
               )}
             </div>
-            <label className="bg-blue-700 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-800 transition text-xl inline-block">
+            <label className="bg-blue-700 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-800 transition text-base inline-block">
               Changer la photo
               <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
             </label>
@@ -141,7 +141,7 @@ const MonProfil = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                     <HiUser className="w-7 h-7" /> Nom
                   </label>
                   <input
@@ -154,7 +154,7 @@ const MonProfil = () => {
                   />
                 </div>
                 <div className="space-y-4">
-                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                     <HiUser className="w-7 h-7" /> Prénom
                   </label>
                   <input
@@ -176,7 +176,7 @@ const MonProfil = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                     <HiMail className="w-7 h-7" /> Email
                   </label>
                   <input
@@ -184,11 +184,11 @@ const MonProfil = () => {
                     name="email"
                     value={user.email}
                     readOnly={true}
-                    className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
+                    className="w-full p-5 border-2 rounded-xl text-base bg-blue-50 border-blue-100 outline-none"
                   />
                 </div>
                 <div className="space-y-4">
-                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                     <HiPhone className="w-7 h-7" /> Téléphone
                   </label>
                   <input
@@ -210,25 +210,25 @@ const MonProfil = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-4">
-                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                     <HiUserGroup className="w-7 h-7" /> Rôle
                   </label>
                   <input
                     type="text"
                     value={user.role || 'Non renseigné'}
                     readOnly
-                    className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
+                    className="w-full p-5 border-2 rounded-xl text-base bg-blue-50 border-blue-100 outline-none"
                   />
                 </div>
                 <div className="space-y-4">
-                  <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                  <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                     <HiCalendar className="w-7 h-7" /> Date d'embauche
                   </label>
                   <input
                     type="text"
                     value={formatDateEmbauche(user.date_embauche)}
                     readOnly
-                    className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
+                    className="w-full p-5 border-2 rounded-xl text-base bg-blue-50 border-blue-100 outline-none"
                   />
                 </div>
               </div>
@@ -241,14 +241,14 @@ const MonProfil = () => {
                 <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
                   <HiSun className="w-8 h-8" /> Congés
                 </h2>
-                <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                   <HiSun className="w-7 h-7" /> Solde congés
                 </label>
                 <input
                   type="text"
                   value={`${user.solde_conge || 0} jours`}
                   readOnly
-                  className="w-full p-5 border-2 rounded-xl text-xl bg-blue-50 border-blue-100 outline-none"
+                  className="w-full p-5 border-2 rounded-xl text-base bg-blue-50 border-blue-100 outline-none"
                 />
               </div>
 
@@ -257,7 +257,7 @@ const MonProfil = () => {
                 <h2 className="text-3xl font-semibold mb-8 text-blue-800 flex items-center gap-4">
                   <HiKey className="w-8 h-8" /> Sécurité
                 </h2>
-                <label className="flex items-center text-xl font-medium text-blue-700 gap-3 mb-3">
+                <label className="flex items-center text-base font-medium text-blue-700 gap-3 mb-3">
                   <HiKey className="w-7 h-7" /> Mot de passe
                 </label>
                 <input

@@ -68,7 +68,7 @@ const EmployeeSidebar = () => {
                 className={`
                   w-full flex items-center gap-4 
                   px-4 py-5 rounded-xl
-                  text-left text-xl font-medium
+                  text-left text-base font-medium
                   transition-all duration-300 transform hover:scale-105
                   ${location.pathname === item.path
                     ? 'bg-white bg-opacity-20 text-white shadow-lg'
@@ -92,7 +92,7 @@ const EmployeeSidebar = () => {
               className="
                 w-full flex items-center gap-4
                 px-4 py-5 rounded-xl
-                text-left text-xl font-medium text-white
+                text-left text-base font-medium text-white
                 hover:bg-white hover:bg-opacity-10
                 transition-all duration-300 transform hover:scale-105
               "

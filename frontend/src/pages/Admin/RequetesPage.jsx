@@ -274,7 +274,7 @@ const RequetesPage = () => {
               </select>
               <motion.p 
                 whileHover={{ scale: 1.05 }}
-                className="text-lg md:text-xl bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium shadow-sm"
+                className="text-lg md:text-base bg-blue-50 text-blue-600 rounded-full px-6 py-2 font-medium shadow-sm"
               >
                 {formattedDate}
               </motion.p>
@@ -285,10 +285,10 @@ const RequetesPage = () => {
         {/* Liste des demandes */}
         <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800">Liste des requêtes</h2>
+            <h2 className="text-base md:text-2xl font-bold text-gray-800">Liste des requêtes</h2>
             <motion.span 
               whileHover={{ scale: 1.05 }}
-              className="text-lg md:text-xl bg-blue-50 text-blue-600 px-6 py-2 rounded-full font-medium"
+              className="text-lg md:text-base bg-blue-50 text-blue-600 px-6 py-2 rounded-full font-medium"
             >
               {filteredConges.length} {filteredConges.length > 1 ? 'demandes' : 'demande'} en attente
             </motion.span>
@@ -306,7 +306,7 @@ const RequetesPage = () => {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center py-12 text-xl text-gray-500"
+              className="text-center py-12 text-base text-gray-500"
             >
               Aucune demande en attente
             </motion.div>
@@ -331,7 +331,7 @@ const RequetesPage = () => {
                           <div className="p-2 bg-blue-100 rounded-full group-hover:bg-blue-200 transition-colors">
                             <FaUser className="text-blue-500 w-5 h-5" />
                           </div>
-                          <span className="text-lg md:text-xl font-medium text-gray-700">
+                          <span className="text-lg md:text-base font-medium text-gray-700">
                             {conge.nom} {conge.prenom}
                           </span>
                         </div>

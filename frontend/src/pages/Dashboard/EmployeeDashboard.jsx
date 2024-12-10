@@ -224,7 +224,7 @@ const EmployeeDashboard = () => {
         {/* Dernières demandes */}
         <div className="bg-white/80 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-md animate-fadeIn">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-700">
+            <h2 className="text-base md:text-2xl font-bold text-gray-700">
               {statusFilter === 'approuve' ? 'Congés approuvés' :
                statusFilter === 'en_attente' ? 'Demandes en attente' :
                'Mes dernières demandes'}
@@ -243,7 +243,7 @@ const EmployeeDashboard = () => {
               <div className="bg-blue-50 rounded-full w-16 md:w-20 h-16 md:h-20 mx-auto flex items-center justify-center mb-4">
                 <HiClipboardList className="w-8 md:w-10 h-8 md:h-10 text-blue-400" />
               </div>
-              <p className="text-lg md:text-xl text-gray-500">Aucune demande de congés</p>
+              <p className="text-lg md:text-base text-gray-500">Aucune demande de congés</p>
             </div>
           ) : (
             <div className="space-y-4">

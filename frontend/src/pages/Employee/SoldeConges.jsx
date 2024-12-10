@@ -97,7 +97,7 @@ const SoldeConges = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="px-6 py-3 bg-white rounded-full shadow-lg"
           >
-            <Text className="text-lg md:text-xl text-gray-700 font-medium">
+            <Text className="text-lg md:text-base text-gray-700 font-medium">
               Année {new Date().getFullYear()}
             </Text>
           </motion.div>
@@ -120,7 +120,7 @@ const SoldeConges = () => {
                       <CalendarOutlined className="text-3xl md:text-4xl" />
                     </div>
                     <div>
-                      <Text className="text-white/90 text-lg md:text-xl block mb-1">Total disponible (annuel)</Text>
+                      <Text className="text-white/90 text-lg md:text-base block mb-1">Total disponible (annuel)</Text>
                       <Title level={2} className="!mb-0 !text-white !text-3xl md:!text-4xl font-bold">
                         22 jours
                       </Title>

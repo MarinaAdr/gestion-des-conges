@@ -78,7 +78,7 @@ const NavbarAdmin = ({ onMenuClick }) => {
               ) : (
                 <RiUserLine className="text-indigo-900 text-3xl" />
               )}
-              <span className="ml-2 text-indigo-900 text-xl font-medium hidden md:block">
+              <span className="ml-2 text-indigo-900 text-base font-medium hidden md:block">
                 {user?.nom || 'Undefined'}
               </span>
             </button>

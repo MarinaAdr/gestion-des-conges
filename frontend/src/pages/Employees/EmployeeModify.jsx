@@ -170,12 +170,12 @@ const EmployeeModify = () => {
               <span>Retour à la liste</span>
             </button>
             <h2 className="text-2xl md:text-4xl font-bold text-gray-800 flex items-center flex-wrap animate-slideDown">
-              <span className="bg-blue-600 text-white p-2 md:p-3 rounded-lg mr-3 md:mr-4 text-xl md:text-2xl">
+              <span className="bg-blue-600 text-white p-2 md:p-3 rounded-lg mr-3 md:mr-4 text-base md:text-2xl">
                 ✏️
               </span>
               Modifier un employé
             </h2>
-            <p className="mt-2 md:mt-3 text-lg md:text-xl text-gray-600 ml-4 md:ml-16 animate-slideRight">
+            <p className="mt-2 md:mt-3 text-lg md:text-base text-gray-600 ml-4 md:ml-16 animate-slideRight">
               Modifiez les informations de l'employé ci-dessous.
             </p>
           </div>
@@ -184,8 +184,8 @@ const EmployeeModify = () => {
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaUser /></span> Nom
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaUser /></span> Nom
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -194,14 +194,14 @@ const EmployeeModify = () => {
                     value={formData.nom}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="Entrez le nom"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaUser /></span> Prénom
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaUser /></span> Prénom
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -210,14 +210,14 @@ const EmployeeModify = () => {
                     value={formData.prenom}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="Entrez le prénom"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><MdEmail /></span> Email
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><MdEmail /></span> Email
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -226,14 +226,14 @@ const EmployeeModify = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="exemple@email.com"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaPhone /></span> Contact
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaPhone /></span> Contact
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -242,14 +242,14 @@ const EmployeeModify = () => {
                     value={formData.contact}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="+261 34 567 89 01"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaLock /></span> 
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaLock /></span> 
                     {formData.password ? 'Nouveau mot de passe (optionnel)' : 'Mot de passe'}
                     {!formData.password && <span className="text-yellow-500 ml-1">*</span>}
                   </label>
@@ -259,21 +259,21 @@ const EmployeeModify = () => {
                     value={formData.password}
                     onChange={handleChange}
                     required={!formData.password}
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="••••••••"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaUserCheck /></span> Rôle
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaUserCheck /></span> Rôle
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <select
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300 bg-white"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300 bg-white"
                   >
                     <option value="EMPLOYEE">Employé</option>
                     <option value="ADMIN">Administrateur</option>
@@ -281,8 +281,8 @@ const EmployeeModify = () => {
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaCalendarCheck /></span> Date d'embauche
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaCalendarCheck /></span> Date d'embauche
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -291,13 +291,13 @@ const EmployeeModify = () => {
                     value={formData.date_embauche}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaCalendarDay /></span> Solde de congés
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaCalendarDay /></span> Solde de congés
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -307,14 +307,14 @@ const EmployeeModify = () => {
                     onChange={handleChange}
                     required
                     min="0"
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="Entrez le solde de congés"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><MdOutlineTitle /></span> Poste
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><MdOutlineTitle /></span> Poste
                     <span className="text-yellow-500 ml-1">*</span>
                   </label>
                   <input
@@ -323,14 +323,14 @@ const EmployeeModify = () => {
                     value={formData.poste}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
+                    className="w-full px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 outline-none hover:border-blue-300"
                     placeholder="Entrez le poste"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-lg md:text-xl font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
-                    <span className="text-xl md:text-2xl mr-2"><FaCloudUploadAlt /></span>
+                  <label className="block text-lg md:text-base font-semibold text-gray-700 mb-2 md:mb-3 flex items-center">
+                    <span className="text-base md:text-2xl mr-2"><FaCloudUploadAlt /></span>
                     Photo de profil
                   </label>
                   <div className="flex items-center space-x-4">
@@ -344,7 +344,7 @@ const EmployeeModify = () => {
                       />
                       <label
                         htmlFor="image-upload"
-                        className="w-full flex items-center justify-center px-3 md:px-5 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-dashed border-blue-400 hover:border-blue-600 cursor-pointer bg-blue-50 hover:bg-blue-100 transition-all duration-300"
+                        className="w-full flex items-center justify-center px-3 md:px-5 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-dashed border-blue-400 hover:border-blue-600 cursor-pointer bg-blue-50 hover:bg-blue-100 transition-all duration-300"
                       >
                         <FaCloudUploadAlt className="mr-2" />
                         {formData.image_preview ? 'Changer l\'image' : 'Choisir une image'}
@@ -367,13 +367,13 @@ const EmployeeModify = () => {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="w-full sm:w-auto px-4 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                  className="w-full sm:w-auto px-4 md:px-8 py-3 md:py-4 text-base md:text-base rounded-lg border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
                 >
                   <IoClose className="mr-2" /> Annuler
                 </button>
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-4 md:px-8 py-3 md:py-4 text-base md:text-xl rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center"
+                  className="w-full sm:w-auto px-4 md:px-8 py-3 md:py-4 text-base md:text-base rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center"
                 >
                   <LuPencilLine className="mr-2" /> Modifier
                 </button>

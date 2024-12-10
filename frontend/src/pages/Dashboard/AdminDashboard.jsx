@@ -203,7 +203,7 @@ const AdminDashboard = () => {
         <Card className="bg-gradient-to-br from-amber-50 to-white transform transition-all hover:scale-105 border-l-4 border-amber-500">
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-gray-700">Demandes en attente</h3>
+              <h3 className="text-base font-semibold text-gray-700">Demandes en attente</h3>
               <div className="p-3 bg-amber-100 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -218,7 +218,7 @@ const AdminDashboard = () => {
         <Card className="bg-gradient-to-br from-green-50 to-white transform transition-all hover:scale-105 border-l-4 border-green-500">
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-gray-700">Demandes approuvées</h3>
+              <h3 className="text-base font-semibold text-gray-700">Demandes approuvées</h3>
               <div className="p-3 bg-green-100 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -233,7 +233,7 @@ const AdminDashboard = () => {
         <Card className="bg-gradient-to-br from-red-50 to-white transform transition-all hover:scale-105 border-l-4 border-red-500">
           <div className="p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-gray-700">Demandes rejetées</h3>
+              <h3 className="text-base font-semibold text-gray-700">Demandes rejetées</h3>
               <div className="p-3 bg-red-100 rounded-full">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -252,7 +252,7 @@ const AdminDashboard = () => {
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-gray-800">Liste des employés</h2>
             <div className="flex gap-2">
-              <span className="text-xl text-gray-500">Total: {employeeBalances.length} employés</span>
+              <span className="text-base text-gray-500">Total: {employeeBalances.length} employés</span>
             </div>
           </div>
           <div className="overflow-x-auto  rounded-lg border border-gray-100">
