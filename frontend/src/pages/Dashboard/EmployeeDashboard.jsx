@@ -139,7 +139,7 @@ const EmployeeDashboard = () => {
       <div className="max-w-[1400px] mx-auto space-y-8">
         {/* En-tête */}
         <div className=" p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-slideDown">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 flex items-center gap-3">
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-gray-800 flex items-center gap-3">
             Bonjour, {user.nom} {user.prenom} 
             <span className="animate-wave">👋</span>
           </h1>
@@ -224,7 +224,7 @@ const EmployeeDashboard = () => {
         {/* Dernières demandes */}
         <div className="bg-white/80 backdrop-blur-sm p-4 md:p-8 rounded-2xl shadow-md animate-fadeIn">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6 md:mb-8 gap-4">
-            <h2 className="text-base md:text-2xl font-bold text-gray-700">
+            <h2 className="text-base md:text-xl font-bold text-gray-700">
               {statusFilter === 'approuve' ? 'Congés approuvés' :
                statusFilter === 'en_attente' ? 'Demandes en attente' :
                'Mes dernières demandes'}

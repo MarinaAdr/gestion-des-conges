@@ -40,6 +40,7 @@ const NavbarEmployee = ({ onMenuClick }) => {
                 {user?.nom || 'Utilisateur'}
               </span>
             </button>
+
           </div>
         </div>
       </div>
